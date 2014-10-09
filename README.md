@@ -1,4 +1,5 @@
-ColiseuPlayer (Beta) is an audio player written in Swift, created for [Coliseu](http://ricardopereira.eu) app.
+ColiseuPlayer (Beta) is an audio player framework written in Swift, created for [Coliseu](http://ricardopereira.eu) app.
+It uses AVFoundation.
 
 ## Requirements
 

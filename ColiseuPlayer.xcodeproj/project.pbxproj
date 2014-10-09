@@ -11,7 +11,7 @@
 		D788F79A19E69E5600C04099 /* ColiseuPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D788F78E19E69E5600C04099 /* ColiseuPlayer.framework */; };
 		D788F7A119E69E5600C04099 /* ColiseuPlayerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D788F7A019E69E5600C04099 /* ColiseuPlayerTests.swift */; };
 		D788F7AE19E6A0B300C04099 /* AudioFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = D788F7AC19E6A0B300C04099 /* AudioFile.swift */; };
-		D788F7AF19E6A0B300C04099 /* AudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D788F7AD19E6A0B300C04099 /* AudioPlayer.swift */; };
+		D788F7AF19E6A0B300C04099 /* ColiseuPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D788F7AD19E6A0B300C04099 /* ColiseuPlayer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -32,7 +32,7 @@
 		D788F79F19E69E5600C04099 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D788F7A019E69E5600C04099 /* ColiseuPlayerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColiseuPlayerTests.swift; sourceTree = "<group>"; };
 		D788F7AC19E6A0B300C04099 /* AudioFile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioFile.swift; sourceTree = "<group>"; };
-		D788F7AD19E6A0B300C04099 /* AudioPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioPlayer.swift; sourceTree = "<group>"; };
+		D788F7AD19E6A0B300C04099 /* ColiseuPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColiseuPlayer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,8 +76,8 @@
 			isa = PBXGroup;
 			children = (
 				D788F79319E69E5600C04099 /* ColiseuPlayer.h */,
+				D788F7AD19E6A0B300C04099 /* ColiseuPlayer.swift */,
 				D788F7AC19E6A0B300C04099 /* AudioFile.swift */,
-				D788F7AD19E6A0B300C04099 /* AudioPlayer.swift */,
 				D788F79119E69E5600C04099 /* Supporting Files */,
 			);
 			path = ColiseuPlayer;
@@ -216,7 +216,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D788F7AE19E6A0B300C04099 /* AudioFile.swift in Sources */,
-				D788F7AF19E6A0B300C04099 /* AudioPlayer.swift in Sources */,
+				D788F7AF19E6A0B300C04099 /* ColiseuPlayer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -403,6 +403,7 @@
 				D788F7A619E69E5600C04099 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		D788F7A719E69E5600C04099 /* Build configuration list for PBXNativeTarget "ColiseuPlayerTests" */ = {
 			isa = XCConfigurationList;
@@ -411,6 +412,7 @@
 				D788F7A919E69E5600C04099 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

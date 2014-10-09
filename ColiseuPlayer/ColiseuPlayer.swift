@@ -1,5 +1,5 @@
 //
-// AudioPlayer.swift
+// ColiseuPlayer.swift
 // Coliseu
 //
 // Copyright (c) 2014 Ricardo Pereira (http://ricardopereira.eu)
@@ -29,7 +29,7 @@ protocol AudioPlayerProtocol: AVAudioPlayerDelegate
     func audioPlayerDidFinishPlaying(player: AVAudioPlayer!, successfully flag: Bool)
 }
 
-public class AudioPlayer: NSObject
+public class ColiseuPlayer: NSObject
 {
     public typealias function = () -> ()
 
@@ -200,7 +200,7 @@ public class AudioPlayer: NSObject
 
 // MARK: AudioPlayerProtocol
 
-extension AudioPlayer: AudioPlayerProtocol
+extension ColiseuPlayer: AudioPlayerProtocol
 {
     public func audioPlayerDidFinishPlaying(player: AVAudioPlayer!, successfully flag: Bool)
     {
