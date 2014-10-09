@@ -27,13 +27,13 @@ import AVFoundation
 
 public class AudioFile
 {
-    let title: String
-    let fileName: String
-    var fileSize: Int = 0
-    var length: Float = 0.0
-    var duration: NSTimeInterval = 0
-    var path: NSURL?
-    var index: Int = 0
+    public let title: String
+    public let fileName: String
+    public var fileSize: Int = 0
+    public var length: Float = 0.0
+    public var duration: NSTimeInterval = 0
+    public var path: NSURL?
+    public var index: Int = 0
 
     required public init(_ title: String, _ fileName: String)
     {
