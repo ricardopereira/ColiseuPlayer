@@ -41,7 +41,7 @@ public class AudioFile
         self.fileName = fileName
     }
 
-    convenience init(url: NSURL)
+    convenience public init(url: NSURL)
     {
         let fileAsset = AVURLAsset(URL: url, options: nil)
         var title: String = "Song"
