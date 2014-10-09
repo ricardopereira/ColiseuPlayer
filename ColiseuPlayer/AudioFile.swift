@@ -22,7 +22,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-// ? - Test for MetaData
 import AVFoundation
 
 public class AudioFile
@@ -46,7 +45,6 @@ public class AudioFile
         let fileAsset = AVURLAsset(URL: url, options: nil)
         var title: String = "Song"
 
-        // ToDo
         for metadataFormat in fileAsset.availableMetadataFormats {
             if let metadataList = fileAsset.metadataForFormat(metadataFormat as String) {
                 for metadataItem in metadataList
@@ -64,6 +62,7 @@ public class AudioFile
                     case "artword":
                         NSLog("Artwork")
                     case "title":
+                        // It's working
                         title = metadataItem.value!!
                     default:
                         NSLog("none")
