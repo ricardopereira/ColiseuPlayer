@@ -31,7 +31,7 @@ protocol AudioPlayerProtocol: AVAudioPlayerDelegate
 
 public class AudioPlayer: NSObject
 {
-    typealias function = () -> ()
+    public typealias function = () -> ()
 
     var audioPlayer: AVAudioPlayer?
     var timer: NSTimer!
@@ -41,8 +41,8 @@ public class AudioPlayer: NSObject
     var songsList: [AudioFile]?
 
     // Events
-    var playerDidStart: function?
-    var playerDidStop: function?
+    public var playerDidStart: function?
+    public var playerDidStop: function?
 
     public override init()
     {
