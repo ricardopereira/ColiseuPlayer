@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>FD9AF387-35AB-462B-AB13-E6480A430343</string>
+	<key>IDESourceControlProjectName</key>
+	<string>ColiseuPlayer</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>B26017FC751A277CD25697498C511C011CB3D749</key>
+		<string>https://github.com/ricardopereira/coliseu.ios.player.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>ColiseuPlayer.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>B26017FC751A277CD25697498C511C011CB3D749</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/ricardopereira/coliseu.ios.player.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>B26017FC751A277CD25697498C511C011CB3D749</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>B26017FC751A277CD25697498C511C011CB3D749</string>
+			<key>IDESourceControlWCCName</key>
+			<string>ColiseuPlayer</string>
+		</dict>
+	</array>
+</dict>
+</plist>

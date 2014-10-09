@@ -1,0 +1,418 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		D788F79419E69E5600C04099 /* ColiseuPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = D788F79319E69E5600C04099 /* ColiseuPlayer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D788F79A19E69E5600C04099 /* ColiseuPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D788F78E19E69E5600C04099 /* ColiseuPlayer.framework */; };
+		D788F7A119E69E5600C04099 /* ColiseuPlayerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D788F7A019E69E5600C04099 /* ColiseuPlayerTests.swift */; };
+		D788F7AE19E6A0B300C04099 /* AudioFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = D788F7AC19E6A0B300C04099 /* AudioFile.swift */; };
+		D788F7AF19E6A0B300C04099 /* AudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D788F7AD19E6A0B300C04099 /* AudioPlayer.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		D788F79B19E69E5600C04099 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D788F78519E69E5600C04099 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D788F78D19E69E5600C04099;
+			remoteInfo = ColiseuPlayer;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		D788F78E19E69E5600C04099 /* ColiseuPlayer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ColiseuPlayer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D788F79219E69E5600C04099 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D788F79319E69E5600C04099 /* ColiseuPlayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ColiseuPlayer.h; sourceTree = "<group>"; };
+		D788F79919E69E5600C04099 /* ColiseuPlayerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ColiseuPlayerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		D788F79F19E69E5600C04099 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D788F7A019E69E5600C04099 /* ColiseuPlayerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColiseuPlayerTests.swift; sourceTree = "<group>"; };
+		D788F7AC19E6A0B300C04099 /* AudioFile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioFile.swift; sourceTree = "<group>"; };
+		D788F7AD19E6A0B300C04099 /* AudioPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioPlayer.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		D788F78A19E69E5600C04099 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D788F79619E69E5600C04099 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D788F79A19E69E5600C04099 /* ColiseuPlayer.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		D788F78419E69E5600C04099 = {
+			isa = PBXGroup;
+			children = (
+				D788F79019E69E5600C04099 /* ColiseuPlayer */,
+				D788F79D19E69E5600C04099 /* ColiseuPlayerTests */,
+				D788F78F19E69E5600C04099 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		D788F78F19E69E5600C04099 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D788F78E19E69E5600C04099 /* ColiseuPlayer.framework */,
+				D788F79919E69E5600C04099 /* ColiseuPlayerTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		D788F79019E69E5600C04099 /* ColiseuPlayer */ = {
+			isa = PBXGroup;
+			children = (
+				D788F79319E69E5600C04099 /* ColiseuPlayer.h */,
+				D788F7AC19E6A0B300C04099 /* AudioFile.swift */,
+				D788F7AD19E6A0B300C04099 /* AudioPlayer.swift */,
+				D788F79119E69E5600C04099 /* Supporting Files */,
+			);
+			path = ColiseuPlayer;
+			sourceTree = "<group>";
+		};
+		D788F79119E69E5600C04099 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				D788F79219E69E5600C04099 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		D788F79D19E69E5600C04099 /* ColiseuPlayerTests */ = {
+			isa = PBXGroup;
+			children = (
+				D788F7A019E69E5600C04099 /* ColiseuPlayerTests.swift */,
+				D788F79E19E69E5600C04099 /* Supporting Files */,
+			);
+			path = ColiseuPlayerTests;
+			sourceTree = "<group>";
+		};
+		D788F79E19E69E5600C04099 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				D788F79F19E69E5600C04099 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		D788F78B19E69E5600C04099 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D788F79419E69E5600C04099 /* ColiseuPlayer.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		D788F78D19E69E5600C04099 /* ColiseuPlayer */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D788F7A419E69E5600C04099 /* Build configuration list for PBXNativeTarget "ColiseuPlayer" */;
+			buildPhases = (
+				D788F78919E69E5600C04099 /* Sources */,
+				D788F78A19E69E5600C04099 /* Frameworks */,
+				D788F78B19E69E5600C04099 /* Headers */,
+				D788F78C19E69E5600C04099 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ColiseuPlayer;
+			productName = ColiseuPlayer;
+			productReference = D788F78E19E69E5600C04099 /* ColiseuPlayer.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		D788F79819E69E5600C04099 /* ColiseuPlayerTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D788F7A719E69E5600C04099 /* Build configuration list for PBXNativeTarget "ColiseuPlayerTests" */;
+			buildPhases = (
+				D788F79519E69E5600C04099 /* Sources */,
+				D788F79619E69E5600C04099 /* Frameworks */,
+				D788F79719E69E5600C04099 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D788F79C19E69E5600C04099 /* PBXTargetDependency */,
+			);
+			name = ColiseuPlayerTests;
+			productName = ColiseuPlayerTests;
+			productReference = D788F79919E69E5600C04099 /* ColiseuPlayerTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		D788F78519E69E5600C04099 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0610;
+				ORGANIZATIONNAME = "Ricardo Pereira";
+				TargetAttributes = {
+					D788F78D19E69E5600C04099 = {
+						CreatedOnToolsVersion = 6.1;
+					};
+					D788F79819E69E5600C04099 = {
+						CreatedOnToolsVersion = 6.1;
+					};
+				};
+			};
+			buildConfigurationList = D788F78819E69E5600C04099 /* Build configuration list for PBXProject "ColiseuPlayer" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = D788F78419E69E5600C04099;
+			productRefGroup = D788F78F19E69E5600C04099 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				D788F78D19E69E5600C04099 /* ColiseuPlayer */,
+				D788F79819E69E5600C04099 /* ColiseuPlayerTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		D788F78C19E69E5600C04099 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D788F79719E69E5600C04099 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		D788F78919E69E5600C04099 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D788F7AE19E6A0B300C04099 /* AudioFile.swift in Sources */,
+				D788F7AF19E6A0B300C04099 /* AudioPlayer.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D788F79519E69E5600C04099 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D788F7A119E69E5600C04099 /* ColiseuPlayerTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		D788F79C19E69E5600C04099 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D788F78D19E69E5600C04099 /* ColiseuPlayer */;
+			targetProxy = D788F79B19E69E5600C04099 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		D788F7A219E69E5600C04099 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		D788F7A319E69E5600C04099 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		D788F7A519E69E5600C04099 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = ColiseuPlayer/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		D788F7A619E69E5600C04099 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = ColiseuPlayer/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		D788F7A819E69E5600C04099 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = ColiseuPlayerTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		D788F7A919E69E5600C04099 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = ColiseuPlayerTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		D788F78819E69E5600C04099 /* Build configuration list for PBXProject "ColiseuPlayer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D788F7A219E69E5600C04099 /* Debug */,
+				D788F7A319E69E5600C04099 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D788F7A419E69E5600C04099 /* Build configuration list for PBXNativeTarget "ColiseuPlayer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D788F7A519E69E5600C04099 /* Debug */,
+				D788F7A619E69E5600C04099 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		D788F7A719E69E5600C04099 /* Build configuration list for PBXNativeTarget "ColiseuPlayerTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D788F7A819E69E5600C04099 /* Debug */,
+				D788F7A919E69E5600C04099 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = D788F78519E69E5600C04099 /* Project object */;
+}
