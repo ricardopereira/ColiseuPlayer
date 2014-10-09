@@ -44,7 +44,7 @@ public class AudioPlayer: NSObject
     var playerDidStart: function?
     var playerDidStop: function?
 
-    override init()
+    public override init()
     {
         // Inherited
         super.init()
