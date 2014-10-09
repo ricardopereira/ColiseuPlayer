@@ -25,7 +25,7 @@
 // ? - Test for MetaData
 import AVFoundation
 
-class AudioFile
+public class AudioFile
 {
     let title: String
     let fileName: String
@@ -35,7 +35,7 @@ class AudioFile
     var path: NSURL?
     var index: Int = 0
 
-    required init(_ title: String, _ fileName: String)
+    required public init(_ title: String, _ fileName: String)
     {
         self.title = title
         self.fileName = fileName

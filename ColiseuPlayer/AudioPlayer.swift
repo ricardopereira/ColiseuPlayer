@@ -29,7 +29,7 @@ protocol AudioPlayerProtocol: AVAudioPlayerDelegate
     func audioPlayerDidFinishPlaying(player: AVAudioPlayer!, successfully flag: Bool)
 }
 
-class AudioPlayer: NSObject
+public class AudioPlayer: NSObject
 {
     typealias function = () -> ()
 
@@ -202,7 +202,7 @@ class AudioPlayer: NSObject
 
 extension AudioPlayer: AudioPlayerProtocol
 {
-    func audioPlayerDidFinishPlaying(player: AVAudioPlayer!, successfully flag: Bool)
+    public func audioPlayerDidFinishPlaying(player: AVAudioPlayer!, successfully flag: Bool)
     {
         if !flag {
             return
