@@ -51,7 +51,7 @@ public class AudioPlayer: NSObject
 
     }
 
-    func startSession()
+    public func startSession()
     {
         // Session
         AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback, error: nil)
@@ -86,7 +86,7 @@ public class AudioPlayer: NSObject
         song.duration = audioPlayer!.duration
     }
 
-    func songListIsValid() -> Bool
+    private func songListIsValid() -> Bool
     {
         if songsList == nil || songsList!.count == 0 {
             return false
@@ -98,7 +98,7 @@ public class AudioPlayer: NSObject
 
 // MARK: Commands
 
-    func playSong()
+    public func playSong()
     {
         // Verify if has a valid playlist to play
         if !songListIsValid() {
@@ -111,7 +111,7 @@ public class AudioPlayer: NSObject
         audioPlayer!.play()
     }
 
-    func playSong(index: Int, songsList: [AudioFile])
+    public func playSong(index: Int, songsList: [AudioFile])
     {
         self.songsList = songsList
         // Prepare core audio
@@ -120,7 +120,7 @@ public class AudioPlayer: NSObject
         playSong()
     }
 
-    func playSong(index: Int)
+    public func playSong(index: Int)
     {
         // Verify if has a valid playlist to play
         if !songListIsValid() {
@@ -132,14 +132,14 @@ public class AudioPlayer: NSObject
         playSong()
     }
 
-    func pauseSong()
+    public func pauseSong()
     {
         if audioPlayer!.playing {
             audioPlayer!.pause()
         }
     }
 
-    func stopSong()
+    public func stopSong()
     {
         if audioPlayer == nil || !audioPlayer!.playing {
             return
@@ -154,7 +154,7 @@ public class AudioPlayer: NSObject
         }
     }
 
-    func playNextSong(stopIfInvalid: Bool = false)
+    public func playNextSong(stopIfInvalid: Bool = false)
     {
         if let songs = songsList {
             if let song = currentSong {
@@ -175,7 +175,7 @@ public class AudioPlayer: NSObject
         }
     }
 
-    func playPreviousSong()
+    public func playPreviousSong()
     {
         if let songs = songsList {
             if let song = currentSong {
