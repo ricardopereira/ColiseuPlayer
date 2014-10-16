@@ -23,6 +23,7 @@
 // THE SOFTWARE.
 
 import AVFoundation
+import MediaPlayer
 
 protocol AudioPlayerProtocol: AVAudioPlayerDelegate
 {
@@ -82,6 +83,22 @@ public class ColiseuPlayer: NSObject
         audioPlayer = AVAudioPlayer(contentsOfURL: song.path, error: nil)
         audioPlayer!.delegate = self
         audioPlayer!.prepareToPlay()
+
+        // ? - Seeking test
+        //let time = audioPlayer!.currentTime
+        //audioPlayer!.currentTime = time + 30 //Seconds
+
+        //slider.maximumValue = CMTimeGetSeconds([player duration]);
+        //slider.value = CMTimeGetSeconds(player.currentTime);
+        //player.currentTime = CMTimeMakeWithSeconds((int)slider.value,1);
+
+        // Remote Control info - ?
+        let songInfo = [MPMediaItemPropertyTitle: "Coliseu",
+            MPMediaItemPropertyArtist: song.title,
+            //MPNowPlayingInfoPropertyElapsedPlaybackTime:  time + 30,
+            MPMediaItemPropertyPlaybackDuration: audioPlayer!.duration]
+
+        MPNowPlayingInfoCenter.defaultCenter().nowPlayingInfo = songInfo
         // ?
         song.duration = audioPlayer!.duration
     }

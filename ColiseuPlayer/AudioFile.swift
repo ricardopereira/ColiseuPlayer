@@ -65,7 +65,7 @@ public class AudioFile
                         // It's working
                         title = metadataItem.value!!
                     default:
-                        NSLog("none")
+                        title = "Song"
                     }
                 }
             }
