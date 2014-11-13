@@ -28,6 +28,30 @@ Working on Demo
 
 ```swift
 import ColiseuPlayer
+
+class ViewController: UIViewController {
+
+    let player = ColiseuPlayer()
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        var list = [AudioFile]()
+
+        if let urlFile = NSURL.fileURLWithPath(NSBundle.mainBundle().pathForResource("1.m4a", ofType: nil)!) {
+            list.append(AudioFile(url: urlFile))
+        }
+
+        if let urlFile = NSURL.fileURLWithPath(NSBundle.mainBundle().pathForResource("2.m4a", ofType: nil)!) {
+            list.append(AudioFile(url: urlFile))
+        }
+
+        if list.count > 0 {
+            // Play first song (it will continue playing with the current playlist)
+            player.playSong(0, songsList: list)
+        }
+    }
+}
 ````
 
 ## Contact
