@@ -71,7 +71,13 @@ public class AudioFile
             }
         }
 
-        self.init(title, url.lastPathComponent)
+        if let lastPath = url.lastPathComponent {
+            self.init(title, lastPath)
+        }
+        else {
+            self.init(title, "")
+        }
+
         path = url
     }
 }
