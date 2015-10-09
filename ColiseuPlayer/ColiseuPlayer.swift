@@ -55,8 +55,18 @@ public class ColiseuPlayer: NSObject
     public func startSession()
     {
         // Session
-        AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback, error: nil)
-        AVAudioSession.sharedInstance().setActive(true, error: nil)
+        do {
+            try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
+        }
+        catch let error as NSError {
+            print("A AVAudioSession setCategory error occurred, here are the details:\n \(error)")
+        }
+        do {
+            try AVAudioSession.sharedInstance().setActive(true)
+        }
+        catch let error as NSError {
+            print("A AVAudioSession setActive error occurred, here are the details:\n \(error)")
+        }
     }
 
     private func prepareAudio(index: Int)
@@ -80,7 +90,12 @@ public class ColiseuPlayer: NSObject
             song.index = index
         }
 
-        audioPlayer = AVAudioPlayer(contentsOfURL: song.path, error: nil)
+        do {
+            audioPlayer = try AVAudioPlayer(contentsOfURL: song.path!)
+        }
+        catch let error as NSError {
+            print("A AVAudioPlayer contentsOfURL error occurred, here are the details:\n \(error)")
+        }
         audioPlayer!.delegate = self
         audioPlayer!.prepareToPlay()
 
