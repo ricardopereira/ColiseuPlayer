@@ -27,7 +27,7 @@ import MediaPlayer
 
 protocol AudioPlayerProtocol: AVAudioPlayerDelegate
 {
-    func audioPlayerDidFinishPlaying(player: AVAudioPlayer!, successfully flag: Bool)
+    func audioPlayerDidFinishPlaying(player: AVAudioPlayer, successfully flag: Bool)
 }
 
 public class ColiseuPlayer: NSObject
@@ -111,7 +111,7 @@ public class ColiseuPlayer: NSObject
         let songInfo = [MPMediaItemPropertyTitle: "Coliseu",
             MPMediaItemPropertyArtist: song.title,
             //MPNowPlayingInfoPropertyElapsedPlaybackTime:  time + 30,
-            MPMediaItemPropertyPlaybackDuration: audioPlayer!.duration]
+            MPMediaItemPropertyPlaybackDuration: audioPlayer!.duration] as [String : AnyObject]
 
         MPNowPlayingInfoCenter.defaultCenter().nowPlayingInfo = songInfo
         // ?
@@ -186,7 +186,7 @@ public class ColiseuPlayer: NSObject
         }
     }
 
-    public func playNextSong(stopIfInvalid: Bool = false)
+    public func playNextSong(stopIfInvalid stopIfInvalid: Bool = false)
     {
         if let songs = songsList {
             if let song = currentSong {
@@ -234,7 +234,7 @@ public class ColiseuPlayer: NSObject
 
 extension ColiseuPlayer: AudioPlayerProtocol
 {
-    public func audioPlayerDidFinishPlaying(player: AVAudioPlayer!, successfully flag: Bool)
+    public func audioPlayerDidFinishPlaying(player: AVAudioPlayer, successfully flag: Bool)
     {
         if !flag {
             return
