@@ -49,7 +49,7 @@ public class ColiseuPlayer: NSObject
     {
         // Inherited
         super.init()
-        
+
     }
 
     public func startSession()
@@ -99,7 +99,7 @@ public class ColiseuPlayer: NSObject
             self.currentSong = song
             song.index = index
         }
-        
+
         do {
             self.audioPlayer = try AVAudioPlayer(contentsOfURL: song.path!)
         }
@@ -181,7 +181,7 @@ public class ColiseuPlayer: NSObject
         if self.audioPlayer == nil || !self.audioPlayer!.playing {
             return
         }
-        
+
         self.audioPlayer!.stop();
         if let event = self.playerDidStop {
             event()
