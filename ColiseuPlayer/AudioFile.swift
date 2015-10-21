@@ -33,51 +33,50 @@ public class AudioFile
     public var duration: NSTimeInterval = 0
     public var path: NSURL?
     public var index: Int = 0
-
+    
     required public init(_ title: String, _ fileName: String)
     {
         self.title = title
         self.fileName = fileName
     }
-
+    
     convenience public init(url: NSURL)
     {
         let fileAsset = AVURLAsset(URL: url, options: nil)
         var title: String = "Song"
-
+        
         for metadataFormat in fileAsset.availableMetadataFormats {
-            if let metadataList = fileAsset.metadataForFormat(metadataFormat as String) {
-                for metadataItem in metadataList
-                {
-                    if metadataItem.commonKey == nil {
-                        continue
-                    }
-                    let commonKey = metadataItem.commonKey!
-
-                    if commonKey == nil {
-                        continue
-                    }
-
-                    switch commonKey! {
-                    case "artword":
-                        NSLog("Artwork")
-                    case "title":
-                        // It's working
-                        title = metadataItem.value!!
-                    default:
-                        title = "Song"
-                    }
+            let metadataList = fileAsset.metadataForFormat(metadataFormat)
+            for metadataItem in metadataList
+            {
+                if metadataItem.commonKey == nil {
+                    continue
+                }
+                let commonKey = metadataItem.commonKey!
+                
+                //                if commonKey == nil {
+                //                    continue
+                //                }
+                
+                switch commonKey {
+                case "artwork":
+                    NSLog("Artwork")
+                case "title":
+                    // It's working
+                    title = metadataItem.value! as! String
+                default:
+                    title = "Song"
                 }
             }
         }
-
+        
         if let lastPath = url.lastPathComponent {
             self.init(title, lastPath)
         }
         else {
             self.init(title, "")
         }
-
+        
         path = url
     }
 }

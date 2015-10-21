@@ -33,25 +33,25 @@ protocol AudioPlayerProtocol: AVAudioPlayerDelegate
 public class ColiseuPlayer: NSObject
 {
     public typealias function = () -> ()
-
+    
     var audioPlayer: AVAudioPlayer?
     var timer: NSTimer!
-
+    
     // Playlist
     private var currentSong: AudioFile?
     var songsList: [AudioFile]?
-
+    
     // Events
     public var playerDidStart: function?
     public var playerDidStop: function?
-
+    
     public override init()
     {
         // Inherited
         super.init()
-
+        
     }
-
+    
     public func startSession()
     {
         // Session
@@ -68,7 +68,18 @@ public class ColiseuPlayer: NSObject
             print("A AVAudioSession setActive error occurred, here are the details:\n \(error)")
         }
     }
-
+    
+    internal func remoteControlInfo(song: AudioFile)
+    {
+        // Remote Control info - ?
+        let songInfo = [MPMediaItemPropertyTitle: "Coliseu",
+            MPMediaItemPropertyArtist: song.title,
+            //MPNowPlayingInfoPropertyElapsedPlaybackTime:  time + 30,
+            MPMediaItemPropertyPlaybackDuration: audioPlayer!.duration] as [String : AnyObject]
+        
+        MPNowPlayingInfoCenter.defaultCenter().nowPlayingInfo = songInfo
+    }
+    
     private func prepareAudio(index: Int)
     {
         if let songs = songsList {
@@ -77,7 +88,7 @@ public class ColiseuPlayer: NSObject
             }
         }
     }
-
+    
     private func prepareAudio(song: AudioFile, _ index: Int)
     {
         // Keep alive audio at background
@@ -89,7 +100,7 @@ public class ColiseuPlayer: NSObject
             currentSong = song
             song.index = index
         }
-
+        
         do {
             audioPlayer = try AVAudioPlayer(contentsOfURL: song.path!)
         }
@@ -98,26 +109,21 @@ public class ColiseuPlayer: NSObject
         }
         audioPlayer!.delegate = self
         audioPlayer!.prepareToPlay()
-
+        
         // ? - Seeking test
         //let time = audioPlayer!.currentTime
         //audioPlayer!.currentTime = time + 30 //Seconds
-
+        
         //slider.maximumValue = CMTimeGetSeconds([player duration]);
         //slider.value = CMTimeGetSeconds(player.currentTime);
         //player.currentTime = CMTimeMakeWithSeconds((int)slider.value,1);
-
-        // Remote Control info - ?
-        let songInfo = [MPMediaItemPropertyTitle: "Coliseu",
-            MPMediaItemPropertyArtist: song.title,
-            //MPNowPlayingInfoPropertyElapsedPlaybackTime:  time + 30,
-            MPMediaItemPropertyPlaybackDuration: audioPlayer!.duration] as [String : AnyObject]
-
-        MPNowPlayingInfoCenter.defaultCenter().nowPlayingInfo = songInfo
+        
+        remoteControlInfo(song)
+        
         // ?
         song.duration = audioPlayer!.duration
     }
-
+    
     private func songListIsValid() -> Bool
     {
         if songsList == nil || songsList!.count == 0 {
@@ -127,9 +133,9 @@ public class ColiseuPlayer: NSObject
             return true
         }
     }
-
-// MARK: Commands
-
+    
+    // MARK: Commands
+    
     public func playSong()
     {
         // Verify if has a valid playlist to play
@@ -142,7 +148,7 @@ public class ColiseuPlayer: NSObject
         }
         audioPlayer!.play()
     }
-
+    
     public func playSong(index: Int, songsList: [AudioFile])
     {
         self.songsList = songsList
@@ -151,7 +157,7 @@ public class ColiseuPlayer: NSObject
         // Play current song
         playSong()
     }
-
+    
     public func playSong(index: Int)
     {
         // Verify if has a valid playlist to play
@@ -163,20 +169,20 @@ public class ColiseuPlayer: NSObject
         // Play current song
         playSong()
     }
-
+    
     public func pauseSong()
     {
         if audioPlayer!.playing {
             audioPlayer!.pause()
         }
     }
-
+    
     public func stopSong()
     {
         if audioPlayer == nil || !audioPlayer!.playing {
             return
         }
-
+        
         audioPlayer!.stop();
         if let event = playerDidStop {
             event()
@@ -185,48 +191,48 @@ public class ColiseuPlayer: NSObject
             prepareAudio(current, current.index)
         }
     }
-
+    
     public func playNextSong(stopIfInvalid stopIfInvalid: Bool = false)
     {
         if let songs = songsList {
             if let song = currentSong {
                 var index = song.index
-
+                
                 // Next song
                 index++
-
+                
                 if index > songs.count - 1 {
                     if stopIfInvalid {
                         stopSong()
                     }
                     return
                 }
-
+                
                 playSong(index)
             }
         }
     }
-
+    
     public func playPreviousSong()
     {
         if let songs = songsList {
             if let song = currentSong {
                 var index = song.index
-
+                
                 // Previous song
                 index--
-
+                
                 if index < 0 {
                     return
                 }
-
+                
                 playSong(index)
             }
         }
     }
-
+    
     // isLastSong
-
+    
     // isFirstSong
 }
 
