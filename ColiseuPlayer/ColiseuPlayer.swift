@@ -33,25 +33,25 @@ protocol AudioPlayerProtocol: AVAudioPlayerDelegate
 public class ColiseuPlayer: NSObject
 {
     public typealias function = () -> ()
-    
+
     var audioPlayer: AVAudioPlayer?
     var timer: NSTimer!
-    
+
     // Playlist
     private var currentSong: AudioFile?
     var songsList: [AudioFile]?
-    
+
     // Events
     public var playerDidStart: function?
     public var playerDidStop: function?
-    
+
     public override init()
     {
         // Inherited
         super.init()
         
     }
-    
+
     public func startSession()
     {
         // Session
@@ -68,7 +68,7 @@ public class ColiseuPlayer: NSObject
             print("A AVAudioSession setActive error occurred, here are the details:\n \(error)")
         }
     }
-    
+
     internal func remoteControlInfo(song: AudioFile)
     {
         // Remote Control info - ?
@@ -79,7 +79,7 @@ public class ColiseuPlayer: NSObject
         
         MPNowPlayingInfoCenter.defaultCenter().nowPlayingInfo = songInfo
     }
-    
+
     private func prepareAudio(index: Int)
     {
         guard let songs = self.songsList where (index >= 0 && index < songs.count) else {
@@ -87,7 +87,7 @@ public class ColiseuPlayer: NSObject
         }
         prepareAudio(songs[index], index)
     }
-    
+
     private func prepareAudio(song: AudioFile, _ index: Int)
     {
         // Keep alive audio at background
@@ -108,21 +108,21 @@ public class ColiseuPlayer: NSObject
         }
         self.audioPlayer!.delegate = self
         self.audioPlayer!.prepareToPlay()
-        
+
         // ? - Seeking test
         //let time = audioPlayer!.currentTime
         //audioPlayer!.currentTime = time + 30 //Seconds
-        
+
         //slider.maximumValue = CMTimeGetSeconds([player duration]);
         //slider.value = CMTimeGetSeconds(player.currentTime);
         //player.currentTime = CMTimeMakeWithSeconds((int)slider.value,1);
-        
+
         remoteControlInfo(song)
-        
+
         // ?
         song.duration = self.audioPlayer!.duration
     }
-    
+
     private func songListIsValid() -> Bool
     {
         if self.songsList == nil || self.songsList!.count == 0 {
@@ -132,9 +132,9 @@ public class ColiseuPlayer: NSObject
             return true
         }
     }
-    
+
     // MARK: Commands
-    
+
     public func playSong()
     {
         // Verify if has a valid playlist to play
@@ -147,7 +147,7 @@ public class ColiseuPlayer: NSObject
         }
         self.audioPlayer!.play()
     }
-    
+
     public func playSong(index: Int, songsList: [AudioFile])
     {
         self.songsList = songsList
@@ -156,7 +156,7 @@ public class ColiseuPlayer: NSObject
         // Play current song
         playSong()
     }
-    
+
     public func playSong(index: Int)
     {
         // Verify if has a valid playlist to play
@@ -168,14 +168,14 @@ public class ColiseuPlayer: NSObject
         // Play current song
         playSong()
     }
-    
+
     public func pauseSong()
     {
         if self.audioPlayer!.playing {
             self.audioPlayer!.pause()
         }
     }
-    
+
     public func stopSong()
     {
         if self.audioPlayer == nil || !self.audioPlayer!.playing {
@@ -190,48 +190,48 @@ public class ColiseuPlayer: NSObject
             prepareAudio(current, current.index)
         }
     }
-    
+
     public func playNextSong(stopIfInvalid stopIfInvalid: Bool = false)
     {
         if let songs = self.songsList {
             if let song = self.currentSong {
                 var index = song.index
-                
+
                 // Next song
                 index++
-                
+
                 if index > songs.count - 1 {
                     if stopIfInvalid {
                         stopSong()
                     }
                     return
                 }
-                
+
                 playSong(index)
             }
         }
     }
-    
+
     public func playPreviousSong()
     {
         if let _ = self.songsList {
             if let song = self.currentSong {
                 var index = song.index
-                
+
                 // Previous song
                 index--
-                
+
                 if index < 0 {
                     return
                 }
-                
+
                 playSong(index)
             }
         }
     }
-    
+
     // isLastSong
-    
+
     // isFirstSong
 }
 

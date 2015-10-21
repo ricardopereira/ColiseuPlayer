@@ -36,19 +36,19 @@ public class AudioFile
     public var path: NSURL?
     public var artwork: MPMediaItemArtwork?
     public var index: Int = 0
-    
+
     required public init(_ title: String, _ fileName: String)
     {
         self.title = title
         self.fileName = fileName
     }
-    
+
     convenience public init(url: NSURL)
     {
         let fileAsset = AVURLAsset(URL: url, options: nil)
         var title: String = "Song"
         var audioArtwork: MPMediaItemArtwork?
-        
+
         for metadataFormat in fileAsset.availableMetadataFormats {
             let metadataList = fileAsset.metadataForFormat(metadataFormat)
             for metadataItem in metadataList
@@ -57,11 +57,11 @@ public class AudioFile
                     continue
                 }
                 let commonKey = metadataItem.commonKey!
-                
-//                if commonKey == nil {
-//                    continue
-//                }
-                
+
+                // if commonKey == nil {
+                //     continue
+                // }
+
                 switch commonKey {
                 case "artwork":
                     if let audioImage = UIImage(data: metadataItem.value! as! NSData) {
@@ -76,14 +76,14 @@ public class AudioFile
                 }
             }
         }
-        
+
         if let lastPath = url.lastPathComponent {
             self.init(title, lastPath)
         }
         else {
             self.init(title, "")
         }
-        
+
         self.path = url
         if let artwork = audioArtwork {
             self.artwork = artwork
