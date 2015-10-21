@@ -76,7 +76,7 @@ public class ColiseuPlayer: NSObject
             MPMediaItemPropertyArtist: song.title,
             //MPNowPlayingInfoPropertyElapsedPlaybackTime:  time + 30,
             MPMediaItemPropertyPlaybackDuration: audioPlayer!.duration] as [String : AnyObject]
-        
+
         MPNowPlayingInfoCenter.defaultCenter().nowPlayingInfo = songInfo
     }
 
