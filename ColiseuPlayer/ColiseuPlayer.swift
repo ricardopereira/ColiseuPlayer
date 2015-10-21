@@ -82,33 +82,32 @@ public class ColiseuPlayer: NSObject
     
     private func prepareAudio(index: Int)
     {
-        if let songs = songsList {
-            if index >= 0 && index < songs.count {
-                prepareAudio(songs[index], index)
-            }
+        guard let songs = self.songsList where (index >= 0 && index < songs.count) else {
+            return
         }
+        prepareAudio(songs[index], index)
     }
     
     private func prepareAudio(song: AudioFile, _ index: Int)
     {
         // Keep alive audio at background
         if song.path == nil {
-            currentSong = nil
+            self.currentSong = nil
             return
         }
         else {
-            currentSong = song
+            self.currentSong = song
             song.index = index
         }
         
         do {
-            audioPlayer = try AVAudioPlayer(contentsOfURL: song.path!)
+            self.audioPlayer = try AVAudioPlayer(contentsOfURL: song.path!)
         }
         catch let error as NSError {
             print("A AVAudioPlayer contentsOfURL error occurred, here are the details:\n \(error)")
         }
-        audioPlayer!.delegate = self
-        audioPlayer!.prepareToPlay()
+        self.audioPlayer!.delegate = self
+        self.audioPlayer!.prepareToPlay()
         
         // ? - Seeking test
         //let time = audioPlayer!.currentTime
@@ -121,12 +120,12 @@ public class ColiseuPlayer: NSObject
         remoteControlInfo(song)
         
         // ?
-        song.duration = audioPlayer!.duration
+        song.duration = self.audioPlayer!.duration
     }
     
     private func songListIsValid() -> Bool
     {
-        if songsList == nil || songsList!.count == 0 {
+        if self.songsList == nil || self.songsList!.count == 0 {
             return false
         }
         else {
@@ -143,10 +142,10 @@ public class ColiseuPlayer: NSObject
             return
         }
         // Check the didStart event
-        if let event = playerDidStart {
+        if let event = self.playerDidStart {
             event()
         }
-        audioPlayer!.play()
+        self.audioPlayer!.play()
     }
     
     public func playSong(index: Int, songsList: [AudioFile])
@@ -172,30 +171,30 @@ public class ColiseuPlayer: NSObject
     
     public func pauseSong()
     {
-        if audioPlayer!.playing {
-            audioPlayer!.pause()
+        if self.audioPlayer!.playing {
+            self.audioPlayer!.pause()
         }
     }
     
     public func stopSong()
     {
-        if audioPlayer == nil || !audioPlayer!.playing {
+        if self.audioPlayer == nil || !self.audioPlayer!.playing {
             return
         }
         
-        audioPlayer!.stop();
-        if let event = playerDidStop {
+        self.audioPlayer!.stop();
+        if let event = self.playerDidStop {
             event()
         }
-        if let current = currentSong {
+        if let current = self.currentSong {
             prepareAudio(current, current.index)
         }
     }
     
     public func playNextSong(stopIfInvalid stopIfInvalid: Bool = false)
     {
-        if let songs = songsList {
-            if let song = currentSong {
+        if let songs = self.songsList {
+            if let song = self.currentSong {
                 var index = song.index
                 
                 // Next song
@@ -215,8 +214,8 @@ public class ColiseuPlayer: NSObject
     
     public func playPreviousSong()
     {
-        if let songs = songsList {
-            if let song = currentSong {
+        if let _ = self.songsList {
+            if let song = self.currentSong {
                 var index = song.index
                 
                 // Previous song
