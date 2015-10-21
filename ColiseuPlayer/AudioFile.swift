@@ -23,6 +23,8 @@
 // THE SOFTWARE.
 
 import AVFoundation
+import UIKit
+import MediaPlayer
 
 public class AudioFile
 {
@@ -32,6 +34,7 @@ public class AudioFile
     public var length: Float = 0.0
     public var duration: NSTimeInterval = 0
     public var path: NSURL?
+    public var artwork: MPMediaItemArtwork?
     public var index: Int = 0
     
     required public init(_ title: String, _ fileName: String)
@@ -44,6 +47,7 @@ public class AudioFile
     {
         let fileAsset = AVURLAsset(URL: url, options: nil)
         var title: String = "Song"
+        var audioArtwork: MPMediaItemArtwork?
         
         for metadataFormat in fileAsset.availableMetadataFormats {
             let metadataList = fileAsset.metadataForFormat(metadataFormat)
@@ -54,13 +58,16 @@ public class AudioFile
                 }
                 let commonKey = metadataItem.commonKey!
                 
-                //                if commonKey == nil {
-                //                    continue
-                //                }
+//                if commonKey == nil {
+//                    continue
+//                }
                 
                 switch commonKey {
                 case "artwork":
-                    NSLog("Artwork")
+                    if let audioImage = UIImage(data: metadataItem.value! as! NSData) {
+                        audioArtwork = MPMediaItemArtwork(image: audioImage)
+                        print(audioImage.description)
+                    }
                 case "title":
                     // It's working
                     title = metadataItem.value! as! String
@@ -77,6 +84,9 @@ public class AudioFile
             self.init(title, "")
         }
         
-        path = url
+        self.path = url
+        if let artwork = audioArtwork {
+            self.artwork = artwork
+        }
     }
 }
