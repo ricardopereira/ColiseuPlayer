@@ -30,6 +30,21 @@ protocol AudioPlayerProtocol: AVAudioPlayerDelegate
     func audioPlayerDidFinishPlaying(player: AVAudioPlayer, successfully flag: Bool)
 }
 
+/* A protocol for delegates of ColiseuPlayer */
+@objc public protocol ColiseuPlayerDelegate: class {
+    /* audioPlayer:didReceiveRemoteControlBeginSeekingBackwardEvent: is called when begin seeking backward from remote control. */
+    optional func audioPlayer(controller: ColiseuPlayer, didReceiveRemoteControlBeginSeekingBackwardEvent eventSubtype: UIEventSubtype)
+
+    /* audioPlayer:didReceiveRemoteControlEndSeekingBackwardEvent: is called when seeking backward ended from remote control. */
+    optional func audioPlayer(controller: ColiseuPlayer, didReceiveRemoteControlEndSeekingBackwardEvent eventSubtype: UIEventSubtype)
+
+    /* audioPlayer:didReceiveRemoteControlBeginSeekingForwardEvent: is called when begin seeking forward from remote control. */
+    optional func audioPlayer(controller: ColiseuPlayer, didReceiveRemoteControlBeginSeekingForwardEvent eventSubtype: UIEventSubtype)
+
+    /* audioPlayer:didReceiveRemoteControlEndSeekingForwardEvent: is called when seeking forward ended from remote control. */
+    optional func audioPlayer(controller: ColiseuPlayer, didReceiveRemoteControlEndSeekingForwardEvent eventSubtype: UIEventSubtype)
+}
+
 public class ColiseuPlayer: NSObject
 {
     public typealias function = () -> ()
@@ -44,6 +59,22 @@ public class ColiseuPlayer: NSObject
     // Events
     public var playerDidStart: function?
     public var playerDidStop: function?
+
+    // Delegate
+    weak var delegate: ColiseuPlayerDelegate? {
+        willSet {
+            let viewController = newValue as! UIViewController
+
+            if newValue == nil {
+                UIApplication.sharedApplication().endReceivingRemoteControlEvents()
+                viewController.resignFirstResponder()
+            }
+            else {
+                UIApplication.sharedApplication().beginReceivingRemoteControlEvents()
+                viewController.becomeFirstResponder()
+            }
+        }
+    }
 
     public override init()
     {
@@ -71,10 +102,18 @@ public class ColiseuPlayer: NSObject
 
     internal func remoteControlInfo(song: AudioFile)
     {
+        // ? - Seeking test
+        //let time = self.audioPlayer!.currentTime
+        //self.audioPlayer!.currentTime = time + 30 //Seconds
+
+        //slider.maximumValue = CMTimeGetSeconds([player duration])
+        //slider.value = CMTimeGetSeconds(player.currentTime)
+        //player.currentTime = CMTimeMakeWithSeconds((int)slider.value,1)
+
         // Remote Control info - ?
         let songInfo = [MPMediaItemPropertyTitle: "Coliseu",
             MPMediaItemPropertyArtist: song.title,
-            //MPNowPlayingInfoPropertyElapsedPlaybackTime:  time + 30,
+            //MPNowPlayingInfoPropertyElapsedPlaybackTime: time + 30,
             MPMediaItemPropertyPlaybackDuration: audioPlayer!.duration] as [String : AnyObject]
 
         MPNowPlayingInfoCenter.defaultCenter().nowPlayingInfo = songInfo
@@ -108,14 +147,6 @@ public class ColiseuPlayer: NSObject
         }
         self.audioPlayer!.delegate = self
         self.audioPlayer!.prepareToPlay()
-
-        // ? - Seeking test
-        //let time = audioPlayer!.currentTime
-        //audioPlayer!.currentTime = time + 30 //Seconds
-
-        //slider.maximumValue = CMTimeGetSeconds([player duration]);
-        //slider.value = CMTimeGetSeconds(player.currentTime);
-        //player.currentTime = CMTimeMakeWithSeconds((int)slider.value,1);
 
         remoteControlInfo(song)
 
@@ -182,7 +213,7 @@ public class ColiseuPlayer: NSObject
             return
         }
 
-        self.audioPlayer!.stop();
+        self.audioPlayer!.stop()
         if let event = self.playerDidStop {
             event()
         }
@@ -233,6 +264,26 @@ public class ColiseuPlayer: NSObject
     // isLastSong
 
     // isFirstSong
+
+    // MARK: ColiseuPlayerDelegate
+
+    public func remoteControlEvent(event: UIEvent) {
+        if let delegate = self.delegate {
+            if (event.type == UIEventType.RemoteControl) {
+                switch event.subtype {
+                case UIEventSubtype.RemoteControlBeginSeekingBackward:
+                    delegate.audioPlayer?(self, didReceiveRemoteControlBeginSeekingBackwardEvent: event.subtype)
+                case UIEventSubtype.RemoteControlEndSeekingBackward:
+                    delegate.audioPlayer?(self, didReceiveRemoteControlEndSeekingBackwardEvent: event.subtype)
+                case UIEventSubtype.RemoteControlBeginSeekingForward:
+                    delegate.audioPlayer?(self, didReceiveRemoteControlBeginSeekingForwardEvent: event.subtype)
+                case UIEventSubtype.RemoteControlEndSeekingForward:
+                    delegate.audioPlayer?(self, didReceiveRemoteControlEndSeekingForwardEvent: event.subtype)
+                default: break
+                }
+            }
+        }
+    }
 }
 
 // MARK: AudioPlayerProtocol
