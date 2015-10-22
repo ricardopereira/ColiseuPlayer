@@ -61,7 +61,8 @@ public class ColiseuPlayer: NSObject
     public var playerDidStop: function?
 
     // Delegate
-    weak var delegate: ColiseuPlayerDelegate? {
+    weak var delegate: ColiseuPlayerDelegate?
+    {
         willSet {
             if let viewController = newValue as? UIViewController {
                 UIApplication.sharedApplication().beginReceivingRemoteControlEvents()
@@ -264,7 +265,8 @@ public class ColiseuPlayer: NSObject
 
     // MARK: ColiseuPlayerDelegate
 
-    public func remoteControlEvent(event: UIEvent) {
+    public func remoteControlEvent(event: UIEvent)
+    {
         if let delegate = self.delegate {
             if (event.type == UIEventType.RemoteControl) {
                 switch event.subtype {
