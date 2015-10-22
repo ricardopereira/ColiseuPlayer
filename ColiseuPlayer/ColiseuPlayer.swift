@@ -49,19 +49,19 @@ public class ColiseuPlayer: NSObject
 {
     public typealias function = () -> ()
 
-    var audioPlayer: AVAudioPlayer?
-    var timer: NSTimer!
+    internal var audioPlayer: AVAudioPlayer?
+    internal var timer: NSTimer!
 
     // Playlist
-    private var currentSong: AudioFile?
-    var songsList: [AudioFile]?
+    internal var currentSong: AudioFile?
+    internal var songsList: [AudioFile]?
 
     // Events
     public var playerDidStart: function?
     public var playerDidStop: function?
 
     // Delegate
-    weak var delegate: ColiseuPlayerDelegate?
+    internal weak var delegate: ColiseuPlayerDelegate?
     {
         willSet {
             if let viewController = newValue as? UIViewController {
