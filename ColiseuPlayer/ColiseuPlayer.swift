@@ -259,9 +259,23 @@ public class ColiseuPlayer: NSObject
         }
     }
 
-    // isLastSong
+    public func isLastSong() -> Bool {
+        if self.songsList != nil && self.currentSong != nil {
+            if self.currentSong!.index + 1 == self.songsList!.count {
+                return true
+            }
+        }
+        return false
+    }
 
-    // isFirstSong
+    public func isFirstSong() -> Bool {
+        if self.currentSong != nil {
+            if self.currentSong!.index == 0 {
+                return true
+            }
+        }
+        return false
+    }
 
     // MARK: ColiseuPlayerDelegate
 
