@@ -259,7 +259,8 @@ public class ColiseuPlayer: NSObject
         }
     }
 
-    public func isLastSong() -> Bool {
+    public func isLastSong() -> Bool
+    {
         if self.songsList != nil && self.currentSong != nil {
             if self.currentSong!.index + 1 == self.songsList!.count {
                 return true
@@ -268,7 +269,8 @@ public class ColiseuPlayer: NSObject
         return false
     }
 
-    public func isFirstSong() -> Bool {
+    public func isFirstSong() -> Bool
+    {
         if self.currentSong != nil {
             if self.currentSong!.index == 0 {
                 return true
