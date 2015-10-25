@@ -64,7 +64,7 @@ public class ColiseuPlayer: NSObject
     internal weak var delegate: ColiseuPlayerDelegate?
     {
         willSet {
-            if let viewController = newValue as? UIView {
+            if let viewController = newValue as? UIViewController {
                 UIApplication.sharedApplication().beginReceivingRemoteControlEvents()
                 viewController.becomeFirstResponder()
             }
