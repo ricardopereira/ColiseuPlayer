@@ -31,7 +31,8 @@ protocol AudioPlayerProtocol: AVAudioPlayerDelegate
 }
 
 /* A protocol for delegates of ColiseuPlayer */
-@objc public protocol ColiseuPlayerDelegate: class {
+@objc public protocol ColiseuPlayerDelegate: class
+{
     /* audioPlayer:didReceiveRemoteControlPlayEvent: is called when play button is clicked from remote control. */
     optional func audioPlayer(controller: ColiseuPlayer, didReceiveRemoteControlPlayEvent eventSubtype: UIEventSubtype)
 
@@ -58,7 +59,8 @@ protocol AudioPlayerProtocol: AVAudioPlayerDelegate
 }
 
 /* A protocol for datasource of ColiseuPlayer */
-public protocol ColiseuPlayerDataSource: class {
+public protocol ColiseuPlayerDataSource: class
+{
     // Determine whether audio is not going to repeat, repeat once or always repeat.
     func audioRepeatTypeInAudioPlayer(controller: ColiseuPlayer) -> ColiseuPlayerRepeat
 
@@ -67,7 +69,8 @@ public protocol ColiseuPlayerDataSource: class {
 }
 
 /* An enum for repeat type of ColiseuPlayer */
-public enum ColiseuPlayerRepeat: Int {
+public enum ColiseuPlayerRepeat: Int
+{
     case None = 0, One, All
 }
 
@@ -89,7 +92,7 @@ public class ColiseuPlayer: NSObject
 
     // Delegate
     internal weak var delegate: ColiseuPlayerDelegate?
-        {
+    {
         willSet {
             if let viewController = newValue as? UIViewController {
                 UIApplication.sharedApplication().beginReceivingRemoteControlEvents()
@@ -299,7 +302,8 @@ public class ColiseuPlayer: NSObject
         }
     }
 
-    public func isLastSong() -> Bool {
+    public func isLastSong() -> Bool
+    {
         if self.songsList != nil && self.currentSong != nil {
             if self.currentSong!.index + 1 == self.songsList!.count {
                 return true
@@ -308,7 +312,8 @@ public class ColiseuPlayer: NSObject
         return false
     }
 
-    public func isFirstSong() -> Bool {
+    public func isFirstSong() -> Bool
+    {
         if self.currentSong != nil {
             if self.currentSong!.index == 0 {
                 return true
@@ -381,7 +386,8 @@ extension ColiseuPlayer: AudioPlayerProtocol
 
 // MARK: shuffle Array
 
-extension Array {
+extension Array
+{
     mutating func shuffle() {
         if count < 2 { return }
         for i in 0..<(count - 1) {
