@@ -99,6 +99,11 @@ public class ColiseuPlayer: NSObject
                 UIApplication.sharedApplication().endReceivingRemoteControlEvents()
             }
         }
+        didSet {
+            if let viewController = oldValue as? UIViewController {
+                viewController.resignFirstResponder()
+            }
+        }
     }
 
     // DataSource
