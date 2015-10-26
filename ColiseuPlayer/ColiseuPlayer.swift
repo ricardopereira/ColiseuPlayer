@@ -32,6 +32,18 @@ protocol AudioPlayerProtocol: AVAudioPlayerDelegate
 
 /* A protocol for delegates of ColiseuPlayer */
 @objc public protocol ColiseuPlayerDelegate: class {
+    /* audioPlayer:didReceiveRemoteControlPlayEvent: is called when play button is clicked from remote control. */
+    optional func audioPlayer(controller: ColiseuPlayer, didReceiveRemoteControlPlayEvent eventSubtype: UIEventSubtype)
+
+    /* audioPlayer:didReceiveRemoteControlPauseEvent: is called when pause button is clicked from remote control. */
+    optional func audioPlayer(controller: ColiseuPlayer, didReceiveRemoteControlPauseEvent eventSubtype: UIEventSubtype)
+
+    /* audioPlayer:didReceiveRemoteControlPreviousTrackEvent: is called when rewind button is clicked from remote control. */
+    optional func audioPlayer(controller: ColiseuPlayer, didReceiveRemoteControlPreviousTrackEvent eventSubtype: UIEventSubtype)
+
+    /* audioPlayer:didReceiveRemoteControlNextTrackEvent: is called when fast forward button is clicked from remote control. */
+    optional func audioPlayer(controller: ColiseuPlayer, didReceiveRemoteControlNextTrackEvent eventSubtype: UIEventSubtype)
+
     /* audioPlayer:didReceiveRemoteControlBeginSeekingBackwardEvent: is called when begin seeking backward from remote control. */
     optional func audioPlayer(controller: ColiseuPlayer, didReceiveRemoteControlBeginSeekingBackwardEvent eventSubtype: UIEventSubtype)
 
@@ -43,6 +55,20 @@ protocol AudioPlayerProtocol: AVAudioPlayerDelegate
 
     /* audioPlayer:didReceiveRemoteControlEndSeekingForwardEvent: is called when seeking forward ended from remote control. */
     optional func audioPlayer(controller: ColiseuPlayer, didReceiveRemoteControlEndSeekingForwardEvent eventSubtype: UIEventSubtype)
+}
+
+/* A protocol for datasource of ColiseuPlayer */
+public protocol ColiseuPlayerDataSource: class {
+    // Determine whether audio is not going to repeat, repeat once or always repeat.
+    func audioRepeatTypeInAudioPlayer(controller: ColiseuPlayer) -> ColiseuPlayerRepeat
+
+    // Determine whether audio list is shuffled.
+    func audioWillShuffleInAudioPlayer(controller: ColiseuPlayer) -> Bool
+}
+
+/* An enum for repeat type of ColiseuPlayer */
+public enum ColiseuPlayerRepeat: Int {
+    case None = 0, One, All
 }
 
 public class ColiseuPlayer: NSObject
@@ -59,10 +85,11 @@ public class ColiseuPlayer: NSObject
     // Events
     public var playerDidStart: function?
     public var playerDidStop: function?
+    private var playerWillRepeat: Bool?
 
     // Delegate
     internal weak var delegate: ColiseuPlayerDelegate?
-    {
+        {
         willSet {
             if let viewController = newValue as? UIViewController {
                 UIApplication.sharedApplication().beginReceivingRemoteControlEvents()
@@ -73,6 +100,9 @@ public class ColiseuPlayer: NSObject
             }
         }
     }
+
+    // DataSource
+    internal weak var dataSource: ColiseuPlayerDataSource?
 
     public override init()
     {
@@ -180,6 +210,11 @@ public class ColiseuPlayer: NSObject
     public func playSong(index: Int, songsList: [AudioFile])
     {
         self.songsList = songsList
+        if let dataSource = self.dataSource {
+            if dataSource.audioWillShuffleInAudioPlayer(self) {
+                self.songsList?.shuffle()
+            }
+        }
         // Prepare core audio
         prepareAudio(index)
         // Play current song
@@ -259,8 +294,7 @@ public class ColiseuPlayer: NSObject
         }
     }
 
-    public func isLastSong() -> Bool
-    {
+    public func isLastSong() -> Bool {
         if self.songsList != nil && self.currentSong != nil {
             if self.currentSong!.index + 1 == self.songsList!.count {
                 return true
@@ -269,8 +303,7 @@ public class ColiseuPlayer: NSObject
         return false
     }
 
-    public func isFirstSong() -> Bool
-    {
+    public func isFirstSong() -> Bool {
         if self.currentSong != nil {
             if self.currentSong!.index == 0 {
                 return true
@@ -286,6 +319,14 @@ public class ColiseuPlayer: NSObject
         if let delegate = self.delegate {
             if (event.type == UIEventType.RemoteControl) {
                 switch event.subtype {
+                case UIEventSubtype.RemoteControlPlay:
+                    delegate.audioPlayer?(self, didReceiveRemoteControlPlayEvent: event.subtype)
+                case UIEventSubtype.RemoteControlPause:
+                    delegate.audioPlayer?(self, didReceiveRemoteControlPauseEvent: event.subtype)
+                case UIEventSubtype.RemoteControlPreviousTrack:
+                    delegate.audioPlayer?(self, didReceiveRemoteControlPreviousTrackEvent: event.subtype)
+                case UIEventSubtype.RemoteControlNextTrack:
+                    delegate.audioPlayer?(self, didReceiveRemoteControlNextTrackEvent: event.subtype)
                 case UIEventSubtype.RemoteControlBeginSeekingBackward:
                     delegate.audioPlayer?(self, didReceiveRemoteControlBeginSeekingBackwardEvent: event.subtype)
                 case UIEventSubtype.RemoteControlEndSeekingBackward:
@@ -311,5 +352,38 @@ extension ColiseuPlayer: AudioPlayerProtocol
             return
         }
         playNextSong(stopIfInvalid: true)
+        if self.audioPlayer?.playing == false {
+            if let dataSource = self.dataSource {
+                let repeatType = dataSource.audioRepeatTypeInAudioPlayer(self)
+                switch repeatType {
+                case ColiseuPlayerRepeat.None:
+                    self.playerWillRepeat = false
+                case ColiseuPlayerRepeat.One:
+                    switch self.playerWillRepeat {
+                    case true?:
+                        self.playerWillRepeat = false
+                    default:
+                        self.playerWillRepeat = true
+                        playSong(0)
+                    }
+                case ColiseuPlayerRepeat.All:
+                    self.playerWillRepeat = true
+                    playSong(0)
+                }
+            }
+        }
+    }
+}
+
+// MARK: shuffle Array
+
+extension Array {
+    mutating func shuffle() {
+        if count < 2 { return }
+        for i in 0..<(count - 1) {
+            let j = Int(arc4random_uniform(UInt32(count - i))) + i
+            guard i != j else { continue }
+            swap(&self[i], &self[j])
+        }
     }
 }
