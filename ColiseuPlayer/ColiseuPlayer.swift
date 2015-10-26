@@ -354,8 +354,7 @@ extension ColiseuPlayer: AudioPlayerProtocol
         playNextSong(stopIfInvalid: true)
         if self.audioPlayer?.playing == false {
             if let dataSource = self.dataSource {
-                let repeatType = dataSource.audioRepeatTypeInAudioPlayer(self)
-                switch repeatType {
+                switch dataSource.audioRepeatTypeInAudioPlayer(self) {
                 case ColiseuPlayerRepeat.None:
                     self.playerWillRepeat = false
                 case ColiseuPlayerRepeat.One:
