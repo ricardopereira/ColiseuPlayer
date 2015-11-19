@@ -91,8 +91,7 @@ public class ColiseuPlayer: NSObject
     private var playerWillRepeat: Bool?
 
     // Delegate
-    internal weak var delegate: ColiseuPlayerDelegate?
-    {
+    internal weak var delegate: ColiseuPlayerDelegate? {
         willSet {
             if let viewController = newValue as? UIViewController {
                 UIApplication.sharedApplication().beginReceivingRemoteControlEvents()
@@ -147,8 +146,8 @@ public class ColiseuPlayer: NSObject
         //player.currentTime = CMTimeMakeWithSeconds((int)slider.value,1)
 
         // Remote Control info - ?
-        let songInfo = [MPMediaItemPropertyTitle: "Coliseu",
-            MPMediaItemPropertyArtist: song.title,
+        let songInfo = [MPMediaItemPropertyTitle: song.title,
+            MPMediaItemPropertyArtist: "Coliseu",
             //MPNowPlayingInfoPropertyElapsedPlaybackTime: time + 30,
             MPMediaItemPropertyPlaybackDuration: audioPlayer!.duration] as [String : AnyObject]
 
@@ -304,8 +303,8 @@ public class ColiseuPlayer: NSObject
 
     public func isLastSong() -> Bool
     {
-        if self.songsList != nil && self.currentSong != nil {
-            if self.currentSong!.index + 1 == self.songsList!.count {
+        if let currentSong = self.currentSong, songsList = self.songsList {
+            if currentSong.index + 1 == songsList.count {
                 return true
             }
         }
@@ -314,8 +313,8 @@ public class ColiseuPlayer: NSObject
 
     public func isFirstSong() -> Bool
     {
-        if self.currentSong != nil {
-            if self.currentSong!.index == 0 {
+        if let currentSong = self.currentSong {
+            if currentSong.index == 0 {
                 return true
             }
         }
@@ -386,7 +385,7 @@ extension ColiseuPlayer: AudioPlayerProtocol
 
 // MARK: shuffle Array
 
-extension Array
+private extension Array
 {
     mutating func shuffle() {
         if count < 2 { return }
