@@ -58,6 +58,13 @@ class ViewController: UIViewController, ColiseuPlayerDataSource, ColiseuPlayerDe
         }
     }
 
+    override func viewDidDisappear(animated: Bool) {
+        super.viewDidDisappear(animated)
+
+        // required for endReceivingRemoteControlEvents and resignFirstResponder
+        self.player.delegate = nil
+    }
+
     func audioRepeatTypeInAudioPlayer(controller: ColiseuPlayer) -> ColiseuPlayerRepeat {
     	return ColiseuPlayerRepeat.All
     }
