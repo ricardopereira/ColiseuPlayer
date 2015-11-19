@@ -150,12 +150,22 @@ public class ColiseuPlayer: NSObject
         //player.currentTime = CMTimeMakeWithSeconds((int)slider.value,1)
 
         // Remote Control info - ?
-        let songInfo = [MPMediaItemPropertyTitle: song.title,
-            MPMediaItemPropertyArtist: title,
-            //MPNowPlayingInfoPropertyElapsedPlaybackTime: time + 30,
-            MPMediaItemPropertyPlaybackDuration: audioPlayer!.duration] as [String : AnyObject]
+        if let artwork = song.artwork {
+            let songInfo = [MPMediaItemPropertyTitle: song.title,
+                MPMediaItemPropertyArtist: title,
+                MPMediaItemPropertyArtwork: MPMediaItemArtwork(image: artwork),
+                MPMediaItemPropertyPlaybackDuration: audioPlayer!.duration] as [String : AnyObject]
 
-        MPNowPlayingInfoCenter.defaultCenter().nowPlayingInfo = songInfo
+            MPNowPlayingInfoCenter.defaultCenter().nowPlayingInfo = songInfo
+        }
+        else {
+            let songInfo = [MPMediaItemPropertyTitle: song.title,
+                MPMediaItemPropertyArtist: title,
+                //MPNowPlayingInfoPropertyElapsedPlaybackTime: time + 30,
+                MPMediaItemPropertyPlaybackDuration: audioPlayer!.duration] as [String : AnyObject]
+
+            MPNowPlayingInfoCenter.defaultCenter().nowPlayingInfo = songInfo
+        }
     }
 
     private func prepareAudio(index: Int)

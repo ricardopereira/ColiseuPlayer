@@ -48,7 +48,7 @@ class ViewController: UIViewController, ColiseuPlayerDataSource, ColiseuPlayerDe
 
         if let urlFile = NSURL.fileURLWithPath(NSBundle.mainBundle().pathForResource("2.m4a", ofType: nil)!) {
             let audio = AudioFile(url: urlFile)
-            audio.artwork = MPMediaItemArtwork(image: UIImage(named: "image-cover-for-2")!)
+            audio.artwork = UIImage(named: "image-cover-for-2")
             list.append(audio)
         }
 

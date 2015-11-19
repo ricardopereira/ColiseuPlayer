@@ -22,7 +22,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-import Foundation
 import AVFoundation
 import MediaPlayer
 
@@ -34,7 +33,7 @@ public class AudioFile
     public var length: Float = 0.0
     public var duration: NSTimeInterval = 0
     public var path: NSURL?
-    public var artwork: MPMediaItemArtwork?
+    public var artwork: UIImage?
     public var index: Int = 0
 
     required public init(_ title: String, _ fileName: String)
@@ -47,7 +46,7 @@ public class AudioFile
     {
         let fileAsset = AVURLAsset(URL: url, options: nil)
         var title: String = "Song"
-        var audioArtwork: MPMediaItemArtwork?
+        var audioArtwork: UIImage?
 
         for metadataFormat in fileAsset.availableMetadataFormats {
             let metadataList = fileAsset.metadataForFormat(metadataFormat)
@@ -65,7 +64,7 @@ public class AudioFile
                 switch commonKey {
                 case "artwork":
                     if let audioImage = UIImage(data: metadataItem.value! as! NSData) {
-                        audioArtwork = MPMediaItemArtwork(image: audioImage)
+                        audioArtwork = audioImage
                         print(audioImage.description)
                     }
                 case "title":
