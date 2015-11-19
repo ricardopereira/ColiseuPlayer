@@ -36,7 +36,7 @@ class ViewController: UIViewController, ColiseuPlayerDataSource, ColiseuPlayerDe
     override func viewDidLoad() {
         super.viewDidLoad()
 
-		self.player.startSession()
+        self.player.startSession()
         self.player.dataSource = self
         self.player.delegate = self
 
@@ -47,8 +47,8 @@ class ViewController: UIViewController, ColiseuPlayerDataSource, ColiseuPlayerDe
         }
 
         if let urlFile = NSURL.fileURLWithPath(NSBundle.mainBundle().pathForResource("2.m4a", ofType: nil)!) {
-        	let audio = AudioFile(url: urlFile)
-        	audio.artwork = MPMediaItemArtwork(image: UIImage(named: "image-cover-for-2")!)
+            let audio = AudioFile(url: urlFile)
+            audio.artwork = MPMediaItemArtwork(image: UIImage(named: "image-cover-for-2")!)
             list.append(audio)
         }
 
@@ -66,11 +66,11 @@ class ViewController: UIViewController, ColiseuPlayerDataSource, ColiseuPlayerDe
     }
 
     func audioRepeatTypeInAudioPlayer(controller: ColiseuPlayer) -> ColiseuPlayerRepeat {
-    	return ColiseuPlayerRepeat.All
+        return ColiseuPlayerRepeat.All
     }
 
     func audioWillShuffleInAudioPlayer(controller: ColiseuPlayer) -> Bool {
-    	return true
+        return true
     }
 
     func audioPlayer(controller: ColiseuPlayer, didReceiveRemoteControlPlayEvent eventSubtype: UIEventSubtype) {
@@ -82,11 +82,11 @@ class ViewController: UIViewController, ColiseuPlayerDataSource, ColiseuPlayerDe
     }
 
     func audioPlayer(controller: ColiseuPlayer, didReceiveRemoteControlPreviousTrackEvent eventSubtype: UIEventSubtype) {
-    	self.player.playPreviousSong()
+        self.player.playPreviousSong()
     }
 
     func audioPlayer(controller: ColiseuPlayer, didReceiveRemoteControlNextTrackEvent eventSubtype: UIEventSubtype) {
-    	self.player.playNextSong(stopIfInvalid: true)
+        self.player.playNextSong(stopIfInvalid: true)
     }
 }
 ````
