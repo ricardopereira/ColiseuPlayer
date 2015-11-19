@@ -137,6 +137,12 @@ public class ColiseuPlayer: NSObject
 
     public func stopSession() {
         do {
+            try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryAmbient)
+        }
+        catch let error as NSError {
+            print("A AVAudioSession setCategory error occurred, here are the details:\n \(error)")
+        }
+        do {
             try AVAudioSession.sharedInstance().setActive(false)
         }
         catch let error as NSError {
