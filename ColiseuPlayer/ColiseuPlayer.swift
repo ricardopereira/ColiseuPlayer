@@ -156,10 +156,7 @@ public class ColiseuPlayer: NSObject
             MPMediaItemPropertyPlaybackDuration: audioPlayer!.duration] as [String : AnyObject]
 
         if let artwork = song.artwork {
-            songInfo = [MPMediaItemPropertyTitle: song.title,
-                MPMediaItemPropertyArtist: title,
-                MPMediaItemPropertyArtwork: MPMediaItemArtwork(image: artwork),
-                MPMediaItemPropertyPlaybackDuration: audioPlayer!.duration] as [String : AnyObject]
+            songInfo[MPMediaItemPropertyArtwork] = MPMediaItemArtwork(image: artwork)
         }
 
         MPNowPlayingInfoCenter.defaultCenter().nowPlayingInfo = songInfo
