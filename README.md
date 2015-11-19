@@ -71,7 +71,6 @@ class ViewController: UIViewController, ColiseuPlayerDataSource, ColiseuPlayerDe
 
     func audioWillShuffleInAudioPlayer(controller: ColiseuPlayer) -> Bool {
     	return true
-
     }
 
     func audioPlayer(controller: ColiseuPlayer, didReceiveRemoteControlPlayEvent eventSubtype: UIEventSubtype) {
