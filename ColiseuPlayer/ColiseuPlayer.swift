@@ -135,6 +135,15 @@ public class ColiseuPlayer: NSObject
         }
     }
 
+    public func stopSession() {
+        do {
+            try AVAudioSession.sharedInstance().setActive(false)
+        }
+        catch let error as NSError {
+            print("A AVAudioSession setActive error occurred, here are the details:\n \(error)")
+        }
+    }
+
     internal func remoteControlInfo(song: AudioFile)
     {
         var title: String = "Coliseu"

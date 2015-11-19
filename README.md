@@ -62,6 +62,7 @@ class ViewController: UIViewController, ColiseuPlayerDataSource, ColiseuPlayerDe
         super.viewDidDisappear(animated)
 
         // required for endReceivingRemoteControlEvents and resignFirstResponder
+        self.player.stopSession()
         self.player.delegate = nil
     }
 
