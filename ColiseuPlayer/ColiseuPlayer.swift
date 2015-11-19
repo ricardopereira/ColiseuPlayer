@@ -137,6 +137,10 @@ public class ColiseuPlayer: NSObject
 
     internal func remoteControlInfo(song: AudioFile)
     {
+        var title: String = "Coliseu"
+        if let bundleName = NSBundle.mainBundle().infoDictionary?["CFBundleName"] as? String {
+            title = bundleName
+        }
         // ? - Seeking test
         //let time = self.audioPlayer!.currentTime
         //self.audioPlayer!.currentTime = time + 30 //Seconds
@@ -147,7 +151,7 @@ public class ColiseuPlayer: NSObject
 
         // Remote Control info - ?
         let songInfo = [MPMediaItemPropertyTitle: song.title,
-            MPMediaItemPropertyArtist: "Coliseu",
+            MPMediaItemPropertyArtist: title,
             //MPNowPlayingInfoPropertyElapsedPlaybackTime: time + 30,
             MPMediaItemPropertyPlaybackDuration: audioPlayer!.duration] as [String : AnyObject]
 
