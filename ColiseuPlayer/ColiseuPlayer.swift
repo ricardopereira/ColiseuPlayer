@@ -189,12 +189,12 @@ public class ColiseuPlayer: NSObject
     {
         // Keep alive audio at background
         if let _ = song.path {
-            self.currentSong = nil
-            return
-        }
-        else {
             self.currentSong = song
             song.index = index
+        }
+        else {
+            self.currentSong = nil
+            return
         }
 
         do {
