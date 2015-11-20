@@ -385,8 +385,7 @@ extension ColiseuPlayer: AudioPlayerProtocol
             case ColiseuPlayerRepeat.All.rawValue:
                 self.playerWillRepeat = true
                 playSong(0)
-            default:
-                break
+            default: break
             }
         }
     }
