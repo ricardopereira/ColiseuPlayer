@@ -66,8 +66,8 @@ class ViewController: UIViewController, ColiseuPlayerDataSource, ColiseuPlayerDe
         self.player.delegate = nil
     }
 
-    func audioRepeatTypeInAudioPlayer(controller: ColiseuPlayer) -> ColiseuPlayerRepeat {
-        return ColiseuPlayerRepeat.All
+    func audioRepeatTypeInAudioPlayer(controller: ColiseuPlayer) -> ColiseuPlayerRepeat.RawValue {
+        return ColiseuPlayerRepeat.All.rawValue
     }
 
     func audioWillShuffleInAudioPlayer(controller: ColiseuPlayer) -> Bool {

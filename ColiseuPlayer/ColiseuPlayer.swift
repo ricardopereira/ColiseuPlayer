@@ -59,13 +59,13 @@ protocol AudioPlayerProtocol: AVAudioPlayerDelegate
 }
 
 /* A protocol for datasource of ColiseuPlayer */
-public protocol ColiseuPlayerDataSource: class
+@objc public protocol ColiseuPlayerDataSource: class
 {
     // Determine whether audio is not going to repeat, repeat once or always repeat.
-    func audioRepeatTypeInAudioPlayer(controller: ColiseuPlayer) -> ColiseuPlayerRepeat
+    optional func audioRepeatTypeInAudioPlayer(controller: ColiseuPlayer) -> ColiseuPlayerRepeat.RawValue
 
     // Determine whether audio list is shuffled.
-    func audioWillShuffleInAudioPlayer(controller: ColiseuPlayer) -> Bool
+    optional func audioWillShuffleInAudioPlayer(controller: ColiseuPlayer) -> Bool
 }
 
 /* An enum for repeat type of ColiseuPlayer */
@@ -238,7 +238,7 @@ public class ColiseuPlayer: NSObject
     public func playSong(index: Int, songsList: [AudioFile])
     {
         self.songsList = songsList
-        if let dataSource = self.dataSource where dataSource.audioWillShuffleInAudioPlayer(self) {
+        if let dataSource = self.dataSource where dataSource.audioWillShuffleInAudioPlayer?(self) == true {
             self.songsList?.shuffle()
         }
         // Prepare core audio
@@ -370,11 +370,11 @@ extension ColiseuPlayer: AudioPlayerProtocol
             return
         }
         playNextSong(stopIfInvalid: true)
-        if let dataSource = self.dataSource where self.audioPlayer?.playing == false {
-            switch dataSource.audioRepeatTypeInAudioPlayer(self) {
-            case ColiseuPlayerRepeat.None:
+        if let repeatType = self.dataSource?.audioRepeatTypeInAudioPlayer?(self) where self.audioPlayer?.playing == false {
+            switch repeatType {
+            case ColiseuPlayerRepeat.None.rawValue:
                 self.playerWillRepeat = false
-            case ColiseuPlayerRepeat.One:
+            case ColiseuPlayerRepeat.One.rawValue:
                 switch self.playerWillRepeat {
                 case true?:
                     self.playerWillRepeat = false
@@ -382,9 +382,11 @@ extension ColiseuPlayer: AudioPlayerProtocol
                     self.playerWillRepeat = true
                     playSong(0)
                 }
-            case ColiseuPlayerRepeat.All:
+            case ColiseuPlayerRepeat.All.rawValue:
                 self.playerWillRepeat = true
                 playSong(0)
+            default:
+                break
             }
         }
     }
