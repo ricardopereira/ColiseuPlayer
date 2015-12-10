@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "ColiseuPlayer"
-  s.version          = "0.9"
+  s.version          = "0.9.1"
   s.summary          = "Audio Player framework"
   s.homepage         = "https://github.com/ricardopereira/ColiseuPlayer"
   s.license          = 'MIT'
