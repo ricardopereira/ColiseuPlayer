@@ -29,12 +29,16 @@ Working on Demo
 ```swift
 import ColiseuPlayer
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, ColiseuPlayerDataSource, ColiseuPlayerDelegate {
 
     let player = ColiseuPlayer()
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        self.player.startSession()
+        self.player.dataSource = self
+        self.player.delegate = self
 
         var list = [AudioFile]()
 
@@ -43,13 +47,47 @@ class ViewController: UIViewController {
         }
 
         if let urlFile = NSURL.fileURLWithPath(NSBundle.mainBundle().pathForResource("2.m4a", ofType: nil)!) {
-            list.append(AudioFile(url: urlFile))
+            let audio = AudioFile(url: urlFile)
+            audio.artwork = UIImage(named: "image-cover-for-2")
+            list.append(audio)
         }
 
         if list.count > 0 {
             // Play first song (it will continue playing with the current playlist)
             player.playSong(0, songsList: list)
         }
+    }
+
+    override func viewDidDisappear(animated: Bool) {
+        super.viewDidDisappear(animated)
+
+        self.player.stopSession()
+        // required for endReceivingRemoteControlEvents and resignFirstResponder
+        self.player.delegate = nil
+    }
+
+    func audioRepeatTypeInAudioPlayer(controller: ColiseuPlayer) -> ColiseuPlayerRepeat.RawValue {
+        return ColiseuPlayerRepeat.All.rawValue
+    }
+
+    func audioWillShuffleInAudioPlayer(controller: ColiseuPlayer) -> Bool {
+        return true
+    }
+
+    func audioPlayer(controller: ColiseuPlayer, didReceiveRemoteControlPlayEvent eventSubtype: UIEventSubtype) {
+        self.player.playSong()
+    }
+
+    func func audioPlayer(controller: ColiseuPlayer, didReceiveRemoteControlPauseEvent eventSubtype: UIEventSubtype) {
+        self.player.pauseSong()
+    }
+
+    func audioPlayer(controller: ColiseuPlayer, didReceiveRemoteControlPreviousTrackEvent eventSubtype: UIEventSubtype) {
+        self.player.playPreviousSong()
+    }
+
+    func audioPlayer(controller: ColiseuPlayer, didReceiveRemoteControlNextTrackEvent eventSubtype: UIEventSubtype) {
+        self.player.playNextSong(stopIfInvalid: true)
     }
 }
 ````
