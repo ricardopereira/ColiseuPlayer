@@ -44,10 +44,6 @@ ColiseuPlayer in your project requires the following steps:_
 
 ## Usage
 
-### Assign to Remote player
-
-Working on Demo
-
 ```swift
 import ColiseuPlayer
 
@@ -114,7 +110,7 @@ class ViewController: UIViewController, ColiseuPlayerDataSource, ColiseuPlayerDe
 }
 ````
 
-## Contact
+### Contact
 
 Follow Coliseu on Twitter ([@coliseuapp](https://twitter.com/coliseuapp))
 
@@ -126,7 +122,7 @@ Follow Coliseu on Twitter ([@coliseuapp](https://twitter.com/coliseuapp))
 
 - [Zaid M. Said](http://github.com/SentulAsia) ([@SentulAsia](https://twitter.com/SentulAsia))
 
-## License
+### License
 
 ColiseuPlayer is released under the MIT license. See [LICENSE] for details.
 
