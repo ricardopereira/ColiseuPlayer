@@ -91,7 +91,7 @@ public class ColiseuPlayer: NSObject
     private var playerWillRepeat: Bool?
 
     // Delegate
-    internal weak var delegate: ColiseuPlayerDelegate? {
+    public weak var delegate: ColiseuPlayerDelegate? {
         willSet {
             if let viewController = newValue as? UIViewController {
                 UIApplication.sharedApplication().beginReceivingRemoteControlEvents()
@@ -109,7 +109,7 @@ public class ColiseuPlayer: NSObject
     }
 
     // DataSource
-    internal weak var dataSource: ColiseuPlayerDataSource?
+    public weak var dataSource: ColiseuPlayerDataSource?
 
     public override init()
     {
@@ -168,7 +168,7 @@ public class ColiseuPlayer: NSObject
         var songInfo = [MPMediaItemPropertyTitle: song.title,
             MPMediaItemPropertyArtist: title,
             //MPNowPlayingInfoPropertyElapsedPlaybackTime: time + 30,
-            MPMediaItemPropertyPlaybackDuration: audioPlayer!.duration] as [String : AnyObject]
+            MPMediaItemPropertyPlaybackDuration: self.audioPlayer!.duration] as [String : AnyObject]
 
         if let artwork = song.artwork {
             songInfo[MPMediaItemPropertyArtwork] = MPMediaItemArtwork(image: artwork)
