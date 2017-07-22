@@ -10,7 +10,7 @@ It uses AVFoundation.
 
 ## Installation
 
-#### <img src="https://dl.dropboxusercontent.com/u/11377305/resources/cocoapods.png" width="24" height="24"> [CocoaPods]
+#### <img src="https://raw.githubusercontent.com/ricardopereira/resources/master/img/cocoapods.png" width="24" height="24"> [CocoaPods]
 
 [CocoaPods]: http://cocoapods.org
 
