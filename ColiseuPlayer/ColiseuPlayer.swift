@@ -34,38 +34,38 @@ protocol AudioPlayerProtocol: AVAudioPlayerDelegate
 @objc public protocol ColiseuPlayerDelegate: class
 {
     /* audioPlayer:didReceiveRemoteControlPlayEvent: is called when play button is clicked from remote control. */
-    optional func audioPlayer(controller: ColiseuPlayer, didReceiveRemoteControlPlayEvent eventSubtype: UIEventSubtype)
+    @objc optional func audioPlayer(controller: ColiseuPlayer, didReceiveRemoteControlPlayEvent eventSubtype: UIEvent.EventSubtype)
 
     /* audioPlayer:didReceiveRemoteControlPauseEvent: is called when pause button is clicked from remote control. */
-    optional func audioPlayer(controller: ColiseuPlayer, didReceiveRemoteControlPauseEvent eventSubtype: UIEventSubtype)
+    @objc optional func audioPlayer(controller: ColiseuPlayer, didReceiveRemoteControlPauseEvent eventSubtype: UIEvent.EventSubtype)
 
     /* audioPlayer:didReceiveRemoteControlPreviousTrackEvent: is called when rewind button is clicked from remote control. */
-    optional func audioPlayer(controller: ColiseuPlayer, didReceiveRemoteControlPreviousTrackEvent eventSubtype: UIEventSubtype)
+    @objc optional func audioPlayer(controller: ColiseuPlayer, didReceiveRemoteControlPreviousTrackEvent eventSubtype: UIEvent.EventSubtype)
 
     /* audioPlayer:didReceiveRemoteControlNextTrackEvent: is called when fast forward button is clicked from remote control. */
-    optional func audioPlayer(controller: ColiseuPlayer, didReceiveRemoteControlNextTrackEvent eventSubtype: UIEventSubtype)
+    @objc optional func audioPlayer(controller: ColiseuPlayer, didReceiveRemoteControlNextTrackEvent eventSubtype: UIEvent.EventSubtype)
 
     /* audioPlayer:didReceiveRemoteControlBeginSeekingBackwardEvent: is called when begin seeking backward from remote control. */
-    optional func audioPlayer(controller: ColiseuPlayer, didReceiveRemoteControlBeginSeekingBackwardEvent eventSubtype: UIEventSubtype)
+    @objc optional func audioPlayer(controller: ColiseuPlayer, didReceiveRemoteControlBeginSeekingBackwardEvent eventSubtype: UIEvent.EventSubtype)
 
     /* audioPlayer:didReceiveRemoteControlEndSeekingBackwardEvent: is called when seeking backward ended from remote control. */
-    optional func audioPlayer(controller: ColiseuPlayer, didReceiveRemoteControlEndSeekingBackwardEvent eventSubtype: UIEventSubtype)
+    @objc optional func audioPlayer(controller: ColiseuPlayer, didReceiveRemoteControlEndSeekingBackwardEvent eventSubtype: UIEvent.EventSubtype)
 
     /* audioPlayer:didReceiveRemoteControlBeginSeekingForwardEvent: is called when begin seeking forward from remote control. */
-    optional func audioPlayer(controller: ColiseuPlayer, didReceiveRemoteControlBeginSeekingForwardEvent eventSubtype: UIEventSubtype)
+    @objc optional func audioPlayer(controller: ColiseuPlayer, didReceiveRemoteControlBeginSeekingForwardEvent eventSubtype: UIEvent.EventSubtype)
 
     /* audioPlayer:didReceiveRemoteControlEndSeekingForwardEvent: is called when seeking forward ended from remote control. */
-    optional func audioPlayer(controller: ColiseuPlayer, didReceiveRemoteControlEndSeekingForwardEvent eventSubtype: UIEventSubtype)
+    @objc optional func audioPlayer(controller: ColiseuPlayer, didReceiveRemoteControlEndSeekingForwardEvent eventSubtype: UIEvent.EventSubtype)
 }
 
 /* A protocol for datasource of ColiseuPlayer */
 @objc public protocol ColiseuPlayerDataSource: class
 {
     // Determine whether audio is not going to repeat, repeat once or always repeat.
-    optional func audioRepeatTypeInAudioPlayer(controller: ColiseuPlayer) -> ColiseuPlayerRepeat.RawValue
+    @objc optional func audioRepeatTypeInAudioPlayer(controller: ColiseuPlayer) -> ColiseuPlayerRepeat.RawValue
 
     // Determine whether audio list is shuffled.
-    optional func audioWillShuffleInAudioPlayer(controller: ColiseuPlayer) -> Bool
+    @objc optional func audioWillShuffleInAudioPlayer(controller: ColiseuPlayer) -> Bool
 }
 
 /* An enum for repeat type of ColiseuPlayer */
@@ -79,7 +79,7 @@ public class ColiseuPlayer: NSObject
     public typealias function = () -> ()
 
     internal var audioPlayer: AVAudioPlayer?
-    internal var timer: NSTimer!
+    internal var timer: Timer!
 
     // Playlist
     internal var currentSong: AudioFile?
@@ -94,11 +94,11 @@ public class ColiseuPlayer: NSObject
     public weak var delegate: ColiseuPlayerDelegate? {
         willSet {
             if let viewController = newValue as? UIViewController {
-                UIApplication.sharedApplication().beginReceivingRemoteControlEvents()
+                UIApplication.shared.beginReceivingRemoteControlEvents()
                 viewController.becomeFirstResponder()
             }
             else {
-                UIApplication.sharedApplication().endReceivingRemoteControlEvents()
+                UIApplication.shared.endReceivingRemoteControlEvents()
             }
         }
         didSet {
@@ -122,7 +122,11 @@ public class ColiseuPlayer: NSObject
     {
         // Session
         do {
-            try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
+            if #available(iOS 10.0, *) {
+                try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.playback, mode: AVAudioSession.Mode.default)
+            } else {
+                AVAudioSession.sharedInstance().perform(NSSelectorFromString("setCategory:error:"), with: AVAudioSession.Category.playback)
+            }
         }
         catch let error as NSError {
             print("A AVAudioSession setCategory error occurred, here are the details:\n \(error)")
@@ -137,7 +141,11 @@ public class ColiseuPlayer: NSObject
 
     public func stopSession() {
         do {
-            try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryAmbient)
+            if #available(iOS 10.0, *) {
+                try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.ambient, mode: AVAudioSession.Mode.default)
+            } else {
+                AVAudioSession.sharedInstance().perform(NSSelectorFromString("setCategory:error:"), with: AVAudioSession.Category.ambient)
+            }
         }
         catch let error as NSError {
             print("A AVAudioSession setCategory error occurred, here are the details:\n \(error)")
@@ -153,7 +161,7 @@ public class ColiseuPlayer: NSObject
     internal func remoteControlInfo(song: AudioFile)
     {
         var title: String = "Coliseu"
-        if let bundleName = NSBundle.mainBundle().infoDictionary?["CFBundleName"] as? String {
+        if let bundleName = Bundle.main.infoDictionary?["CFBundleName"] as? String {
             title = bundleName
         }
         // ? - Seeking test
@@ -174,15 +182,15 @@ public class ColiseuPlayer: NSObject
             songInfo[MPMediaItemPropertyArtwork] = MPMediaItemArtwork(image: artwork)
         }
 
-        MPNowPlayingInfoCenter.defaultCenter().nowPlayingInfo = songInfo
+        MPNowPlayingInfoCenter.default().nowPlayingInfo = songInfo
     }
 
     private func prepareAudio(index: Int)
     {
-        guard let songs = self.songsList where (index >= 0 && index < songs.count) else {
+        guard let songs = self.songsList, (index >= 0 && index < songs.count) else {
             return
         }
-        prepareAudio(songs[index], index)
+        prepareAudio(song: songs[index], index)
     }
 
     private func prepareAudio(song: AudioFile, _ index: Int)
@@ -198,7 +206,7 @@ public class ColiseuPlayer: NSObject
         }
 
         do {
-            self.audioPlayer = try AVAudioPlayer(contentsOfURL: song.path!)
+            self.audioPlayer = try AVAudioPlayer(contentsOf: song.path!)
         }
         catch let error as NSError {
             print("A AVAudioPlayer contentsOfURL error occurred, here are the details:\n \(error)")
@@ -206,7 +214,7 @@ public class ColiseuPlayer: NSObject
         self.audioPlayer!.delegate = self
         self.audioPlayer!.prepareToPlay()
 
-        remoteControlInfo(song)
+        remoteControlInfo(song: song)
 
         // ?
         song.duration = self.audioPlayer!.duration
@@ -238,11 +246,11 @@ public class ColiseuPlayer: NSObject
     public func playSong(index: Int, songsList: [AudioFile])
     {
         self.songsList = songsList
-        if let dataSource = self.dataSource where dataSource.audioWillShuffleInAudioPlayer?(self) == true {
+        if let dataSource = self.dataSource, dataSource.audioWillShuffleInAudioPlayer?(controller: self) == true {
             self.songsList?.shuffle()
         }
         // Prepare core audio
-        prepareAudio(index)
+        prepareAudio(index: index)
         // Play current song
         playSong()
     }
@@ -254,21 +262,21 @@ public class ColiseuPlayer: NSObject
             return
         }
         // Prepare core audio
-        prepareAudio(index)
+        prepareAudio(index: index)
         // Play current song
         playSong()
     }
 
     public func pauseSong()
     {
-        if self.audioPlayer!.playing {
+        if self.audioPlayer!.isPlaying {
             self.audioPlayer!.pause()
         }
     }
 
     public func stopSong()
     {
-        if self.audioPlayer == nil || !self.audioPlayer!.playing {
+        if self.audioPlayer == nil || !self.audioPlayer!.isPlaying {
             return
         }
 
@@ -277,17 +285,17 @@ public class ColiseuPlayer: NSObject
             event()
         }
         if let current = self.currentSong {
-            prepareAudio(current, current.index)
+            prepareAudio(song: current, current.index)
         }
     }
 
-    public func playNextSong(stopIfInvalid stopIfInvalid: Bool = false)
+    public func playNextSong(stopIfInvalid: Bool = false)
     {
-        if let songs = self.songsList, song = self.currentSong {
+        if let songs = self.songsList, let song = self.currentSong {
             var index = song.index
 
             // Next song
-            index++
+            index += 1
 
             if index > songs.count - 1 {
                 if stopIfInvalid {
@@ -296,29 +304,29 @@ public class ColiseuPlayer: NSObject
                 return
             }
 
-            playSong(index)
+            playSong(index: index)
         }
     }
 
     public func playPreviousSong()
     {
-        if let _ = self.songsList, song = self.currentSong {
+        if let _ = self.songsList, let song = self.currentSong {
             var index = song.index
 
             // Previous song
-            index--
+            index -= 1
 
             if index < 0 {
                 return
             }
 
-            playSong(index)
+            playSong(index: index)
         }
     }
 
     public func isLastSong() -> Bool
     {
-        if let currentSong = self.currentSong, songsList = self.songsList where currentSong.index + 1 == songsList.count {
+        if let currentSong = self.currentSong, let songsList = self.songsList, currentSong.index + 1 == songsList.count {
             return true
         }
         return false
@@ -326,7 +334,7 @@ public class ColiseuPlayer: NSObject
 
     public func isFirstSong() -> Bool
     {
-        if let currentSong = self.currentSong where currentSong.index == 0 {
+        if let currentSong = self.currentSong, currentSong.index == 0 {
             return true
         }
         return false
@@ -336,24 +344,24 @@ public class ColiseuPlayer: NSObject
 
     public func remoteControlEvent(event: UIEvent)
     {
-        if let delegate = self.delegate where event.type == UIEventType.RemoteControl {
+        if let delegate = self.delegate, event.type == UIEvent.EventType.remoteControl {
             switch event.subtype {
-            case UIEventSubtype.RemoteControlPlay:
-                delegate.audioPlayer?(self, didReceiveRemoteControlPlayEvent: event.subtype)
-            case UIEventSubtype.RemoteControlPause:
-                delegate.audioPlayer?(self, didReceiveRemoteControlPauseEvent: event.subtype)
-            case UIEventSubtype.RemoteControlPreviousTrack:
-                delegate.audioPlayer?(self, didReceiveRemoteControlPreviousTrackEvent: event.subtype)
-            case UIEventSubtype.RemoteControlNextTrack:
-                delegate.audioPlayer?(self, didReceiveRemoteControlNextTrackEvent: event.subtype)
-            case UIEventSubtype.RemoteControlBeginSeekingBackward:
-                delegate.audioPlayer?(self, didReceiveRemoteControlBeginSeekingBackwardEvent: event.subtype)
-            case UIEventSubtype.RemoteControlEndSeekingBackward:
-                delegate.audioPlayer?(self, didReceiveRemoteControlEndSeekingBackwardEvent: event.subtype)
-            case UIEventSubtype.RemoteControlBeginSeekingForward:
-                delegate.audioPlayer?(self, didReceiveRemoteControlBeginSeekingForwardEvent: event.subtype)
-            case UIEventSubtype.RemoteControlEndSeekingForward:
-                delegate.audioPlayer?(self, didReceiveRemoteControlEndSeekingForwardEvent: event.subtype)
+            case UIEvent.EventSubtype.remoteControlPlay:
+                delegate.audioPlayer?(controller: self, didReceiveRemoteControlPlayEvent: event.subtype)
+            case UIEvent.EventSubtype.remoteControlPause:
+                delegate.audioPlayer?(controller: self, didReceiveRemoteControlPauseEvent: event.subtype)
+            case UIEvent.EventSubtype.remoteControlPreviousTrack:
+                delegate.audioPlayer?(controller: self, didReceiveRemoteControlPreviousTrackEvent: event.subtype)
+            case UIEvent.EventSubtype.remoteControlNextTrack:
+                delegate.audioPlayer?(controller: self, didReceiveRemoteControlNextTrackEvent: event.subtype)
+            case UIEvent.EventSubtype.remoteControlBeginSeekingBackward:
+                delegate.audioPlayer?(controller: self, didReceiveRemoteControlBeginSeekingBackwardEvent: event.subtype)
+            case UIEvent.EventSubtype.remoteControlEndSeekingBackward:
+                delegate.audioPlayer?(controller: self, didReceiveRemoteControlEndSeekingBackwardEvent: event.subtype)
+            case UIEvent.EventSubtype.remoteControlBeginSeekingForward:
+                delegate.audioPlayer?(controller: self, didReceiveRemoteControlBeginSeekingForwardEvent: event.subtype)
+            case UIEvent.EventSubtype.remoteControlEndSeekingForward:
+                delegate.audioPlayer?(controller: self, didReceiveRemoteControlEndSeekingForwardEvent: event.subtype)
             default: break
             }
         }
@@ -370,7 +378,7 @@ extension ColiseuPlayer: AudioPlayerProtocol
             return
         }
         playNextSong(stopIfInvalid: true)
-        if let repeatType = self.dataSource?.audioRepeatTypeInAudioPlayer?(self) where self.audioPlayer?.playing == false {
+        if let repeatType = self.dataSource?.audioRepeatTypeInAudioPlayer?(controller: self), self.audioPlayer?.isPlaying == false {
             switch repeatType {
             case ColiseuPlayerRepeat.None.rawValue:
                 self.playerWillRepeat = false
@@ -380,11 +388,11 @@ extension ColiseuPlayer: AudioPlayerProtocol
                     self.playerWillRepeat = false
                 default:
                     self.playerWillRepeat = true
-                    playSong(0)
+                    playSong(index: 0)
                 }
             case ColiseuPlayerRepeat.All.rawValue:
                 self.playerWillRepeat = true
-                playSong(0)
+                playSong(index: 0)
             default: break
             }
         }
@@ -400,7 +408,7 @@ private extension Array
         for i in 0..<(count - 1) {
             let j = Int(arc4random_uniform(UInt32(count - i))) + i
             guard i != j else { continue }
-            swap(&self[i], &self[j])
+            self.swapAt(i, j)
         }
     }
 }
