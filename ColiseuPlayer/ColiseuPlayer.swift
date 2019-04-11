@@ -184,15 +184,15 @@ public class ColiseuPlayer: NSObject
         MPNowPlayingInfoCenter.default().nowPlayingInfo = songInfo
     }
 
-    private func prepareAudio(index: Int)
+    private func prepareAudio(_ index: Int)
     {
         guard let songs = self.songsList, (index >= 0 && index < songs.count) else {
             return
         }
-        prepareAudio(song: songs[index], index)
+        prepareAudio(songs[index], index)
     }
 
-    private func prepareAudio(song: AudioFile, _ index: Int)
+    private func prepareAudio(_ song: AudioFile, _ index: Int)
     {
         // Keep alive audio at background
         if let _ = song.path {
@@ -249,7 +249,7 @@ public class ColiseuPlayer: NSObject
             self.songsList?.shuffle()
         }
         // Prepare core audio
-        prepareAudio(index: index)
+        prepareAudio(index)
         // Play current song
         playSong()
     }
@@ -261,7 +261,7 @@ public class ColiseuPlayer: NSObject
             return
         }
         // Prepare core audio
-        prepareAudio(index: index)
+        prepareAudio(index)
         // Play current song
         playSong()
     }
@@ -284,7 +284,7 @@ public class ColiseuPlayer: NSObject
             event()
         }
         if let current = self.currentSong {
-            prepareAudio(song: current, current.index)
+            prepareAudio(current, current.index)
         }
     }
 
