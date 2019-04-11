@@ -34,38 +34,38 @@ protocol AudioPlayerProtocol: AVAudioPlayerDelegate
 @objc public protocol ColiseuPlayerDelegate: class
 {
     /* audioPlayer:didReceiveRemoteControlPlayEvent: is called when play button is clicked from remote control. */
-    @objc optional func audioPlayer(controller: ColiseuPlayer, didReceiveRemoteControlPlayEvent eventSubtype: UIEvent.EventSubtype)
+    @objc optional func audioPlayer(_ controller: ColiseuPlayer, didReceiveRemoteControlPlayEvent eventSubtype: UIEvent.EventSubtype)
 
     /* audioPlayer:didReceiveRemoteControlPauseEvent: is called when pause button is clicked from remote control. */
-    @objc optional func audioPlayer(controller: ColiseuPlayer, didReceiveRemoteControlPauseEvent eventSubtype: UIEvent.EventSubtype)
+    @objc optional func audioPlayer(_ controller: ColiseuPlayer, didReceiveRemoteControlPauseEvent eventSubtype: UIEvent.EventSubtype)
 
     /* audioPlayer:didReceiveRemoteControlPreviousTrackEvent: is called when rewind button is clicked from remote control. */
-    @objc optional func audioPlayer(controller: ColiseuPlayer, didReceiveRemoteControlPreviousTrackEvent eventSubtype: UIEvent.EventSubtype)
+    @objc optional func audioPlayer(_ controller: ColiseuPlayer, didReceiveRemoteControlPreviousTrackEvent eventSubtype: UIEvent.EventSubtype)
 
     /* audioPlayer:didReceiveRemoteControlNextTrackEvent: is called when fast forward button is clicked from remote control. */
-    @objc optional func audioPlayer(controller: ColiseuPlayer, didReceiveRemoteControlNextTrackEvent eventSubtype: UIEvent.EventSubtype)
+    @objc optional func audioPlayer(_ controller: ColiseuPlayer, didReceiveRemoteControlNextTrackEvent eventSubtype: UIEvent.EventSubtype)
 
     /* audioPlayer:didReceiveRemoteControlBeginSeekingBackwardEvent: is called when begin seeking backward from remote control. */
-    @objc optional func audioPlayer(controller: ColiseuPlayer, didReceiveRemoteControlBeginSeekingBackwardEvent eventSubtype: UIEvent.EventSubtype)
+    @objc optional func audioPlayer(_ controller: ColiseuPlayer, didReceiveRemoteControlBeginSeekingBackwardEvent eventSubtype: UIEvent.EventSubtype)
 
     /* audioPlayer:didReceiveRemoteControlEndSeekingBackwardEvent: is called when seeking backward ended from remote control. */
-    @objc optional func audioPlayer(controller: ColiseuPlayer, didReceiveRemoteControlEndSeekingBackwardEvent eventSubtype: UIEvent.EventSubtype)
+    @objc optional func audioPlayer(_ controller: ColiseuPlayer, didReceiveRemoteControlEndSeekingBackwardEvent eventSubtype: UIEvent.EventSubtype)
 
     /* audioPlayer:didReceiveRemoteControlBeginSeekingForwardEvent: is called when begin seeking forward from remote control. */
-    @objc optional func audioPlayer(controller: ColiseuPlayer, didReceiveRemoteControlBeginSeekingForwardEvent eventSubtype: UIEvent.EventSubtype)
+    @objc optional func audioPlayer(_ controller: ColiseuPlayer, didReceiveRemoteControlBeginSeekingForwardEvent eventSubtype: UIEvent.EventSubtype)
 
     /* audioPlayer:didReceiveRemoteControlEndSeekingForwardEvent: is called when seeking forward ended from remote control. */
-    @objc optional func audioPlayer(controller: ColiseuPlayer, didReceiveRemoteControlEndSeekingForwardEvent eventSubtype: UIEvent.EventSubtype)
+    @objc optional func audioPlayer(_ controller: ColiseuPlayer, didReceiveRemoteControlEndSeekingForwardEvent eventSubtype: UIEvent.EventSubtype)
 }
 
 /* A protocol for datasource of ColiseuPlayer */
 @objc public protocol ColiseuPlayerDataSource: class
 {
     // Determine whether audio is not going to repeat, repeat once or always repeat.
-    @objc optional func audioRepeatTypeInAudioPlayer(controller: ColiseuPlayer) -> ColiseuPlayerRepeat.RawValue
+    @objc optional func audioRepeatTypeInAudioPlayer(_ controller: ColiseuPlayer) -> ColiseuPlayerRepeat.RawValue
 
     // Determine whether audio list is shuffled.
-    @objc optional func audioWillShuffleInAudioPlayer(controller: ColiseuPlayer) -> Bool
+    @objc optional func audioWillShuffleInAudioPlayer(_ controller: ColiseuPlayer) -> Bool
 }
 
 /* An enum for repeat type of ColiseuPlayer */
@@ -245,7 +245,7 @@ public class ColiseuPlayer: NSObject
     public func playSong(index: Int, songsList: [AudioFile])
     {
         self.songsList = songsList
-        if let dataSource = self.dataSource, dataSource.audioWillShuffleInAudioPlayer?(controller: self) == true {
+        if let dataSource = self.dataSource, dataSource.audioWillShuffleInAudioPlayer?(self) == true {
             self.songsList?.shuffle()
         }
         // Prepare core audio
@@ -346,21 +346,21 @@ public class ColiseuPlayer: NSObject
         if let delegate = self.delegate, event.type == UIEvent.EventType.remoteControl {
             switch event.subtype {
             case UIEvent.EventSubtype.remoteControlPlay:
-                delegate.audioPlayer?(controller: self, didReceiveRemoteControlPlayEvent: event.subtype)
+                delegate.audioPlayer?(self, didReceiveRemoteControlPlayEvent: event.subtype)
             case UIEvent.EventSubtype.remoteControlPause:
-                delegate.audioPlayer?(controller: self, didReceiveRemoteControlPauseEvent: event.subtype)
+                delegate.audioPlayer?(self, didReceiveRemoteControlPauseEvent: event.subtype)
             case UIEvent.EventSubtype.remoteControlPreviousTrack:
-                delegate.audioPlayer?(controller: self, didReceiveRemoteControlPreviousTrackEvent: event.subtype)
+                delegate.audioPlayer?(self, didReceiveRemoteControlPreviousTrackEvent: event.subtype)
             case UIEvent.EventSubtype.remoteControlNextTrack:
-                delegate.audioPlayer?(controller: self, didReceiveRemoteControlNextTrackEvent: event.subtype)
+                delegate.audioPlayer?(self, didReceiveRemoteControlNextTrackEvent: event.subtype)
             case UIEvent.EventSubtype.remoteControlBeginSeekingBackward:
-                delegate.audioPlayer?(controller: self, didReceiveRemoteControlBeginSeekingBackwardEvent: event.subtype)
+                delegate.audioPlayer?(self, didReceiveRemoteControlBeginSeekingBackwardEvent: event.subtype)
             case UIEvent.EventSubtype.remoteControlEndSeekingBackward:
-                delegate.audioPlayer?(controller: self, didReceiveRemoteControlEndSeekingBackwardEvent: event.subtype)
+                delegate.audioPlayer?(self, didReceiveRemoteControlEndSeekingBackwardEvent: event.subtype)
             case UIEvent.EventSubtype.remoteControlBeginSeekingForward:
-                delegate.audioPlayer?(controller: self, didReceiveRemoteControlBeginSeekingForwardEvent: event.subtype)
+                delegate.audioPlayer?(self, didReceiveRemoteControlBeginSeekingForwardEvent: event.subtype)
             case UIEvent.EventSubtype.remoteControlEndSeekingForward:
-                delegate.audioPlayer?(controller: self, didReceiveRemoteControlEndSeekingForwardEvent: event.subtype)
+                delegate.audioPlayer?(self, didReceiveRemoteControlEndSeekingForwardEvent: event.subtype)
             default: break
             }
         }
@@ -377,7 +377,7 @@ extension ColiseuPlayer: AudioPlayerProtocol
             return
         }
         playNextSong(stopIfInvalid: true)
-        if let repeatType = self.dataSource?.audioRepeatTypeInAudioPlayer?(controller: self), self.audioPlayer?.isPlaying == false {
+        if let repeatType = self.dataSource?.audioRepeatTypeInAudioPlayer?(self), self.audioPlayer?.isPlaying == false {
             switch repeatType {
             case ColiseuPlayerRepeat.None.rawValue:
                 self.playerWillRepeat = false
