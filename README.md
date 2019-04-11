@@ -60,11 +60,11 @@ class ViewController: UIViewController, ColiseuPlayerDataSource, ColiseuPlayerDe
 
         var list = [AudioFile]()
 
-        if let urlFile = NSURL.fileURLWithPath(NSBundle.mainBundle().pathForResource("1.m4a", ofType: nil)!) {
+        if let path = Bundle.main.path(forResource: "1.m4a", ofType: nil), let urlFile = URL(fileURLWithPath: path) {
             list.append(AudioFile(url: urlFile))
         }
 
-        if let urlFile = NSURL.fileURLWithPath(NSBundle.mainBundle().pathForResource("2.m4a", ofType: nil)!) {
+        if let path = Bundle.main.path(forResource: "2.m4a", ofType: nil), let urlFile = URL(fileURLWithPath: path) {
             let audio = AudioFile(url: urlFile)
             audio.artwork = UIImage(named: "image-cover-for-2")
             list.append(audio)
@@ -88,22 +88,6 @@ class ViewController: UIViewController, ColiseuPlayerDataSource, ColiseuPlayerDe
 
     func audioWillShuffleInAudioPlayer(controller: ColiseuPlayer) -> Bool {
         return true
-    }
-
-    func audioPlayer(controller: ColiseuPlayer, didReceiveRemoteControlPlayEvent eventSubtype: UIEventSubtype) {
-        self.player.playSong()
-    }
-
-    func func audioPlayer(controller: ColiseuPlayer, didReceiveRemoteControlPauseEvent eventSubtype: UIEventSubtype) {
-        self.player.pauseSong()
-    }
-
-    func audioPlayer(controller: ColiseuPlayer, didReceiveRemoteControlPreviousTrackEvent eventSubtype: UIEventSubtype) {
-        self.player.playPreviousSong()
-    }
-
-    func audioPlayer(controller: ColiseuPlayer, didReceiveRemoteControlNextTrackEvent eventSubtype: UIEventSubtype) {
-        self.player.playNextSong(stopIfInvalid: true)
     }
 }
 ````

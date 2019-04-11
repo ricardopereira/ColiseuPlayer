@@ -340,12 +340,16 @@ public class ColiseuPlayer: NSObject
         if let delegate = self.delegate, event.type == UIEvent.EventType.remoteControl {
             switch event.subtype {
             case UIEvent.EventSubtype.remoteControlPlay:
+                playSong()
                 delegate.audioPlayer?(self, didReceiveRemoteControlPlayEvent: event.subtype)
             case UIEvent.EventSubtype.remoteControlPause:
+                pauseSong()
                 delegate.audioPlayer?(self, didReceiveRemoteControlPauseEvent: event.subtype)
             case UIEvent.EventSubtype.remoteControlPreviousTrack:
+                playPreviousSong()
                 delegate.audioPlayer?(self, didReceiveRemoteControlPreviousTrackEvent: event.subtype)
             case UIEvent.EventSubtype.remoteControlNextTrack:
+                playNextSong(stopIfInvalid: true)
                 delegate.audioPlayer?(self, didReceiveRemoteControlNextTrackEvent: event.subtype)
             case UIEvent.EventSubtype.remoteControlBeginSeekingBackward:
                 delegate.audioPlayer?(self, didReceiveRemoteControlBeginSeekingBackwardEvent: event.subtype)
