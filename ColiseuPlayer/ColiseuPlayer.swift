@@ -157,7 +157,7 @@ public class ColiseuPlayer: NSObject
         }
     }
 
-    internal func remoteControlInfo(song: AudioFile)
+    internal func remoteControlInfo(_ song: AudioFile)
     {
         var title: String = "Coliseu"
         if let bundleName = Bundle.main.infoDictionary?["CFBundleName"] as? String {
@@ -213,7 +213,7 @@ public class ColiseuPlayer: NSObject
         self.audioPlayer!.delegate = self
         self.audioPlayer!.prepareToPlay()
 
-        remoteControlInfo(song: song)
+        remoteControlInfo(song)
 
         // ?
         song.duration = self.audioPlayer!.duration
