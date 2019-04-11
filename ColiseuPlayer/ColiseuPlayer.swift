@@ -59,13 +59,13 @@ private protocol AudioPlayerProtocol: AVAudioPlayerDelegate
 }
 
 /// A protocol for datasource of ColiseuPlayer
-@objc public protocol ColiseuPlayerDataSource: class
+public protocol ColiseuPlayerDataSource: class
 {
     /// Determine whether audio is not going to repeat, repeat once or always repeat.
-    @objc optional func audioRepeatTypeInAudioPlayer(_ controller: ColiseuPlayer) -> ColiseuPlayerRepeat.RawValue
+    func audioRepeatTypeInAudioPlayer(_ controller: ColiseuPlayer) -> ColiseuPlayerRepeat
 
     /// Determine whether audio list is shuffled.
-    @objc optional func audioWillShuffleInAudioPlayer(_ controller: ColiseuPlayer) -> Bool
+    func audioWillShuffleInAudioPlayer(_ controller: ColiseuPlayer) -> Bool
 }
 
 /// An enum for repeat type of ColiseuPlayer
@@ -94,17 +94,17 @@ public class ColiseuPlayer: NSObject
 
     // MARK: Delegate
 
-    public weak var delegate: ColiseuPlayerDelegate? {
+    public weak var delegate: ColiseuPlayerDelegate?
+
+    // MARK: DataSource
+
+    public weak var dataSource: ColiseuPlayerDataSource? {
         willSet {
             if let responder = newValue as? UIResponder {
                 responder.becomeFirstResponder()
             }
         }
     }
-
-    // MARK: DataSource
-
-    public weak var dataSource: ColiseuPlayerDataSource?
 
     public override init()
     {
@@ -116,7 +116,7 @@ public class ColiseuPlayer: NSObject
     deinit
     {
         UIApplication.shared.endReceivingRemoteControlEvents()
-        if let responder = self.delegate as? UIResponder {
+        if let responder = self.dataSource as? UIResponder {
             responder.resignFirstResponder()
         }
     }
@@ -239,7 +239,7 @@ public class ColiseuPlayer: NSObject
     public func playSong(index: Int, songsList: [AudioFile])
     {
         self.songsList = songsList
-        if let dataSource = self.dataSource, dataSource.audioWillShuffleInAudioPlayer?(self) == true {
+        if let dataSource = self.dataSource, dataSource.audioWillShuffleInAudioPlayer(self) == true {
             self.songsList?.shuffle()
         }
         // Prepare core audio
@@ -375,11 +375,11 @@ extension ColiseuPlayer: AudioPlayerProtocol
             return
         }
         playNextSong(stopIfInvalid: true)
-        if let repeatType = self.dataSource?.audioRepeatTypeInAudioPlayer?(self), self.audioPlayer?.isPlaying == false {
+        if let repeatType = self.dataSource?.audioRepeatTypeInAudioPlayer(self), self.audioPlayer?.isPlaying == false {
             switch repeatType {
-            case ColiseuPlayerRepeat.none.rawValue:
+            case .none:
                 self.playerWillRepeat = false
-            case ColiseuPlayerRepeat.one.rawValue:
+            case .one:
                 switch self.playerWillRepeat {
                 case true?:
                     self.playerWillRepeat = false
@@ -387,10 +387,9 @@ extension ColiseuPlayer: AudioPlayerProtocol
                     self.playerWillRepeat = true
                     playSong(index: 0)
                 }
-            case ColiseuPlayerRepeat.all.rawValue:
+            case .all:
                 self.playerWillRepeat = true
                 playSong(index: 0)
-            default: break
             }
         }
     }

@@ -82,8 +82,8 @@ class ViewController: UIViewController, ColiseuPlayerDataSource, ColiseuPlayerDe
         self.player.stopSession()
     }
 
-    func audioRepeatTypeInAudioPlayer(controller: ColiseuPlayer) -> ColiseuPlayerRepeat.RawValue {
-        return ColiseuPlayerRepeat.All.rawValue
+    func audioRepeatTypeInAudioPlayer(controller: ColiseuPlayer) -> ColiseuPlayerRepeat {
+        return ColiseuPlayerRepeat.all
     }
 
     func audioWillShuffleInAudioPlayer(controller: ColiseuPlayer) -> Bool {
