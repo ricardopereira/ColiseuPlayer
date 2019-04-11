@@ -80,8 +80,6 @@ class ViewController: UIViewController, ColiseuPlayerDataSource, ColiseuPlayerDe
         super.viewDidDisappear(animated)
 
         self.player.stopSession()
-        // required for endReceivingRemoteControlEvents and resignFirstResponder
-        self.player.delegate = nil
     }
 
     func audioRepeatTypeInAudioPlayer(controller: ColiseuPlayer) -> ColiseuPlayerRepeat.RawValue {

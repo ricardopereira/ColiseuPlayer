@@ -93,17 +93,8 @@ public class ColiseuPlayer: NSObject
     // Delegate
     public weak var delegate: ColiseuPlayerDelegate? {
         willSet {
-            if let viewController = newValue as? UIViewController {
-                UIApplication.shared.beginReceivingRemoteControlEvents()
-                viewController.becomeFirstResponder()
-            }
-            else {
-                UIApplication.shared.endReceivingRemoteControlEvents()
-            }
-        }
-        didSet {
-            if let viewController = oldValue as? UIViewController {
-                viewController.resignFirstResponder()
+            if let responder = newValue as? UIResponder {
+                responder.becomeFirstResponder()
             }
         }
     }
@@ -115,7 +106,15 @@ public class ColiseuPlayer: NSObject
     {
         // Inherited
         super.init()
+        UIApplication.shared.beginReceivingRemoteControlEvents()
+    }
 
+    deinit
+    {
+        UIApplication.shared.endReceivingRemoteControlEvents()
+        if let responder = self.delegate as? UIResponder {
+            responder.resignFirstResponder()
+        }
     }
 
     public func startSession()
