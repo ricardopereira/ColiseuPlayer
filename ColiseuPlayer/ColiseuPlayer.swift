@@ -71,7 +71,7 @@ private protocol AudioPlayerProtocol: AVAudioPlayerDelegate
 /// An enum for repeat type of ColiseuPlayer
 public enum ColiseuPlayerRepeat: Int
 {
-    case None = 0, One, All
+    case none = 0, one, all
 }
 
 public class ColiseuPlayer: NSObject
@@ -251,7 +251,7 @@ public class ColiseuPlayer: NSObject
     public func playSong(index: Int)
     {
         // Verify if has a valid playlist to play
-        if !songListIsValid {
+        if !isSongListValid {
             return
         }
         // Prepare core audio
@@ -377,9 +377,9 @@ extension ColiseuPlayer: AudioPlayerProtocol
         playNextSong(stopIfInvalid: true)
         if let repeatType = self.dataSource?.audioRepeatTypeInAudioPlayer?(self), self.audioPlayer?.isPlaying == false {
             switch repeatType {
-            case ColiseuPlayerRepeat.None.rawValue:
+            case ColiseuPlayerRepeat.none.rawValue:
                 self.playerWillRepeat = false
-            case ColiseuPlayerRepeat.One.rawValue:
+            case ColiseuPlayerRepeat.one.rawValue:
                 switch self.playerWillRepeat {
                 case true?:
                     self.playerWillRepeat = false
@@ -387,7 +387,7 @@ extension ColiseuPlayer: AudioPlayerProtocol
                     self.playerWillRepeat = true
                     playSong(index: 0)
                 }
-            case ColiseuPlayerRepeat.All.rawValue:
+            case ColiseuPlayerRepeat.all.rawValue:
                 self.playerWillRepeat = true
                 playSong(index: 0)
             default: break
