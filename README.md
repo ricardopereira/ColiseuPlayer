@@ -1,14 +1,36 @@
-ColiseuPlayer (Beta) is an audio player framework written in Swift, created for [Coliseu](http://ricardopereira.eu) app.
+ColiseuPlayer is an audio player framework written in Swift, created for [Coliseu](http://ricardopereira.eu) app.
 It uses AVFoundation.
+
+[![Version](https://img.shields.io/cocoapods/v/ColiseuPlayer.svg?style=flat)](http://cocoapods.org/pods/ColiseuPlayer)
 
 ## Requirements
 
 - iOS 8.0+ (not tested on Mac OS X)
-- Xcode 6.0+
+- Xcode 7.1+
 
 ## Installation
 
-_Due to the current lack of [proper infrastructure](http://cocoapods.org) for Swift dependency management, using ColiseuPlayer in your project requires the following steps:_
+#### <img src="https://raw.githubusercontent.com/ricardopereira/resources/master/img/cocoapods.png" width="24" height="24"> [CocoaPods]
+
+[CocoaPods]: http://cocoapods.org
+
+To install it, simply add the following line to your Podfile:
+
+```ruby
+pod 'ColiseuPlayer'
+```
+
+You will also need to make sure you're opting into using frameworks:
+
+```ruby
+use_frameworks!
+```
+
+Then run `pod install` with CocoaPods 0.36 or newer.
+
+#### Manually
+
+ColiseuPlayer in your project requires the following steps:_
 
 1. Add ColiseuPlayer as a [submodule](http://git-scm.com/docs/git-submodule) by opening the Terminal, `cd`-ing into your top-level project directory, and entering the command `git submodule add https://github.com/ricardopereira/coliseu.ios.player.git`
 2. Open the `ColiseuPlayer` folder, and drag `ColiseuPlayer.xcodeproj` into the file navigator of your app project.
@@ -21,10 +43,6 @@ _Due to the current lack of [proper infrastructure](http://cocoapods.org) for Sw
 ---
 
 ## Usage
-
-### Assign to Remote player
-
-Working on Demo
 
 ```swift
 import ColiseuPlayer
@@ -92,14 +110,20 @@ class ViewController: UIViewController, ColiseuPlayerDataSource, ColiseuPlayerDe
 }
 ````
 
-## Contact
+### Contact
 
 Follow Coliseu on Twitter ([@coliseuapp](https://twitter.com/coliseuapp))
 
-### Creator
+### Author
 
 - [Ricardo Pereira](http://github.com/ricardopereira) ([@ricardopereiraw](https://twitter.com/ricardopereiraw))
 
-## License
+### Main contributers
 
-ColiseuPlayer is released under the MIT license. See LICENSE for details.
+- [Zaid M. Said](http://github.com/SentulAsia) ([@SentulAsia](https://twitter.com/SentulAsia))
+
+### License
+
+ColiseuPlayer is released under the MIT license. See [LICENSE] for details.
+
+[LICENSE]: /LICENSE
