@@ -69,7 +69,7 @@ class ViewController: UIViewController, ColiseuPlayerDataSource, ColiseuPlayerDe
 
         if list.count > 0 {
             // Play first song (it will continue playing with the current playlist)
-            player.playSong(0, songsList: list)
+            player.playSong(index: 0, songsList: list)
         }
     }
 
