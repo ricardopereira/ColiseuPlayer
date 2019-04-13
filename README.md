@@ -60,14 +60,10 @@ class ViewController: UIViewController, ColiseuPlayerDataSource, ColiseuPlayerDe
 
         var list = [AudioFile]()
 
-        if let path = Bundle.main.path(forResource: "1.m4a", ofType: nil), let urlFile = URL(fileURLWithPath: path) {
-            list.append(AudioFile(url: urlFile))
-        }
-
-        if let path = Bundle.main.path(forResource: "2.m4a", ofType: nil), let urlFile = URL(fileURLWithPath: path) {
+        if let path = Bundle.main.path(forResource: "sampleAudio", ofType: "m4a"), let urlFile = URL(fileURLWithPath: path) {
             let audio = AudioFile(url: urlFile)
-            audio.artwork = UIImage(named: "image-cover-for-2")
-            list.append(audio)
+            audio.artwork = UIImage(named: "image-cover-artwork")
+            list.append(AudioFile(url: urlFile))
         }
 
         if list.count > 0 {
