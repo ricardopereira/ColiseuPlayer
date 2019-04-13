@@ -132,7 +132,7 @@ public class ColiseuPlayer: NSObject
             }
             try AVAudioSession.sharedInstance().setActive(true)
         }
-        catch let error as NSError {
+        catch let error {
             print("AVAudioSession error occurred:\n\(error)")
         }
     }
@@ -146,7 +146,7 @@ public class ColiseuPlayer: NSObject
             }
             try AVAudioSession.sharedInstance().setActive(false)
         }
-        catch let error as NSError {
+        catch let error {
             print("AVAudioSession error occurred:\n\(error)")
         }
     }
@@ -207,8 +207,8 @@ public class ColiseuPlayer: NSObject
         do {
             self.audioPlayer = try AVAudioPlayer(contentsOf: song.path!)
         }
-        catch let error as NSError {
-            print("A AVAudioPlayer contentsOfURL error occurred, here are the details:\n \(error)")
+        catch let error {
+            print("AVAudioPlayer error occurred:\n \(error)")
         }
         self.audioPlayer!.delegate = self
         self.audioPlayer!.prepareToPlay()
