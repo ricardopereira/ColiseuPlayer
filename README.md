@@ -64,7 +64,7 @@ class ViewController: UIViewController, ColiseuPlayerDataSource, ColiseuPlayerDe
             let urlFile = URL(fileURLWithPath: path)
             let audio = AudioFile(url: urlFile)
             audio.artwork = UIImage(named: "image-cover-artwork")
-            list.append(AudioFile(url: urlFile))
+            list.append(audio)
         }
 
         if list.count > 0 {
