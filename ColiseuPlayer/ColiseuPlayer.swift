@@ -56,6 +56,12 @@ private protocol AudioPlayerProtocol: AVAudioPlayerDelegate
 
     /// audioPlayer:didReceiveRemoteControlEndSeekingForwardEvent: is called when seeking forward ended from remote control.
     @objc optional func audioPlayer(_ controller: ColiseuPlayer, didReceiveRemoteControlEndSeekingForwardEvent eventSubtype: UIEvent.EventSubtype)
+
+    /// audioPlayer:didFinishPlayingSuccessfully: is called when a sound has finished playing. This method is ALSO called if the player is stopped due to an interruption.
+    @objc optional func audioPlayer(_ controller: ColiseuPlayer, didFinishPlayingSuccessfully flag: Bool)
+
+    /// audioPlayer:didFinishPlayingSuccessfullyAndWillBeginPlaying: is called when a sound has finished playing and will begin to play a new sound. This method is NOT called if the player is stopped due to an interruption.
+    @objc optional func audioPlayer(_ controller: ColiseuPlayer, didFinishPlayingSuccessfullyAndWillBeginPlaying flag: Bool)
 }
 
 /// A protocol for datasource of ColiseuPlayer
@@ -252,7 +258,7 @@ public class ColiseuPlayer: NSObject
     public func playSong(index: Int, songsList: [AudioFile])
     {
         self.songsList = songsList
-        if let dataSource = self.dataSource, dataSource.audioWillShuffleInAudioPlayer(self) == true {
+        if self.dataSource?.audioWillShuffleInAudioPlayer(self) == true {
             self.songsList?.shuffle()
         }
         // Prepare core audio
@@ -355,28 +361,28 @@ public class ColiseuPlayer: NSObject
 
     public func remoteControlEvent(event: UIEvent)
     {
-        if let delegate = self.delegate, event.type == UIEvent.EventType.remoteControl {
+        if event.type == UIEvent.EventType.remoteControl {
             switch event.subtype {
             case UIEvent.EventSubtype.remoteControlPlay:
                 playSong()
-                delegate.audioPlayer?(self, didReceiveRemoteControlPlayEvent: event.subtype)
+                self.delegate?.audioPlayer?(self, didReceiveRemoteControlPlayEvent: event.subtype)
             case UIEvent.EventSubtype.remoteControlPause:
                 pauseSong()
-                delegate.audioPlayer?(self, didReceiveRemoteControlPauseEvent: event.subtype)
+                self.delegate?.audioPlayer?(self, didReceiveRemoteControlPauseEvent: event.subtype)
             case UIEvent.EventSubtype.remoteControlPreviousTrack:
                 playPreviousSong()
-                delegate.audioPlayer?(self, didReceiveRemoteControlPreviousTrackEvent: event.subtype)
+                self.delegate?.audioPlayer?(self, didReceiveRemoteControlPreviousTrackEvent: event.subtype)
             case UIEvent.EventSubtype.remoteControlNextTrack:
                 playNextSong(stopIfInvalid: true)
-                delegate.audioPlayer?(self, didReceiveRemoteControlNextTrackEvent: event.subtype)
+                self.delegate?.audioPlayer?(self, didReceiveRemoteControlNextTrackEvent: event.subtype)
             case UIEvent.EventSubtype.remoteControlBeginSeekingBackward:
-                delegate.audioPlayer?(self, didReceiveRemoteControlBeginSeekingBackwardEvent: event.subtype)
+                self.delegate?.audioPlayer?(self, didReceiveRemoteControlBeginSeekingBackwardEvent: event.subtype)
             case UIEvent.EventSubtype.remoteControlEndSeekingBackward:
-                delegate.audioPlayer?(self, didReceiveRemoteControlEndSeekingBackwardEvent: event.subtype)
+                self.delegate?.audioPlayer?(self, didReceiveRemoteControlEndSeekingBackwardEvent: event.subtype)
             case UIEvent.EventSubtype.remoteControlBeginSeekingForward:
-                delegate.audioPlayer?(self, didReceiveRemoteControlBeginSeekingForwardEvent: event.subtype)
+                self.delegate?.audioPlayer?(self, didReceiveRemoteControlBeginSeekingForwardEvent: event.subtype)
             case UIEvent.EventSubtype.remoteControlEndSeekingForward:
-                delegate.audioPlayer?(self, didReceiveRemoteControlEndSeekingForwardEvent: event.subtype)
+                self.delegate?.audioPlayer?(self, didReceiveRemoteControlEndSeekingForwardEvent: event.subtype)
             default: break
             }
         }
@@ -390,6 +396,7 @@ extension ColiseuPlayer: AudioPlayerProtocol
     public func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool)
     {
         if !flag {
+            self.delegate?.audioPlayer?(self, didFinishPlayingSuccessfully: flag)
             return
         }
         playNextSong(stopIfInvalid: true)
@@ -410,6 +417,11 @@ extension ColiseuPlayer: AudioPlayerProtocol
                 playSong(index: 0)
             }
         }
+        if isPlaying {
+            self.delegate?.audioPlayer?(self, didFinishPlayingSuccessfullyAndWillBeginPlaying: flag)
+            return
+        }
+        self.delegate?.audioPlayer?(self, didFinishPlayingSuccessfully: flag)
     }
 }
 
