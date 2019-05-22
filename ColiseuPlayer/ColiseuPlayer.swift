@@ -275,14 +275,14 @@ public class ColiseuPlayer: NSObject
 
     public func pauseSong()
     {
-        if self.audioPlayer!.isPlaying {
+        if isPlaying {
             self.audioPlayer!.pause()
         }
     }
 
     public func stopSong()
     {
-        if self.audioPlayer == nil || !self.audioPlayer!.isPlaying {
+        if self.audioPlayer == nil || !isPlaying {
             return
         }
 
@@ -328,6 +328,11 @@ public class ColiseuPlayer: NSObject
 
             playSong(index: index)
         }
+    }
+
+    public var isPlaying: Bool
+    {
+        return self.audioPlayer!.isPlaying == true
     }
 
     public var isLastSong: Bool
@@ -388,7 +393,7 @@ extension ColiseuPlayer: AudioPlayerProtocol
             return
         }
         playNextSong(stopIfInvalid: true)
-        if let repeatType = self.dataSource?.audioRepeatTypeInAudioPlayer(self), self.audioPlayer?.isPlaying == false {
+        if let repeatType = self.dataSource?.audioRepeatTypeInAudioPlayer(self), !isPlaying {
             switch repeatType {
             case .none:
                 self.playerWillRepeat = false
