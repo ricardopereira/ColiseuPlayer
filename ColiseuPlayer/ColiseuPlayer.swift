@@ -30,11 +30,6 @@ private protocol AudioPlayerProtocol: AVAudioPlayerDelegate
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool)
 }
 
-public protocol ColiseuPlayerDelegator {
-    var dataSource: ColiseuPlayerDataSource? { get set }
-    var delegate: ColiseuPlayerDelegate? { get set }
-}
-
 /// A protocol for delegates of ColiseuPlayer
 @objc public protocol ColiseuPlayerDelegate: class
 {
@@ -79,7 +74,7 @@ public enum ColiseuPlayerRepeat: Int
     case none = 0, one, all
 }
 
-public class ColiseuPlayer: NSObject, ColiseuPlayerDelegator
+public class ColiseuPlayer: NSObject
 {
     public typealias function = () -> ()
 
@@ -99,7 +94,8 @@ public class ColiseuPlayer: NSObject, ColiseuPlayerDelegator
 
     // MARK: DataSource
 
-    public unowned(unsafe) var dataSource: ColiseuPlayerDataSource? {
+    public weak var dataSource: ColiseuPlayerDataSource?
+    {
         willSet {
             if let responder = newValue as? UIResponder {
                 responder.becomeFirstResponder()
@@ -109,7 +105,7 @@ public class ColiseuPlayer: NSObject, ColiseuPlayerDelegator
 
     // MARK: Delegate
 
-    public unowned(unsafe) var delegate: ColiseuPlayerDelegate?
+    public weak var delegate: ColiseuPlayerDelegate?
 
     public override init()
     {
@@ -132,7 +128,8 @@ public class ColiseuPlayer: NSObject, ColiseuPlayerDelegator
         do {
             if #available(iOS 10.0, *) {
                 try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.playback, mode: AVAudioSession.Mode.default)
-            } else {
+            }
+            else {
                 AVAudioSession.sharedInstance().perform(NSSelectorFromString("setCategory:error:"), with: AVAudioSession.Category.playback)
             }
             try AVAudioSession.sharedInstance().setActive(true)
@@ -142,11 +139,13 @@ public class ColiseuPlayer: NSObject, ColiseuPlayerDelegator
         }
     }
 
-    public func stopSession() {
+    public func stopSession()
+    {
         do {
             if #available(iOS 10.0, *) {
                 try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.ambient, mode: AVAudioSession.Mode.default)
-            } else {
+            }
+            else {
                 AVAudioSession.sharedInstance().perform(NSSelectorFromString("setCategory:error:"), with: AVAudioSession.Category.ambient)
             }
             try AVAudioSession.sharedInstance().setActive(false)
@@ -181,7 +180,8 @@ public class ColiseuPlayer: NSObject, ColiseuPlayerDelegator
                 songInfo[MPMediaItemPropertyArtwork] = MPMediaItemArtwork(boundsSize: artwork.size, requestHandler: { (size) -> UIImage in
                     return artwork
                 })
-            } else {
+            }
+            else {
                 songInfo[MPMediaItemPropertyArtwork] = MPMediaItemArtwork(image: artwork)
             }
         }
@@ -210,7 +210,9 @@ public class ColiseuPlayer: NSObject, ColiseuPlayerDelegator
         }
 
         do {
-            self.audioPlayer = try AVAudioPlayer(contentsOf: song.path!)
+            if let path = song.path {
+                self.audioPlayer = try AVAudioPlayer(contentsOf: path)
+            }
         }
         catch let error {
             print("AVAudioPlayer error occurred:\n \(error)")
@@ -226,10 +228,10 @@ public class ColiseuPlayer: NSObject, ColiseuPlayerDelegator
 
     private var isSongListValid: Bool
     {
-        if self.songsList == nil || self.songsList!.count == 0 {
-            return false
+        if let songsList = self.songsList, songsList.count > 0 {
+            return true
         }
-        return true
+        return false
     }
 
     // MARK: Commands
@@ -410,7 +412,8 @@ extension ColiseuPlayer: AudioPlayerProtocol
 
 private extension Array
 {
-    mutating func shuffle() {
+    mutating func shuffle()
+    {
         if count < 2 { return }
         for i in 0..<(count - 1) {
             let j = Int(arc4random_uniform(UInt32(count - i))) + i
