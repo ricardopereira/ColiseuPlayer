@@ -338,7 +338,7 @@ public class ColiseuPlayer: NSObject
 
     public var isPlaying: Bool
     {
-        return self.audioPlayer!.isPlaying == true
+        return self.audioPlayer!.isPlaying
     }
 
     public var isLastSong: Bool
