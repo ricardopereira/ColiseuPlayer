@@ -55,21 +55,23 @@ public class AudioFile
                 if metadataItem.commonKey == nil {
                     continue
                 }
-                let commonKey = metadataItem.commonKey!.rawValue
+                let commonKey = metadataItem.commonKey?.rawValue
 
                 // if commonKey == nil {
                 //     continue
                 // }
 
                 switch commonKey {
-                case "artwork":
-                    if let audioImage = UIImage(data: metadataItem.value! as! Data) {
+                case "artwork"?:
+                    if let value = metadataItem.value as? Data, let audioImage = UIImage(data: value) {
                         audioArtwork = audioImage
                         print(audioImage.description)
                     }
-                case "title":
+                case "title"?:
                     // It's working
-                    title = metadataItem.value! as! String
+                    if let value = metadataItem.value as? String {
+                        title = value
+                    }
                 default:
                     title = "Song"
                 }
