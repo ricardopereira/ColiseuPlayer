@@ -30,6 +30,11 @@ private protocol AudioPlayerProtocol: AVAudioPlayerDelegate
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool)
 }
 
+public protocol ColiseuPlayerDelegator {
+    var dataSource: ColiseuPlayerDataSource? { get set }
+    var delegate: ColiseuPlayerDelegate? { get set }
+}
+
 /// A protocol for delegates of ColiseuPlayer
 @objc public protocol ColiseuPlayerDelegate: class
 {
@@ -74,7 +79,7 @@ public enum ColiseuPlayerRepeat: Int
     case none = 0, one, all
 }
 
-public class ColiseuPlayer: NSObject
+public class ColiseuPlayer: NSObject, ColiseuPlayerDelegator
 {
     public typealias function = () -> ()
 
@@ -92,19 +97,19 @@ public class ColiseuPlayer: NSObject
     public var playerDidStop: function?
     private var playerWillRepeat: Bool?
 
-    // MARK: Delegate
-
-    public weak var delegate: ColiseuPlayerDelegate?
-
     // MARK: DataSource
 
-    public weak var dataSource: ColiseuPlayerDataSource? {
+    public unowned(unsafe) var dataSource: ColiseuPlayerDataSource? {
         willSet {
             if let responder = newValue as? UIResponder {
                 responder.becomeFirstResponder()
             }
         }
     }
+
+    // MARK: Delegate
+
+    public unowned(unsafe) var delegate: ColiseuPlayerDelegate?
 
     public override init()
     {
