@@ -31,8 +31,8 @@ public class AudioFile
     public let fileName: String
     public var fileSize: Int = 0
     public var length: Float = 0.0
-    public var duration: NSTimeInterval = 0
-    public var path: NSURL?
+    public var duration: TimeInterval = 0
+    public var path: URL?
     public var artwork: UIImage?
     public var index: Int = 0
 
@@ -42,46 +42,43 @@ public class AudioFile
         self.fileName = fileName
     }
 
-    convenience public init(url: NSURL)
+    convenience public init(url: URL)
     {
-        let fileAsset = AVURLAsset(URL: url, options: nil)
+        let fileAsset = AVURLAsset(url: url, options: nil)
         var title: String = "Song"
         var audioArtwork: UIImage?
 
         for metadataFormat in fileAsset.availableMetadataFormats {
-            let metadataList = fileAsset.metadataForFormat(metadataFormat)
+            let metadataList = fileAsset.metadata(forFormat: metadataFormat)
             for metadataItem in metadataList
             {
                 if metadataItem.commonKey == nil {
                     continue
                 }
-                let commonKey = metadataItem.commonKey!
+                let commonKey = metadataItem.commonKey?.rawValue
 
                 // if commonKey == nil {
                 //     continue
                 // }
 
                 switch commonKey {
-                case "artwork":
-                    if let audioImage = UIImage(data: metadataItem.value! as! NSData) {
+                case "artwork"?:
+                    if let value = metadataItem.value as? Data, let audioImage = UIImage(data: value) {
                         audioArtwork = audioImage
                         print(audioImage.description)
                     }
-                case "title":
+                case "title"?:
                     // It's working
-                    title = metadataItem.value! as! String
+                    if let value = metadataItem.value as? String {
+                        title = value
+                    }
                 default:
                     title = "Song"
                 }
             }
         }
 
-        if let lastPath = url.lastPathComponent {
-            self.init(title, lastPath)
-        }
-        else {
-            self.init(title, "")
-        }
+        self.init(title, url.lastPathComponent)
 
         self.path = url
         if let artwork = audioArtwork {
