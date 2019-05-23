@@ -91,16 +91,16 @@ class ColiseuPlayerTests: XCTestCase {
         // then
         XCTAssertEqual(actualResult, expectedResult, "testPauseSong() should be false")
     }
-    
+
     func testStopSong() {
         // given
         let expectedResult = false
-        
+
         // when
         self.sut.playSong(index: 0, songsList: self.list)
         self.sut.stopSong()
         let actualResult = self.sut.isPlaying
-        
+
         // then
         XCTAssertEqual(actualResult, expectedResult, "testStopSong() should be false")
     }
@@ -110,7 +110,7 @@ extension ColiseuPlayerTests: ColiseuPlayerDataSource {
     func audioRepeatTypeInAudioPlayer(_ controller: ColiseuPlayer) -> ColiseuPlayerRepeat {
         return .none
     }
-    
+
     func audioWillShuffleInAudioPlayer(_ controller: ColiseuPlayer) -> Bool {
         return false
     }
