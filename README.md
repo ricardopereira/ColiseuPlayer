@@ -56,7 +56,6 @@ class ViewController: UIViewController, ColiseuPlayerDataSource, ColiseuPlayerDe
 
         self.player.startSession()
         self.player.dataSource = self
-        self.player.delegate = self
 
         var list = [AudioFile]()
 
@@ -80,7 +79,7 @@ class ViewController: UIViewController, ColiseuPlayerDataSource, ColiseuPlayerDe
     }
 
     func audioRepeatTypeInAudioPlayer(controller: ColiseuPlayer) -> ColiseuPlayerRepeat {
-        return ColiseuPlayerRepeat.all
+        return .all
     }
 
     func audioWillShuffleInAudioPlayer(controller: ColiseuPlayer) -> Bool {

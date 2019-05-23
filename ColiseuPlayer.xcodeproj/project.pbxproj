@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B84253632296468700E3DC9C /* public_domain_1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B84253552296407A00E3DC9C /* public_domain_1.mp3 */; };
+		B84253642296468900E3DC9C /* public_domain_2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B84253562296407A00E3DC9C /* public_domain_2.mp3 */; };
+		B84253652296468B00E3DC9C /* public_domain_3.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B84253572296407A00E3DC9C /* public_domain_3.mp3 */; };
 		D788F79419E69E5600C04099 /* ColiseuPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = D788F79319E69E5600C04099 /* ColiseuPlayer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D788F79A19E69E5600C04099 /* ColiseuPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D788F78E19E69E5600C04099 /* ColiseuPlayer.framework */; };
 		D788F7A119E69E5600C04099 /* ColiseuPlayerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D788F7A019E69E5600C04099 /* ColiseuPlayerTests.swift */; };
@@ -25,6 +28,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		B84253552296407A00E3DC9C /* public_domain_1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = public_domain_1.mp3; sourceTree = "<group>"; };
+		B84253562296407A00E3DC9C /* public_domain_2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = public_domain_2.mp3; sourceTree = "<group>"; };
+		B84253572296407A00E3DC9C /* public_domain_3.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = public_domain_3.mp3; sourceTree = "<group>"; };
 		D788F78E19E69E5600C04099 /* ColiseuPlayer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ColiseuPlayer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D788F79219E69E5600C04099 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D788F79319E69E5600C04099 /* ColiseuPlayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ColiseuPlayer.h; sourceTree = "<group>"; };
@@ -95,6 +101,9 @@
 			isa = PBXGroup;
 			children = (
 				D788F7A019E69E5600C04099 /* ColiseuPlayerTests.swift */,
+				B84253552296407A00E3DC9C /* public_domain_1.mp3 */,
+				B84253562296407A00E3DC9C /* public_domain_2.mp3 */,
+				B84253572296407A00E3DC9C /* public_domain_3.mp3 */,
 				D788F79E19E69E5600C04099 /* Supporting Files */,
 			);
 			path = ColiseuPlayerTests;
@@ -206,6 +215,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B84253642296468900E3DC9C /* public_domain_2.mp3 in Resources */,
+				B84253652296468B00E3DC9C /* public_domain_3.mp3 in Resources */,
+				B84253632296468700E3DC9C /* public_domain_1.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
