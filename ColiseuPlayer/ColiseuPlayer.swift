@@ -36,75 +36,75 @@ private protocol AudioPlayerProtocol: AVAudioPlayerDelegate
     /// Tells the delegate that play button is clicked from remote control.
     ///
     /// - Parameters:
-    ///   - controller: The instance object of ColiseuPlayer
+    ///   - player: The instance object of ColiseuPlayer
     ///   - eventSubtype: the instance object of EventSubtype for UIEvent
-    @objc optional func audioPlayer(_ controller: ColiseuPlayer, didReceiveRemoteControlPlayEvent eventSubtype: UIEvent.EventSubtype)
+    @objc optional func audioPlayerDidReceiveRemoteControlPlayEvent(_ player: ColiseuPlayer, withEventSubtype eventSubtype: UIEvent.EventSubtype)
 
     /// Tells the delegate that pause button is clicked from remote control.
     ///
     /// - Parameters:
-    ///   - controller: The instance object of ColiseuPlayer
+    ///   - player: The instance object of ColiseuPlayer
     ///   - eventSubtype: the instance object of EventSubtype for UIEvent
-    @objc optional func audioPlayer(_ controller: ColiseuPlayer, didReceiveRemoteControlPauseEvent eventSubtype: UIEvent.EventSubtype)
+    @objc optional func audioPlayerDidReceiveRemoteControlPauseEvent(_ player: ColiseuPlayer, withEventSubtype eventSubtype: UIEvent.EventSubtype)
 
     /// Tells the delegate that rewind button is clicked from remote control.
     ///
     /// - Parameters:
-    ///   - controller: The instance object of ColiseuPlayer
+    ///   - player: The instance object of ColiseuPlayer
     ///   - eventSubtype: the instance object of EventSubtype for UIEvent
-    @objc optional func audioPlayer(_ controller: ColiseuPlayer, didReceiveRemoteControlPreviousTrackEvent eventSubtype: UIEvent.EventSubtype)
+    @objc optional func audioPlayerDidReceiveRemoteControlPreviousTrackEvent(_ player: ColiseuPlayer, withEventSubtype eventSubtype: UIEvent.EventSubtype)
 
     /// Tells the delegate that fast forward button is clicked from remote control.
     ///
     /// - Parameters:
-    ///   - controller: The instance object of ColiseuPlayer
+    ///   - player: The instance object of ColiseuPlayer
     ///   - eventSubtype: the instance object of EventSubtype for UIEvent
-    @objc optional func audioPlayer(_ controller: ColiseuPlayer, didReceiveRemoteControlNextTrackEvent eventSubtype: UIEvent.EventSubtype)
+    @objc optional func audioPlayerDidReceiveRemoteControlNextTrackEvent(_ player: ColiseuPlayer, withEventSubtype eventSubtype: UIEvent.EventSubtype)
 
     /// Tells the delegate that it is begin seeking backward from remote control.
     ///
     /// - Parameters:
-    ///   - controller: The instance object of ColiseuPlayer
+    ///   - player: The instance object of ColiseuPlayer
     ///   - eventSubtype: the instance object of EventSubtype for UIEvent
-    @objc optional func audioPlayer(_ controller: ColiseuPlayer, didReceiveRemoteControlBeginSeekingBackwardEvent eventSubtype: UIEvent.EventSubtype)
+    @objc optional func audioPlayerDidReceiveRemoteControlBeginSeekingBackwardEvent(_ player: ColiseuPlayer, withEventSubtype eventSubtype: UIEvent.EventSubtype)
 
     /// Tells the delegate that it is seeking backward ended from remote control.
     ///
     /// - Parameters:
-    ///   - controller: The instance object of ColiseuPlayer
+    ///   - player: The instance object of ColiseuPlayer
     ///   - eventSubtype: the instance object of EventSubtype for UIEvent
-    @objc optional func audioPlayer(_ controller: ColiseuPlayer, didReceiveRemoteControlEndSeekingBackwardEvent eventSubtype: UIEvent.EventSubtype)
+    @objc optional func audioPlayerDidReceiveRemoteControlEndSeekingBackwardEvent(_ player: ColiseuPlayer, withEventSubtype eventSubtype: UIEvent.EventSubtype)
 
     /// Tells the delegate that it is begin seeking forward from remote control.
     ///
     /// - Parameters:
-    ///   - controller: The instance object of ColiseuPlayer
+    ///   - player: The instance object of ColiseuPlayer
     ///   - eventSubtype: the instance object of EventSubtype for UIEvent
-    @objc optional func audioPlayer(_ controller: ColiseuPlayer, didReceiveRemoteControlBeginSeekingForwardEvent eventSubtype: UIEvent.EventSubtype)
+    @objc optional func audioPlayerDidReceiveRemoteControlBeginSeekingForwardEvent(_ player: ColiseuPlayer, withEventSubtype eventSubtype: UIEvent.EventSubtype)
 
     /// Tells the delegate that it is seeking forward ended from remote control.
     ///
     /// - Parameters:
-    ///   - controller: The instance object of ColiseuPlayer
+    ///   - player: The instance object of ColiseuPlayer
     ///   - eventSubtype: the instance object of EventSubtype for UIEvent
-    @objc optional func audioPlayer(_ controller: ColiseuPlayer, didReceiveRemoteControlEndSeekingForwardEvent eventSubtype: UIEvent.EventSubtype)
+    @objc optional func audioPlayerDidReceiveRemoteControlEndSeekingForwardEvent(_ player: ColiseuPlayer, withEventSubtype eventSubtype: UIEvent.EventSubtype)
 
     /// Tells the delegate that an audio has finished playing.
     ///
     /// The delegate will ALSO be told if the player is stopped due to an interruption.
     ///
     /// - Parameters:
-    ///   - controller: The instance object of ColiseuPlayer
+    ///   - player: The instance object of ColiseuPlayer
     ///   - flag: the indicator if audio ended successfully or not
-    @objc optional func audioPlayer(_ controller: ColiseuPlayer, didFinishPlayingSuccessfully flag: Bool)
+    @objc optional func audioPlayerDidFinishPlaying(_ player: ColiseuPlayer, successfully flag: Bool)
 
     /// Tells the delegate that an audio has finished playing and will begin to play a new audio.
     ///
     /// The delegate will NOT be told if the player is stopped due to an interruption.
     ///
     /// - Parameters:
-    ///   - controller: The instance object of ColiseuPlayer
-    @objc optional func audioPlayerDidFinishPlayingSuccessfullyAndWillBeginPlaying(_ controller: ColiseuPlayer)
+    ///   - player: The instance object of ColiseuPlayer
+    @objc optional func audioPlayerDidFinishPlayingSuccessfullyAndWillBeginPlaying(_ player: ColiseuPlayer)
 }
 
 /// A protocol for datasource of ColiseuPlayer
@@ -113,18 +113,18 @@ public protocol ColiseuPlayerDataSource: class
     /// Asks the datasource to determine if audio is not going to repeat, repeat once or always repeat.
     ///
     /// - Parameters:
-    ///   - controller: The instance object of ColiseuPlayer
+    ///   - player: The instance object of ColiseuPlayer
     ///
     /// - Returns: An enum of ColiseuPlayerRepeat.
-    func audioRepeatTypeInAudioPlayer(_ controller: ColiseuPlayer) -> ColiseuPlayerRepeat
+    func audioRepeatType(in player: ColiseuPlayer) -> ColiseuPlayerRepeat
 
     /// Asks the datasource to determine if audio list is shuffled.
     ///
     /// - Parameters:
-    ///   - controller: The instance object of ColiseuPlayer
+    ///   - player: The instance object of ColiseuPlayer
     ///
     /// - Returns: A boolean to indicate audio will shuffle or not
-    func audioWillShuffleInAudioPlayer(_ controller: ColiseuPlayer) -> Bool
+    func audioWillShuffle(in player: ColiseuPlayer) -> Bool
 }
 
 /// An enum for repeat type of ColiseuPlayer
@@ -311,7 +311,7 @@ public class ColiseuPlayer: NSObject
     public func playSong(index: Int, songsList: [AudioFile])
     {
         self.songsList = songsList
-        if self.dataSource?.audioWillShuffleInAudioPlayer(self) == true {
+        if self.dataSource?.audioWillShuffle(in: self) == true {
             self.songsList?.shuffle()
         }
         // Prepare core audio
@@ -418,24 +418,24 @@ public class ColiseuPlayer: NSObject
             switch event.subtype {
             case UIEvent.EventSubtype.remoteControlPlay:
                 playSong()
-                self.delegate?.audioPlayer?(self, didReceiveRemoteControlPlayEvent: event.subtype)
+                self.delegate?.audioPlayerDidReceiveRemoteControlPlayEvent?(self, withEventSubtype: event.subtype)
             case UIEvent.EventSubtype.remoteControlPause:
                 pauseSong()
-                self.delegate?.audioPlayer?(self, didReceiveRemoteControlPauseEvent: event.subtype)
+                self.delegate?.audioPlayerDidReceiveRemoteControlPauseEvent?(self, withEventSubtype: event.subtype)
             case UIEvent.EventSubtype.remoteControlPreviousTrack:
                 playPreviousSong()
-                self.delegate?.audioPlayer?(self, didReceiveRemoteControlPreviousTrackEvent: event.subtype)
+                self.delegate?.audioPlayerDidReceiveRemoteControlPreviousTrackEvent?(self, withEventSubtype: event.subtype)
             case UIEvent.EventSubtype.remoteControlNextTrack:
                 playNextSong(stopIfInvalid: true)
-                self.delegate?.audioPlayer?(self, didReceiveRemoteControlNextTrackEvent: event.subtype)
+                self.delegate?.audioPlayerDidReceiveRemoteControlNextTrackEvent?(self, withEventSubtype: event.subtype)
             case UIEvent.EventSubtype.remoteControlBeginSeekingBackward:
-                self.delegate?.audioPlayer?(self, didReceiveRemoteControlBeginSeekingBackwardEvent: event.subtype)
+                self.delegate?.audioPlayerDidReceiveRemoteControlBeginSeekingBackwardEvent?(self, withEventSubtype: event.subtype)
             case UIEvent.EventSubtype.remoteControlEndSeekingBackward:
-                self.delegate?.audioPlayer?(self, didReceiveRemoteControlEndSeekingBackwardEvent: event.subtype)
+                self.delegate?.audioPlayerDidReceiveRemoteControlEndSeekingBackwardEvent?(self, withEventSubtype: event.subtype)
             case UIEvent.EventSubtype.remoteControlBeginSeekingForward:
-                self.delegate?.audioPlayer?(self, didReceiveRemoteControlBeginSeekingForwardEvent: event.subtype)
+                self.delegate?.audioPlayerDidReceiveRemoteControlBeginSeekingForwardEvent?(self, withEventSubtype: event.subtype)
             case UIEvent.EventSubtype.remoteControlEndSeekingForward:
-                self.delegate?.audioPlayer?(self, didReceiveRemoteControlEndSeekingForwardEvent: event.subtype)
+                self.delegate?.audioPlayerDidReceiveRemoteControlEndSeekingForwardEvent?(self, withEventSubtype: event.subtype)
             default: break
             }
         }
@@ -449,11 +449,11 @@ extension ColiseuPlayer: AudioPlayerProtocol
     public func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool)
     {
         if !flag {
-            self.delegate?.audioPlayer?(self, didFinishPlayingSuccessfully: flag)
+            self.delegate?.audioPlayerDidFinishPlaying?(self, successfully: flag)
             return
         }
         playNextSong(stopIfInvalid: true)
-        if let repeatType = self.dataSource?.audioRepeatTypeInAudioPlayer(self), !isPlaying {
+        if let repeatType = self.dataSource?.audioRepeatType(in: self), !isPlaying {
             switch repeatType {
             case .none:
                 self.playerWillRepeat = false
@@ -474,7 +474,7 @@ extension ColiseuPlayer: AudioPlayerProtocol
             self.delegate?.audioPlayerDidFinishPlayingSuccessfullyAndWillBeginPlaying?(self)
             return
         }
-        self.delegate?.audioPlayer?(self, didFinishPlayingSuccessfully: flag)
+        self.delegate?.audioPlayerDidFinishPlaying?(self, successfully: flag)
     }
 }
 
