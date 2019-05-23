@@ -33,44 +33,97 @@ private protocol AudioPlayerProtocol: AVAudioPlayerDelegate
 /// A protocol for delegates of ColiseuPlayer
 @objc public protocol ColiseuPlayerDelegate: class
 {
-    /// audioPlayer:didReceiveRemoteControlPlayEvent: is called when play button is clicked from remote control.
+    /// Tells the delegate that play button is clicked from remote control.
+    ///
+    /// - Parameters:
+    ///   - controller: The instance object of ColiseuPlayer
+    ///   - eventSubtype: the instance object of EventSubtype for UIEvent
     @objc optional func audioPlayer(_ controller: ColiseuPlayer, didReceiveRemoteControlPlayEvent eventSubtype: UIEvent.EventSubtype)
 
-    /// audioPlayer:didReceiveRemoteControlPauseEvent: is called when pause button is clicked from remote control.
+    /// Tells the delegate that pause button is clicked from remote control.
+    ///
+    /// - Parameters:
+    ///   - controller: The instance object of ColiseuPlayer
+    ///   - eventSubtype: the instance object of EventSubtype for UIEvent
     @objc optional func audioPlayer(_ controller: ColiseuPlayer, didReceiveRemoteControlPauseEvent eventSubtype: UIEvent.EventSubtype)
 
-    /// audioPlayer:didReceiveRemoteControlPreviousTrackEvent: is called when rewind button is clicked from remote control.
+    /// Tells the delegate that rewind button is clicked from remote control.
+    ///
+    /// - Parameters:
+    ///   - controller: The instance object of ColiseuPlayer
+    ///   - eventSubtype: the instance object of EventSubtype for UIEvent
     @objc optional func audioPlayer(_ controller: ColiseuPlayer, didReceiveRemoteControlPreviousTrackEvent eventSubtype: UIEvent.EventSubtype)
 
-    /// audioPlayer:didReceiveRemoteControlNextTrackEvent: is called when fast forward button is clicked from remote control.
+    /// Tells the delegate that fast forward button is clicked from remote control.
+    ///
+    /// - Parameters:
+    ///   - controller: The instance object of ColiseuPlayer
+    ///   - eventSubtype: the instance object of EventSubtype for UIEvent
     @objc optional func audioPlayer(_ controller: ColiseuPlayer, didReceiveRemoteControlNextTrackEvent eventSubtype: UIEvent.EventSubtype)
 
-    /// audioPlayer:didReceiveRemoteControlBeginSeekingBackwardEvent: is called when begin seeking backward from remote control.
+    /// Tells the delegate that it is begin seeking backward from remote control.
+    ///
+    /// - Parameters:
+    ///   - controller: The instance object of ColiseuPlayer
+    ///   - eventSubtype: the instance object of EventSubtype for UIEvent
     @objc optional func audioPlayer(_ controller: ColiseuPlayer, didReceiveRemoteControlBeginSeekingBackwardEvent eventSubtype: UIEvent.EventSubtype)
 
-    /// audioPlayer:didReceiveRemoteControlEndSeekingBackwardEvent: is called when seeking backward ended from remote control.
+    /// Tells the delegate that it is seeking backward ended from remote control.
+    ///
+    /// - Parameters:
+    ///   - controller: The instance object of ColiseuPlayer
+    ///   - eventSubtype: the instance object of EventSubtype for UIEvent
     @objc optional func audioPlayer(_ controller: ColiseuPlayer, didReceiveRemoteControlEndSeekingBackwardEvent eventSubtype: UIEvent.EventSubtype)
 
-    /// audioPlayer:didReceiveRemoteControlBeginSeekingForwardEvent: is called when begin seeking forward from remote control.
+    /// Tells the delegate that it is begin seeking forward from remote control.
+    ///
+    /// - Parameters:
+    ///   - controller: The instance object of ColiseuPlayer
+    ///   - eventSubtype: the instance object of EventSubtype for UIEvent
     @objc optional func audioPlayer(_ controller: ColiseuPlayer, didReceiveRemoteControlBeginSeekingForwardEvent eventSubtype: UIEvent.EventSubtype)
 
-    /// audioPlayer:didReceiveRemoteControlEndSeekingForwardEvent: is called when seeking forward ended from remote control.
+    /// Tells the delegate that it is seeking forward ended from remote control.
+    ///
+    /// - Parameters:
+    ///   - controller: The instance object of ColiseuPlayer
+    ///   - eventSubtype: the instance object of EventSubtype for UIEvent
     @objc optional func audioPlayer(_ controller: ColiseuPlayer, didReceiveRemoteControlEndSeekingForwardEvent eventSubtype: UIEvent.EventSubtype)
 
-    /// audioPlayer:didFinishPlayingSuccessfully: is called when a sound has finished playing. This method is ALSO called if the player is stopped due to an interruption.
+    /// Tells the delegate that an audio has finished playing.
+    ///
+    /// The delegate will ALSO be told if the player is stopped due to an interruption.
+    ///
+    /// - Parameters:
+    ///   - controller: The instance object of ColiseuPlayer
+    ///   - flag: the indicator if audio ended successfully or not
     @objc optional func audioPlayer(_ controller: ColiseuPlayer, didFinishPlayingSuccessfully flag: Bool)
 
-    /// audioPlayer:didFinishPlayingSuccessfullyAndWillBeginPlaying: is called when a sound has finished playing and will begin to play a new sound. This method is NOT called if the player is stopped due to an interruption.
-    @objc optional func audioPlayer(_ controller: ColiseuPlayer, didFinishPlayingSuccessfullyAndWillBeginPlaying flag: Bool)
+    /// Tells the delegate that an audio has finished playing and will begin to play a new audio.
+    ///
+    /// The delegate will NOT be told if the player is stopped due to an interruption.
+    ///
+    /// - Parameters:
+    ///   - controller: The instance object of ColiseuPlayer
+    @objc optional func audioPlayerDidFinishPlayingSuccessfullyAndWillBeginPlaying(_ controller: ColiseuPlayer)
 }
 
 /// A protocol for datasource of ColiseuPlayer
 public protocol ColiseuPlayerDataSource: class
 {
-    /// Determine whether audio is not going to repeat, repeat once or always repeat.
+    /// Asks the datasource to determine if audio is not going to repeat, repeat once or always repeat.
+    ///
+    /// - Parameters:
+    ///   - controller: The instance object of ColiseuPlayer
+    ///
+    /// - Returns: An enum of ColiseuPlayerRepeat.
     func audioRepeatTypeInAudioPlayer(_ controller: ColiseuPlayer) -> ColiseuPlayerRepeat
 
-    /// Determine whether audio list is shuffled.
+    /// Asks the datasource to determine if audio list is shuffled.
+    ///
+    /// - Parameters:
+    ///   - controller: The instance object of ColiseuPlayer
+    ///
+    /// - Returns: A boolean to indicate audio will shuffle or not
     func audioWillShuffleInAudioPlayer(_ controller: ColiseuPlayer) -> Bool
 }
 
@@ -418,7 +471,7 @@ extension ColiseuPlayer: AudioPlayerProtocol
             }
         }
         if isPlaying {
-            self.delegate?.audioPlayer?(self, didFinishPlayingSuccessfullyAndWillBeginPlaying: flag)
+            self.delegate?.audioPlayerDidFinishPlayingSuccessfullyAndWillBeginPlaying?(self)
             return
         }
         self.delegate?.audioPlayer?(self, didFinishPlayingSuccessfully: flag)
