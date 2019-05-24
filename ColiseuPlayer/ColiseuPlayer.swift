@@ -412,7 +412,7 @@ public class ColiseuPlayer: NSObject
 
     // MARK: ColiseuPlayerDelegate
 
-    public func remoteControlEvent(event: UIEvent)
+    public func remoteControlReceived(with event: UIEvent)
     {
         if event.type == UIEvent.EventType.remoteControl {
             switch event.subtype {

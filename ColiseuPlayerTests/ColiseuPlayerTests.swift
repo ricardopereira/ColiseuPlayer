@@ -57,9 +57,9 @@ class ColiseuPlayerTests: XCTestCase {
     func testStopSession() {
         // given
         let expectedResult = AVAudioSession.Category.ambient
+        self.sut.startSession()
 
         // when
-        self.sut.startSession()
         self.sut.stopSession()
         let actualResult = AVAudioSession.sharedInstance().category
 
@@ -67,7 +67,7 @@ class ColiseuPlayerTests: XCTestCase {
         XCTAssertEqual(actualResult, expectedResult, "testStopSession() should equal .ambient")
     }
 
-    func testPlaySong() {
+    func testPlaySongIndexSongsList() {
         // given
         let expectedResult = true
 
@@ -82,9 +82,9 @@ class ColiseuPlayerTests: XCTestCase {
     func testPauseSong() {
         // given
         let expectedResult = false
+        self.sut.playSong(index: 0, songsList: self.list)
 
         // when
-        self.sut.playSong(index: 0, songsList: self.list)
         self.sut.pauseSong()
         let actualResult = self.sut.isPlaying
 
@@ -107,11 +107,11 @@ class ColiseuPlayerTests: XCTestCase {
 }
 
 extension ColiseuPlayerTests: ColiseuPlayerDataSource {
-    func audioRepeatTypeInAudioPlayer(_ controller: ColiseuPlayer) -> ColiseuPlayerRepeat {
+    func audioRepeatType(in player: ColiseuPlayer) -> ColiseuPlayerRepeat {
         return .none
     }
 
-    func audioWillShuffleInAudioPlayer(_ controller: ColiseuPlayer) -> Bool {
+    func audioWillShuffle(in player: ColiseuPlayer) -> Bool {
         return false
     }
 }
