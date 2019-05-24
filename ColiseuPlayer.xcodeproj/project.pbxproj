@@ -189,11 +189,10 @@
 			};
 			buildConfigurationList = D788F78819E69E5600C04099 /* Build configuration list for PBXProject "ColiseuPlayer" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
-				Base,
 			);
 			mainGroup = D788F78419E69E5600C04099;
 			productRefGroup = D788F78F19E69E5600C04099 /* Products */;
