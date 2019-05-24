@@ -80,7 +80,7 @@ class ViewController: UIViewController, ColiseuPlayerDataSource, ColiseuPlayerDe
     }
 
     override func remoteControlReceived(with event: UIEvent?) {
-        self.player.remoteControlEvent(event)
+        self.player.didReceiveRemoteControl(event: event)
     }
 
     func audioRepeatType(in player: ColiseuPlayer) -> ColiseuPlayerRepeat {

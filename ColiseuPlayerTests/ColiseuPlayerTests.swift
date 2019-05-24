@@ -14,12 +14,17 @@ class ColiseuPlayerTests: XCTestCase {
 
     var sut: ColiseuPlayer!
     var list: [AudioFile]!
+    var audioPlayerDidReceiveRemoteControlPlayEventCalled = false
+    var audioPlayerDidReceiveRemoteControlPauseEventCalled = false
+    var audioPlayerDidReceiveRemoteControlPreviousTrackEventCalled = false
+    var audioPlayerDidReceiveRemoteControlNextTrackEventCalled = false
 
     override func setUp() {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
         self.sut = ColiseuPlayer()
         self.sut.dataSource = self
+        self.sut.delegate = self
         self.list = []
         let paths = [
             Bundle(for: type(of: self)).path(forResource: "public_domain_1", ofType: "mp3")!,
@@ -31,6 +36,10 @@ class ColiseuPlayerTests: XCTestCase {
             let audio = AudioFile(url: urlFile)
             self.list.append(audio)
         }
+        self.audioPlayerDidReceiveRemoteControlPlayEventCalled = false
+        self.audioPlayerDidReceiveRemoteControlPauseEventCalled = false
+        self.audioPlayerDidReceiveRemoteControlPreviousTrackEventCalled = false
+        self.audioPlayerDidReceiveRemoteControlNextTrackEventCalled = false
     }
 
     override func tearDown() {
@@ -188,6 +197,108 @@ class ColiseuPlayerTests: XCTestCase {
         // then
         XCTAssertEqual(actualResult, expectedResult, "testPlayPreviousSongGivenFirstSong() should be false")
     }
+
+    func testDidReceiveRemoteControlPlayEvent() {
+        // given
+        let expectedResult = true
+        self.sut.playSong(index: 1, songsList: self.list)
+        self.sut.stopSong()
+        let event = UIEventPlayDouble()
+
+        // when
+        self.sut.didReceiveRemoteControl(event: event)
+        let actualResult = self.audioPlayerDidReceiveRemoteControlPlayEventCalled
+
+        // then
+        XCTAssertEqual(actualResult, expectedResult, "didReceiveRemoteControl(event:) is remote control play should be true")
+    }
+
+    func testDidReceiveRemoteControlPauseEvent() {
+        // given
+        let expectedResult = true
+        self.sut.playSong(index: 1, songsList: self.list)
+        self.sut.stopSong()
+        let event = UIEventPauseDouble()
+
+        // when
+        self.sut.didReceiveRemoteControl(event: event)
+        let actualResult = self.audioPlayerDidReceiveRemoteControlPauseEventCalled
+
+        // then
+        XCTAssertEqual(actualResult, expectedResult, "didReceiveRemoteControl(event:) is remote control pause should be true")
+    }
+
+    func testDidReceiveRemoteControlPreviousTrackEvent() {
+        // given
+        let expectedResult = true
+        self.sut.playSong(index: 1, songsList: self.list)
+        self.sut.stopSong()
+        let event = UIEventPreviousTrackDouble()
+
+        // when
+        self.sut.didReceiveRemoteControl(event: event)
+        let actualResult = self.audioPlayerDidReceiveRemoteControlPreviousTrackEventCalled
+
+        // then
+        XCTAssertEqual(actualResult, expectedResult, "didReceiveRemoteControl(event:) is remote control previous track should be true")
+    }
+
+    func testDidReceiveRemoteControlNextTrackEvent() {
+        // given
+        let expectedResult = true
+        self.sut.playSong(index: 1, songsList: self.list)
+        self.sut.stopSong()
+        let event = UIEventNextTrackDouble()
+
+        // when
+        self.sut.didReceiveRemoteControl(event: event)
+        let actualResult = self.audioPlayerDidReceiveRemoteControlNextTrackEventCalled
+
+        // then
+        XCTAssertEqual(actualResult, expectedResult, "didReceiveRemoteControl(event:) is remote control next track should be true")
+    }
+}
+
+extension ColiseuPlayerTests {
+    class UIEventRemoteControlDouble: UIEvent {
+        override var type: UIEvent.EventType {
+            get {
+                return UIEvent.EventType.remoteControl
+            }
+        }
+    }
+
+    class UIEventPlayDouble: UIEventRemoteControlDouble {
+        override var subtype: UIEvent.EventSubtype {
+            get {
+                return UIEvent.EventSubtype.remoteControlPlay
+            }
+        }
+    }
+
+    class UIEventPauseDouble: UIEventRemoteControlDouble {
+        override var subtype: UIEvent.EventSubtype {
+            get {
+                return UIEvent.EventSubtype.remoteControlPause
+            }
+        }
+    }
+
+    class UIEventPreviousTrackDouble: UIEventRemoteControlDouble {
+        override var subtype: UIEvent.EventSubtype {
+            get {
+                return UIEvent.EventSubtype.remoteControlPreviousTrack
+            }
+        }
+    }
+
+    class UIEventNextTrackDouble: UIEventRemoteControlDouble {
+        override var subtype: UIEvent.EventSubtype {
+            get {
+                return UIEvent.EventSubtype.remoteControlNextTrack
+            }
+        }
+    }
 }
 
 extension ColiseuPlayerTests: ColiseuPlayerDataSource {
@@ -197,5 +308,23 @@ extension ColiseuPlayerTests: ColiseuPlayerDataSource {
 
     func audioWillShuffle(in player: ColiseuPlayer) -> Bool {
         return false
+    }
+}
+
+extension ColiseuPlayerTests: ColiseuPlayerDelegate {
+    func audioPlayerDidReceiveRemoteControlPlayEvent(_ player: ColiseuPlayer, withSubtype eventSubtype: UIEvent.EventSubtype) {
+        self.audioPlayerDidReceiveRemoteControlPlayEventCalled = true
+    }
+
+    func audioPlayerDidReceiveRemoteControlPauseEvent(_ player: ColiseuPlayer, withSubtype eventSubtype: UIEvent.EventSubtype) {
+        self.audioPlayerDidReceiveRemoteControlPauseEventCalled = true
+    }
+
+    func audioPlayerDidReceiveRemoteControlPreviousTrackEvent(_ player: ColiseuPlayer, withSubtype eventSubtype: UIEvent.EventSubtype) {
+        self.audioPlayerDidReceiveRemoteControlPreviousTrackEventCalled = true
+    }
+
+    func audioPlayerDidReceiveRemoteControlNextTrackEvent(_ player: ColiseuPlayer, withSubtype eventSubtype: UIEvent.EventSubtype) {
+        self.audioPlayerDidReceiveRemoteControlNextTrackEventCalled = true
     }
 }
