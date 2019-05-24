@@ -22,9 +22,9 @@ class ColiseuPlayerTests: XCTestCase {
         self.sut.dataSource = self
         self.list = []
         let paths = [
-            Bundle(for: type(of: self)).path(forResource: "public_domain_1", ofType: "mp3")!,
-            Bundle(for: type(of: self)).path(forResource: "public_domain_2", ofType: "mp3")!,
-            Bundle(for: type(of: self)).path(forResource: "public_domain_3", ofType: "mp3")!
+            Bundle(for: type(of: self)).path(forResource: "public_domain_sound_1", ofType: "mp3")!,
+            Bundle(for: type(of: self)).path(forResource: "public_domain_sound_2", ofType: "mp3")!,
+            Bundle(for: type(of: self)).path(forResource: "public_domain_sound_3", ofType: "mp3")!
         ]
         for path in paths {
             let urlFile = URL(fileURLWithPath: path)
