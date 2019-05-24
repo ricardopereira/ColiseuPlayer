@@ -208,7 +208,7 @@ public class ColiseuPlayer: NSObject
 
     // MARK: - Session
 
-    /// Activates your app’s audio session using the specified options.
+    /// Activates your app’s audio session.
     public func startSession()
     {
         do {
@@ -225,7 +225,7 @@ public class ColiseuPlayer: NSObject
         }
     }
 
-    /// Deactivates your app’s audio session using the specified options.
+    /// Deactivates your app’s audio session.
     public func stopSession()
     {
         do {
@@ -373,11 +373,9 @@ public class ColiseuPlayer: NSObject
     /// Stops playback and undoes the setup needed for playback.
     public func stopSong()
     {
-        if self.audioPlayer == nil || !self.isPlaying {
-            return
-        }
+        guard let audioPlayer = self.audioPlayer, self.isPlaying else { return }
 
-        self.audioPlayer!.stop()
+        audioPlayer.stop()
         if let event = self.playerDidStop {
             event()
         }
@@ -426,7 +424,7 @@ public class ColiseuPlayer: NSObject
     }
 
     // MARK: - ColiseuPlayerDelegate
-    
+
     /// Tells the object when a remote-control event is received.
     ///
     /// - Parameter event: An event object encapsulating a remote-control command. Remote-control events have a type of UIEvent.EventType.remoteControl.
