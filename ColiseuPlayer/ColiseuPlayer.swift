@@ -110,7 +110,14 @@ public protocol ColiseuPlayerDataSource: class
 /// Specifies the repeat type of an audio player.
 public enum ColiseuPlayerRepeat: Int
 {
-    case none = 0, one, all
+    /// Represents will not repeat.
+    case none = 0
+
+    /// Represents will repeat once.
+    case one
+
+    /// Represents will always repeat.
+    case all
 }
 
 /// An audio player that provides playback of audio data from a file or memory.
@@ -189,7 +196,7 @@ public class ColiseuPlayer: NSObject
         return false
     }
 
-    // MARK: - Init
+    // MARK: - Initializers
 
     public override init()
     {
@@ -208,7 +215,7 @@ public class ColiseuPlayer: NSObject
 
     // MARK: - Session
 
-    /// Activates your app’s audio session using the specified options.
+    /// Activates your app’s audio session.
     public func startSession()
     {
         do {
@@ -225,7 +232,7 @@ public class ColiseuPlayer: NSObject
         }
     }
 
-    /// Deactivates your app’s audio session using the specified options.
+    /// Deactivates your app’s audio session.
     public func stopSession()
     {
         do {
@@ -373,11 +380,9 @@ public class ColiseuPlayer: NSObject
     /// Stops playback and undoes the setup needed for playback.
     public func stopSong()
     {
-        if self.audioPlayer == nil || !self.isPlaying {
-            return
-        }
+        guard let audioPlayer = self.audioPlayer, self.isPlaying else { return }
 
-        self.audioPlayer!.stop()
+        audioPlayer.stop()
         if let event = self.playerDidStop {
             event()
         }
@@ -426,7 +431,7 @@ public class ColiseuPlayer: NSObject
     }
 
     // MARK: - ColiseuPlayerDelegate
-    
+
     /// Tells the object when a remote-control event is received.
     ///
     /// - Parameter event: An event object encapsulating a remote-control command. Remote-control events have a type of UIEvent.EventType.remoteControl.
