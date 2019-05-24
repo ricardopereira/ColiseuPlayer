@@ -56,7 +56,6 @@ class ViewController: UIViewController, ColiseuPlayerDataSource, ColiseuPlayerDe
 
         self.player.startSession()
         self.player.dataSource = self
-        self.player.delegate = self
 
         var list = [AudioFile]()
 

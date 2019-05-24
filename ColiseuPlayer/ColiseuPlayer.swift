@@ -135,6 +135,8 @@ public enum ColiseuPlayerRepeat: Int
 
 public class ColiseuPlayer: NSObject
 {
+    // MARK: - Properties
+
     public typealias function = () -> ()
 
     internal var audioPlayer: AVAudioPlayer?
@@ -148,6 +150,7 @@ public class ColiseuPlayer: NSObject
     // MARK: Events
 
     public var playerDidStart: function?
+    public var playerDidPause: function?
     public var playerDidStop: function?
     private var playerWillRepeat: Bool?
 
@@ -166,6 +169,39 @@ public class ColiseuPlayer: NSObject
 
     public weak var delegate: ColiseuPlayerDelegate?
 
+    // MARK: Status
+
+    public var isLastSong: Bool
+    {
+        if let currentSong = self.currentSong, let songsList = self.songsList, currentSong.index + 1 == songsList.count {
+            return true
+        }
+        return false
+    }
+
+    public var isFirstSong: Bool
+    {
+        if let currentSong = self.currentSong, currentSong.index == 0 {
+            return true
+        }
+        return false
+    }
+
+    public var isPlaying: Bool
+    {
+        return self.audioPlayer!.isPlaying
+    }
+
+    private var isSongListValid: Bool
+    {
+        if let songsList = self.songsList, songsList.count > 0 {
+            return true
+        }
+        return false
+    }
+
+    // MARK: - Init
+
     public override init()
     {
         // Inherited
@@ -181,9 +217,10 @@ public class ColiseuPlayer: NSObject
         }
     }
 
+    // MARK: - Session
+
     public func startSession()
     {
-        // Session
         do {
             if #available(iOS 10.0, *) {
                 try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.playback, mode: AVAudioSession.Mode.default)
@@ -285,15 +322,7 @@ public class ColiseuPlayer: NSObject
         song.duration = self.audioPlayer!.duration
     }
 
-    private var isSongListValid: Bool
-    {
-        if let songsList = self.songsList, songsList.count > 0 {
-            return true
-        }
-        return false
-    }
-
-    // MARK: Commands
+    // MARK: - Commands
 
     public func playSong()
     {
@@ -334,14 +363,17 @@ public class ColiseuPlayer: NSObject
 
     public func pauseSong()
     {
-        if isPlaying {
+        if self.isPlaying {
             self.audioPlayer!.pause()
+            if let event = self.playerDidPause {
+                event()
+            }
         }
     }
 
     public func stopSong()
     {
-        if self.audioPlayer == nil || !isPlaying {
+        if self.audioPlayer == nil || !self.isPlaying {
             return
         }
 
@@ -389,28 +421,7 @@ public class ColiseuPlayer: NSObject
         }
     }
 
-    public var isPlaying: Bool
-    {
-        return self.audioPlayer!.isPlaying
-    }
-
-    public var isLastSong: Bool
-    {
-        if let currentSong = self.currentSong, let songsList = self.songsList, currentSong.index + 1 == songsList.count {
-            return true
-        }
-        return false
-    }
-
-    public var isFirstSong: Bool
-    {
-        if let currentSong = self.currentSong, currentSong.index == 0 {
-            return true
-        }
-        return false
-    }
-
-    // MARK: ColiseuPlayerDelegate
+    // MARK: - ColiseuPlayerDelegate
 
     public func remoteControlEvent(event: UIEvent)
     {
@@ -442,7 +453,7 @@ public class ColiseuPlayer: NSObject
     }
 }
 
-// MARK: AudioPlayerProtocol
+// MARK: - AudioPlayerProtocol
 
 extension ColiseuPlayer: AudioPlayerProtocol
 {
@@ -453,7 +464,7 @@ extension ColiseuPlayer: AudioPlayerProtocol
             return
         }
         playNextSong(stopIfInvalid: true)
-        if let repeatType = self.dataSource?.audioRepeatType(in: self), !isPlaying {
+        if let repeatType = self.dataSource?.audioRepeatType(in: self), !self.isPlaying {
             switch repeatType {
             case .none:
                 self.playerWillRepeat = false
@@ -470,7 +481,7 @@ extension ColiseuPlayer: AudioPlayerProtocol
                 playSong(index: 0)
             }
         }
-        if isPlaying {
+        if self.isPlaying {
             self.delegate?.audioPlayerDidFinishPlayingSuccessfullyAndWillBeginPlaying?(self)
             return
         }
@@ -478,10 +489,12 @@ extension ColiseuPlayer: AudioPlayerProtocol
     }
 }
 
-// MARK: Shuffle Array
+// MARK: - Helper
 
 private extension Array
 {
+    // MARK: Shuffle Array
+
     mutating func shuffle()
     {
         if count < 2 { return }
