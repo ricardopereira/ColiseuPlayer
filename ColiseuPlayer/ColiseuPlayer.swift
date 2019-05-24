@@ -38,56 +38,56 @@ private protocol AudioPlayerProtocol: AVAudioPlayerDelegate
     /// - Parameters:
     ///   - player: The instance object of ColiseuPlayer
     ///   - eventSubtype: the instance object of EventSubtype for UIEvent
-    @objc optional func audioPlayerDidReceiveRemoteControlPlayEvent(_ player: ColiseuPlayer, withSubtype eventSubtype: UIEvent.EventSubtype)
+    @objc optional func audioPlayerDidReceiveRemoteControlPlayEvent(_ player: ColiseuPlayer)
 
     /// Tells the delegate that pause button is clicked from remote control.
     ///
     /// - Parameters:
     ///   - player: The instance object of ColiseuPlayer
     ///   - eventSubtype: the instance object of EventSubtype for UIEvent
-    @objc optional func audioPlayerDidReceiveRemoteControlPauseEvent(_ player: ColiseuPlayer, withSubtype eventSubtype: UIEvent.EventSubtype)
+    @objc optional func audioPlayerDidReceiveRemoteControlPauseEvent(_ player: ColiseuPlayer)
 
     /// Tells the delegate that rewind button is clicked from remote control.
     ///
     /// - Parameters:
     ///   - player: The instance object of ColiseuPlayer
     ///   - eventSubtype: the instance object of EventSubtype for UIEvent
-    @objc optional func audioPlayerDidReceiveRemoteControlPreviousTrackEvent(_ player: ColiseuPlayer, withSubtype eventSubtype: UIEvent.EventSubtype)
+    @objc optional func audioPlayerDidReceiveRemoteControlPreviousTrackEvent(_ player: ColiseuPlayer)
 
     /// Tells the delegate that fast forward button is clicked from remote control.
     ///
     /// - Parameters:
     ///   - player: The instance object of ColiseuPlayer
     ///   - eventSubtype: the instance object of EventSubtype for UIEvent
-    @objc optional func audioPlayerDidReceiveRemoteControlNextTrackEvent(_ player: ColiseuPlayer, withSubtype eventSubtype: UIEvent.EventSubtype)
+    @objc optional func audioPlayerDidReceiveRemoteControlNextTrackEvent(_ player: ColiseuPlayer)
 
     /// Tells the delegate that it is begin seeking backward from remote control.
     ///
     /// - Parameters:
     ///   - player: The instance object of ColiseuPlayer
     ///   - eventSubtype: the instance object of EventSubtype for UIEvent
-    @objc optional func audioPlayerDidReceiveRemoteControlBeginSeekingBackwardEvent(_ player: ColiseuPlayer, withSubtype eventSubtype: UIEvent.EventSubtype)
+    @objc optional func audioPlayerDidReceiveRemoteControlBeginSeekingBackwardEvent(_ player: ColiseuPlayer)
 
     /// Tells the delegate that it is seeking backward ended from remote control.
     ///
     /// - Parameters:
     ///   - player: The instance object of ColiseuPlayer
     ///   - eventSubtype: the instance object of EventSubtype for UIEvent
-    @objc optional func audioPlayerDidReceiveRemoteControlEndSeekingBackwardEvent(_ player: ColiseuPlayer, withSubtype eventSubtype: UIEvent.EventSubtype)
+    @objc optional func audioPlayerDidReceiveRemoteControlEndSeekingBackwardEvent(_ player: ColiseuPlayer)
 
     /// Tells the delegate that it is begin seeking forward from remote control.
     ///
     /// - Parameters:
     ///   - player: The instance object of ColiseuPlayer
     ///   - eventSubtype: the instance object of EventSubtype for UIEvent
-    @objc optional func audioPlayerDidReceiveRemoteControlBeginSeekingForwardEvent(_ player: ColiseuPlayer, withSubtype eventSubtype: UIEvent.EventSubtype)
+    @objc optional func audioPlayerDidReceiveRemoteControlBeginSeekingForwardEvent(_ player: ColiseuPlayer)
 
     /// Tells the delegate that it is seeking forward ended from remote control.
     ///
     /// - Parameters:
     ///   - player: The instance object of ColiseuPlayer
     ///   - eventSubtype: the instance object of EventSubtype for UIEvent
-    @objc optional func audioPlayerDidReceiveRemoteControlEndSeekingForwardEvent(_ player: ColiseuPlayer, withSubtype eventSubtype: UIEvent.EventSubtype)
+    @objc optional func audioPlayerDidReceiveRemoteControlEndSeekingForwardEvent(_ player: ColiseuPlayer)
 
     /// Tells the delegate that an audio has finished playing.
     ///
@@ -189,7 +189,10 @@ public class ColiseuPlayer: NSObject
 
     public var isPlaying: Bool
     {
-        return self.audioPlayer!.isPlaying
+        if let audioPlayer = self.audioPlayer {
+            return audioPlayer.isPlaying
+        }
+        return false
     }
 
     private var isSongListValid: Bool
@@ -287,9 +290,7 @@ public class ColiseuPlayer: NSObject
 
     private func prepareAudio(_ index: Int)
     {
-        guard let songs = self.songsList, (index >= 0 && index < songs.count) else {
-            return
-        }
+        guard let songs = self.songsList, (index >= 0 && index < songs.count) else { return }
         prepareAudio(songs[index], index)
     }
 
@@ -425,30 +426,30 @@ public class ColiseuPlayer: NSObject
     
     public func didReceiveRemoteControl(event: UIEvent?)
     {
-        if let event = event, event.type == UIEvent.EventType.remoteControl {
-            switch event.subtype {
-            case UIEvent.EventSubtype.remoteControlPlay:
-                playSong()
-                self.delegate?.audioPlayerDidReceiveRemoteControlPlayEvent?(self, withSubtype: event.subtype)
-            case UIEvent.EventSubtype.remoteControlPause:
-                pauseSong()
-                self.delegate?.audioPlayerDidReceiveRemoteControlPauseEvent?(self, withSubtype: event.subtype)
-            case UIEvent.EventSubtype.remoteControlPreviousTrack:
-                playPreviousSong()
-                self.delegate?.audioPlayerDidReceiveRemoteControlPreviousTrackEvent?(self, withSubtype: event.subtype)
-            case UIEvent.EventSubtype.remoteControlNextTrack:
-                playNextSong(stopIfInvalid: true)
-                self.delegate?.audioPlayerDidReceiveRemoteControlNextTrackEvent?(self, withSubtype: event.subtype)
-            case UIEvent.EventSubtype.remoteControlBeginSeekingBackward:
-                self.delegate?.audioPlayerDidReceiveRemoteControlBeginSeekingBackwardEvent?(self, withSubtype: event.subtype)
-            case UIEvent.EventSubtype.remoteControlEndSeekingBackward:
-                self.delegate?.audioPlayerDidReceiveRemoteControlEndSeekingBackwardEvent?(self, withSubtype: event.subtype)
-            case UIEvent.EventSubtype.remoteControlBeginSeekingForward:
-                self.delegate?.audioPlayerDidReceiveRemoteControlBeginSeekingForwardEvent?(self, withSubtype: event.subtype)
-            case UIEvent.EventSubtype.remoteControlEndSeekingForward:
-                self.delegate?.audioPlayerDidReceiveRemoteControlEndSeekingForwardEvent?(self, withSubtype: event.subtype)
-            default: break
-            }
+        guard let event = event, event.type == UIEvent.EventType.remoteControl else { return }
+        switch event.subtype {
+        case UIEvent.EventSubtype.remoteControlPlay:
+            playSong()
+            self.delegate?.audioPlayerDidReceiveRemoteControlPlayEvent?(self)
+        case UIEvent.EventSubtype.remoteControlPause:
+            pauseSong()
+            self.delegate?.audioPlayerDidReceiveRemoteControlPauseEvent?(self)
+        case UIEvent.EventSubtype.remoteControlPreviousTrack:
+            playPreviousSong()
+            self.delegate?.audioPlayerDidReceiveRemoteControlPreviousTrackEvent?(self)
+        case UIEvent.EventSubtype.remoteControlNextTrack:
+            playNextSong(stopIfInvalid: true)
+            self.delegate?.audioPlayerDidReceiveRemoteControlNextTrackEvent?(self)
+        case UIEvent.EventSubtype.remoteControlBeginSeekingBackward:
+            self.delegate?.audioPlayerDidReceiveRemoteControlBeginSeekingBackwardEvent?(self)
+        case UIEvent.EventSubtype.remoteControlEndSeekingBackward:
+            self.delegate?.audioPlayerDidReceiveRemoteControlEndSeekingBackwardEvent?(self)
+        case UIEvent.EventSubtype.remoteControlBeginSeekingForward:
+            self.delegate?.audioPlayerDidReceiveRemoteControlBeginSeekingForwardEvent?(self)
+        case UIEvent.EventSubtype.remoteControlEndSeekingForward:
+            self.delegate?.audioPlayerDidReceiveRemoteControlEndSeekingForwardEvent?(self)
+        default:
+            break
         }
     }
 }
