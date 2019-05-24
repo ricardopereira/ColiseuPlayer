@@ -110,7 +110,14 @@ public protocol ColiseuPlayerDataSource: class
 /// Specifies the repeat type of an audio player.
 public enum ColiseuPlayerRepeat: Int
 {
-    case none = 0, one, all
+    /// Represents will not repeat.
+    case none = 0
+
+    /// Represents will repeat once.
+    case one
+
+    /// Represents will always repeat.
+    case all
 }
 
 /// An audio player that provides playback of audio data from a file or memory.
