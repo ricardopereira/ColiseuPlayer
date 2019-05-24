@@ -189,7 +189,7 @@ public class ColiseuPlayer: NSObject
         return false
     }
 
-    // MARK: - Init
+    // MARK: - Initializers
 
     public override init()
     {
