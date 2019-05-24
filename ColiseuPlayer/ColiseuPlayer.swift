@@ -30,7 +30,8 @@ private protocol AudioPlayerProtocol: AVAudioPlayerDelegate
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool)
 }
 
-/// A protocol for delegates of ColiseuPlayer
+/// A set of methods implemented by the delegate of a audio player to handle remote control event.
+/// The methods of this protocol are all optional.
 @objc public protocol ColiseuPlayerDelegate: class
 {
     /// Tells the delegate that play is triggered from remote control.
@@ -88,7 +89,7 @@ private protocol AudioPlayerProtocol: AVAudioPlayerDelegate
     @objc optional func audioPlayerDidFinishPlayingSuccessfullyAndWillBeginPlaying(_ player: ColiseuPlayer)
 }
 
-/// A protocol for datasource of ColiseuPlayer
+/// The methods adopted by the object you use to manage behaviour for a audio player.
 public protocol ColiseuPlayerDataSource: class
 {
     /// Asks the datasource to determine if audio is not going to repeat, repeat once or always repeat.
@@ -106,12 +107,13 @@ public protocol ColiseuPlayerDataSource: class
     func audioWillShuffle(in player: ColiseuPlayer) -> Bool
 }
 
-/// An enum for repeat type of ColiseuPlayer
+/// Specifies the repeat type of an audio player.
 public enum ColiseuPlayerRepeat: Int
 {
     case none = 0, one, all
 }
 
+/// An audio player that provides playback of audio data from a file or memory.
 public class ColiseuPlayer: NSObject
 {
     // MARK: - Properties
@@ -135,6 +137,7 @@ public class ColiseuPlayer: NSObject
 
     // MARK: DataSource
 
+    /// The object that acts as the data source of the audio player.
     public weak var dataSource: ColiseuPlayerDataSource?
     {
         willSet {
@@ -146,18 +149,12 @@ public class ColiseuPlayer: NSObject
 
     // MARK: Delegate
 
+    /// The object that acts as the delegate of the audio player.
     public weak var delegate: ColiseuPlayerDelegate?
 
     // MARK: Status
 
-    public var isLastSong: Bool
-    {
-        if let currentSong = self.currentSong, let songsList = self.songsList, currentSong.index + 1 == songsList.count {
-            return true
-        }
-        return false
-    }
-
+    /// A Boolean value that indicates whether the audio player is playing first song (true) or not (false).
     public var isFirstSong: Bool
     {
         if let currentSong = self.currentSong, currentSong.index == 0 {
@@ -166,6 +163,16 @@ public class ColiseuPlayer: NSObject
         return false
     }
 
+    /// A Boolean value that indicates whether the audio player is playing last song (true) or not (false).
+    public var isLastSong: Bool
+    {
+        if let currentSong = self.currentSong, let songsList = self.songsList, currentSong.index + 1 == songsList.count {
+            return true
+        }
+        return false
+    }
+
+    /// A Boolean value that indicates whether the audio player is playing (true) or not (false).
     public var isPlaying: Bool
     {
         if let audioPlayer = self.audioPlayer {
@@ -201,6 +208,7 @@ public class ColiseuPlayer: NSObject
 
     // MARK: - Session
 
+    /// Activates your app’s audio session using the specified options.
     public func startSession()
     {
         do {
@@ -217,6 +225,7 @@ public class ColiseuPlayer: NSObject
         }
     }
 
+    /// Deactivates your app’s audio session using the specified options.
     public func stopSession()
     {
         do {
@@ -304,6 +313,7 @@ public class ColiseuPlayer: NSObject
 
     // MARK: - Commands
 
+    /// Plays sound asynchronously from song list.
     public func playSong()
     {
         // Verify if has a valid playlist to play
@@ -317,6 +327,11 @@ public class ColiseuPlayer: NSObject
         self.audioPlayer!.play()
     }
 
+    /// Plays sound asynchronously from song list.
+    ///
+    /// - Parameters:
+    ///   - index: The index of song list that audio player will play from.
+    ///   - songsList: The song list of the audio player.
     public func playSong(index: Int, songsList: [AudioFile])
     {
         self.songsList = songsList
@@ -329,6 +344,9 @@ public class ColiseuPlayer: NSObject
         playSong()
     }
 
+    /// Plays sound asynchronously from song list.
+    ///
+    /// - Parameter index: The index of sing list that audio player will play from.
     public func playSong(index: Int)
     {
         // Verify if has a valid playlist to play
@@ -341,6 +359,7 @@ public class ColiseuPlayer: NSObject
         playSong()
     }
 
+    /// Pauses playback; sound remains ready to resume playback from where it left off.
     public func pauseSong()
     {
         if self.isPlaying {
@@ -351,6 +370,7 @@ public class ColiseuPlayer: NSObject
         }
     }
 
+    /// Stops playback and undoes the setup needed for playback.
     public func stopSong()
     {
         if self.audioPlayer == nil || !self.isPlaying {
@@ -366,6 +386,9 @@ public class ColiseuPlayer: NSObject
         }
     }
 
+    /// Plays next sound asynchronously from song list.
+    ///
+    /// - Parameter stopIfInvalid: true to tell the audio player to stop, false to tell the audio player not to stop.
     public func playNextSong(stopIfInvalid: Bool = false)
     {
         if let songs = self.songsList, let song = self.currentSong {
@@ -385,6 +408,7 @@ public class ColiseuPlayer: NSObject
         }
     }
 
+    /// Plays previous sound asynchronously from song list.
     public func playPreviousSong()
     {
         if let _ = self.songsList, let song = self.currentSong {
@@ -403,6 +427,9 @@ public class ColiseuPlayer: NSObject
 
     // MARK: - ColiseuPlayerDelegate
     
+    /// Tells the object when a remote-control event is received.
+    ///
+    /// - Parameter event: An event object encapsulating a remote-control command. Remote-control events have a type of UIEvent.EventType.remoteControl.
     public func didReceiveRemoteControl(event: UIEvent?)
     {
         guard let event = event, event.type == UIEvent.EventType.remoteControl else { return }
