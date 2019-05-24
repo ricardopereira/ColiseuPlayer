@@ -315,73 +315,55 @@ class ColiseuPlayerTests: XCTestCase {
 extension ColiseuPlayerTests {
     class UIEventRemoteControlStub: UIEvent {
         override var type: UIEvent.EventType {
-            get {
-                return UIEvent.EventType.remoteControl
-            }
+            return UIEvent.EventType.remoteControl
         }
     }
 
     class UIEventPlayStub: UIEventRemoteControlStub {
         override var subtype: UIEvent.EventSubtype {
-            get {
-                return UIEvent.EventSubtype.remoteControlPlay
-            }
+            return UIEvent.EventSubtype.remoteControlPlay
         }
     }
 
     class UIEventPauseStub: UIEventRemoteControlStub {
         override var subtype: UIEvent.EventSubtype {
-            get {
-                return UIEvent.EventSubtype.remoteControlPause
-            }
+            return UIEvent.EventSubtype.remoteControlPause
         }
     }
 
     class UIEventPreviousTrackStub: UIEventRemoteControlStub {
         override var subtype: UIEvent.EventSubtype {
-            get {
-                return UIEvent.EventSubtype.remoteControlPreviousTrack
-            }
+            return UIEvent.EventSubtype.remoteControlPreviousTrack
         }
     }
 
     class UIEventNextTrackStub: UIEventRemoteControlStub {
         override var subtype: UIEvent.EventSubtype {
-            get {
-                return UIEvent.EventSubtype.remoteControlNextTrack
-            }
+            return UIEvent.EventSubtype.remoteControlNextTrack
         }
     }
 
     class UIEventBeginSeekingBackwardStub: UIEventRemoteControlStub {
         override var subtype: UIEvent.EventSubtype {
-            get {
-                return UIEvent.EventSubtype.remoteControlBeginSeekingBackward
-            }
+            return UIEvent.EventSubtype.remoteControlBeginSeekingBackward
         }
     }
 
     class UIEventEndSeekingBackwardStub: UIEventRemoteControlStub {
         override var subtype: UIEvent.EventSubtype {
-            get {
-                return UIEvent.EventSubtype.remoteControlEndSeekingBackward
-            }
+            return UIEvent.EventSubtype.remoteControlEndSeekingBackward
         }
     }
 
     class UIEventBeginSeekingForwardStub: UIEventRemoteControlStub {
         override var subtype: UIEvent.EventSubtype {
-            get {
-                return UIEvent.EventSubtype.remoteControlBeginSeekingForward
-            }
+            return UIEvent.EventSubtype.remoteControlBeginSeekingForward
         }
     }
 
     class UIEventEndSeekingForwardStub: UIEventRemoteControlStub {
         override var subtype: UIEvent.EventSubtype {
-            get {
-                return UIEvent.EventSubtype.remoteControlEndSeekingForward
-            }
+            return UIEvent.EventSubtype.remoteControlEndSeekingForward
         }
     }
 }
