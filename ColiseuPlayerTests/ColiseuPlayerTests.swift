@@ -51,7 +51,7 @@ class ColiseuPlayerTests: XCTestCase {
         let actualResult = AVAudioSession.sharedInstance().category
 
         // then
-        XCTAssertEqual(actualResult, expectedResult, "testStartSession() should equal .playback")
+        XCTAssertEqual(actualResult, expectedResult, "startSession() should result category equal .playback")
     }
 
     func testStopSession() {
@@ -64,7 +64,7 @@ class ColiseuPlayerTests: XCTestCase {
         let actualResult = AVAudioSession.sharedInstance().category
 
         // then
-        XCTAssertEqual(actualResult, expectedResult, "testStopSession() should equal .ambient")
+        XCTAssertEqual(actualResult, expectedResult, "stopSession() should result category equal .ambient")
     }
 
     func testPlaySong() {
@@ -78,7 +78,7 @@ class ColiseuPlayerTests: XCTestCase {
         let actualResult = self.sut.isPlaying
 
         // then
-        XCTAssertEqual(actualResult, expectedResult, "testPlaySong() should be true")
+        XCTAssertEqual(actualResult, expectedResult, "playSong() should play song")
     }
 
     func testPlaySongIndexSongsList() {
@@ -90,10 +90,10 @@ class ColiseuPlayerTests: XCTestCase {
         let actualResult = self.sut.isPlaying
 
         // then
-        XCTAssertEqual(actualResult, expectedResult, "testPlaySong(index:songsList:) should be true")
+        XCTAssertEqual(actualResult, expectedResult, "playSong(index:songsList:) should play song")
     }
 
-    func testPlaySongIndex() {
+    func testPlaySongIndexIsValidIndex() {
         // given
         let expectedResult = true
         self.sut.playSong(index: 0, songsList: self.list)
@@ -104,7 +104,21 @@ class ColiseuPlayerTests: XCTestCase {
         let actualResult = self.sut.isPlaying
 
         // then
-        XCTAssertEqual(actualResult, expectedResult, "testPlaySongIndex() should be true")
+        XCTAssertEqual(actualResult, expectedResult, "playSong(index:) is valid index should play song")
+    }
+
+    func testPlaySongIndexIsInvalidIndex() {
+        // given
+        let expectedResult = true
+        self.sut.playSong(index: 0, songsList: self.list)
+        self.sut.stopSong()
+
+        // when
+        self.sut.playSong(index: 3)
+        let actualResult = self.sut.isPlaying
+
+        // then
+        XCTAssertEqual(actualResult, expectedResult, "playSong(index:) is invalid index should not play song")
     }
 
     func testPauseSong() {
@@ -117,23 +131,23 @@ class ColiseuPlayerTests: XCTestCase {
         let actualResult = self.sut.isPlaying
 
         // then
-        XCTAssertEqual(actualResult, expectedResult, "testPauseSong() should be false")
+        XCTAssertEqual(actualResult, expectedResult, "pauseSong() should not play song")
     }
 
     func testStopSong() {
         // given
         let expectedResult = false
+        self.sut.playSong(index: 0, songsList: self.list)
 
         // when
-        self.sut.playSong(index: 0, songsList: self.list)
         self.sut.stopSong()
         let actualResult = self.sut.isPlaying
 
         // then
-        XCTAssertEqual(actualResult, expectedResult, "testStopSong() should be false")
+        XCTAssertEqual(actualResult, expectedResult, "stopSong() should not play song")
     }
 
-    func testPlayNextSong() {
+    func testPlayNextSongIsNotLastSong() {
         // given
         let expectedResult = true
         self.sut.playSong(index: 1, songsList: self.list)
@@ -144,10 +158,10 @@ class ColiseuPlayerTests: XCTestCase {
         let actualResult = self.sut.isPlaying
 
         // then
-        XCTAssertEqual(actualResult, expectedResult, "testPlayNextSong() should be true")
+        XCTAssertEqual(actualResult, expectedResult, "playNextSong() is not last song should play song")
     }
 
-    func testPlayNextSongGivenLastSong() {
+    func testPlayNextSongIsLastSong() {
         // given
         let expectedResult = false
         self.sut.playSong(index: 2, songsList: self.list)
@@ -158,10 +172,10 @@ class ColiseuPlayerTests: XCTestCase {
         let actualResult = self.sut.isPlaying
 
         // then
-        XCTAssertEqual(actualResult, expectedResult, "testPlayNextSongGivenLastSong() should be false")
+        XCTAssertEqual(actualResult, expectedResult, "playNextSong() is last song should not play song")
     }
 
-    func testPlayPreviousSong() {
+    func testPlayPreviousSongIsNotFirstSong() {
         // given
         let expectedResult = true
         self.sut.playSong(index: 1, songsList: self.list)
@@ -172,10 +186,10 @@ class ColiseuPlayerTests: XCTestCase {
         let actualResult = self.sut.isPlaying
 
         // then
-        XCTAssertEqual(actualResult, expectedResult, "testPlayPreviousSong() should be true")
+        XCTAssertEqual(actualResult, expectedResult, "playPreviousSong() is not first song should play song")
     }
 
-    func testPlayPreviousSongGivenFirstSong() {
+    func testPlayPreviousSongIsFirstSong() {
         // given
         let expectedResult = false
         self.sut.playSong(index: 0, songsList: self.list)
@@ -186,7 +200,7 @@ class ColiseuPlayerTests: XCTestCase {
         let actualResult = self.sut.isPlaying
 
         // then
-        XCTAssertEqual(actualResult, expectedResult, "testPlayPreviousSongGivenFirstSong() should be false")
+        XCTAssertEqual(actualResult, expectedResult, "playPreviousSong() is first song should not play song")
     }
 }
 
