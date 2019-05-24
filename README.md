@@ -45,6 +45,7 @@ ColiseuPlayer in your project requires the following steps:_
 ## Usage
 
 ```swift
+import AVFoundation
 import ColiseuPlayer
 
 class ViewController: UIViewController, ColiseuPlayerDataSource, ColiseuPlayerDelegate {
@@ -76,6 +77,10 @@ class ViewController: UIViewController, ColiseuPlayerDataSource, ColiseuPlayerDe
         super.viewDidDisappear(animated)
 
         self.player.stopSession()
+    }
+
+    override func remoteControlReceived(with event: UIEvent?) {
+        self.player.remoteControlEvent(event)
     }
 
     func audioRepeatType(in player: ColiseuPlayer) -> ColiseuPlayerRepeat {

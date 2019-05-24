@@ -422,10 +422,10 @@ public class ColiseuPlayer: NSObject
     }
 
     // MARK: - ColiseuPlayerDelegate
-
-    public func remoteControlEvent(event: UIEvent)
+    
+    public func remoteControlEvent(_ event: UIEvent?)
     {
-        if event.type == UIEvent.EventType.remoteControl {
+        if let event = event, event.type == UIEvent.EventType.remoteControl {
             switch event.subtype {
             case UIEvent.EventSubtype.remoteControlPlay:
                 playSong()
