@@ -197,7 +197,7 @@ class ColiseuPlayerTests: XCTestCase {
         let actualResult = self.sut.isPlaying
 
         // then
-        XCTAssertEqual(actualResult, expectedResult, "playSong(index:) is invalid song list is valid index should not play song")
+        XCTAssertEqual(actualResult, expectedResult, "playSong(index:) is invalid song list should not play song")
     }
 
     func testPlaySongIndexIsValidSongListIsInvalidIndex() {
