@@ -14,12 +14,15 @@ class ColiseuPlayerTests: XCTestCase {
 
     var sut: ColiseuPlayer!
     var list: [AudioFile]!
+    var delegatorSpy: DelegatorSpy!
 
     override func setUp() {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
         self.sut = ColiseuPlayer()
+        self.delegatorSpy = DelegatorSpy()
         self.sut.dataSource = self
+        self.sut.delegate = self.delegatorSpy
         self.list = []
         let paths = [
             Bundle(for: type(of: self)).path(forResource: "public_domain_sound_1", ofType: "mp3")!,
@@ -39,6 +42,7 @@ class ColiseuPlayerTests: XCTestCase {
         self.sut.stopSong()
         self.sut.stopSession()
         self.list = nil
+        self.delegatorSpy = nil
         self.sut = nil
     }
 
@@ -202,6 +206,184 @@ class ColiseuPlayerTests: XCTestCase {
         // then
         XCTAssertEqual(actualResult, expectedResult, "playPreviousSong() is first song should not play song")
     }
+
+    func testDidReceiveRemoteControlPlayEvent() {
+        // given
+        let expectedResult = true
+        let event = UIEventPlayStub()
+
+        // when
+        self.sut.didReceiveRemoteControl(event: event)
+        let actualResult = self.delegatorSpy.audioPlayerDidReceiveRemoteControlPlayEventCalled
+
+        // then
+        XCTAssertEqual(actualResult, expectedResult, "didReceiveRemoteControl(event:) is remote control play should be true")
+    }
+
+    func testDidReceiveRemoteControlPauseEvent() {
+        // given
+        let expectedResult = true
+        let event = UIEventPauseStub()
+
+        // when
+        self.sut.didReceiveRemoteControl(event: event)
+        let actualResult = self.delegatorSpy.audioPlayerDidReceiveRemoteControlPauseEventCalled
+
+        // then
+        XCTAssertEqual(actualResult, expectedResult, "didReceiveRemoteControl(event:) is remote control pause should be true")
+    }
+
+    func testDidReceiveRemoteControlPreviousTrackEvent() {
+        // given
+        let expectedResult = true
+        let event = UIEventPreviousTrackStub()
+
+        // when
+        self.sut.didReceiveRemoteControl(event: event)
+        let actualResult = self.delegatorSpy.audioPlayerDidReceiveRemoteControlPreviousTrackEventCalled
+
+        // then
+        XCTAssertEqual(actualResult, expectedResult, "didReceiveRemoteControl(event:) is remote control previous track should be true")
+    }
+
+    func testDidReceiveRemoteControlNextTrackEvent() {
+        // given
+        let expectedResult = true
+        let event = UIEventNextTrackStub()
+
+        // when
+        self.sut.didReceiveRemoteControl(event: event)
+        let actualResult = self.delegatorSpy.audioPlayerDidReceiveRemoteControlNextTrackEventCalled
+
+        // then
+        XCTAssertEqual(actualResult, expectedResult, "didReceiveRemoteControl(event:) is remote control next track should be true")
+    }
+
+    func testDidReceiveRemoteControlBeginSeekingBackwardEvent() {
+        // given
+        let expectedResult = true
+        let event = UIEventBeginSeekingBackwardStub()
+
+        // when
+        self.sut.didReceiveRemoteControl(event: event)
+        let actualResult = self.delegatorSpy.audioPlayerDidReceiveRemoteControlBeginSeekingBackwardEventCalled
+
+        // then
+        XCTAssertEqual(actualResult, expectedResult, "didReceiveRemoteControl(event:) is remote control begin seeking backward should be true")
+    }
+
+    func testDidReceiveRemoteControlEndSeekingBackwardEvent() {
+        // given
+        let expectedResult = true
+        let event = UIEventEndSeekingBackwardStub()
+
+        // when
+        self.sut.didReceiveRemoteControl(event: event)
+        let actualResult = self.delegatorSpy.audioPlayerDidReceiveRemoteControlEndSeekingBackwardEventCalled
+
+        // then
+        XCTAssertEqual(actualResult, expectedResult, "didReceiveRemoteControl(event:) is remote control end seeking backward should be true")
+    }
+
+    func testDidReceiveRemoteControlBeginSeekingForwardEvent() {
+        // given
+        let expectedResult = true
+        let event = UIEventBeginSeekingForwardStub()
+
+        // when
+        self.sut.didReceiveRemoteControl(event: event)
+        let actualResult = self.delegatorSpy.audioPlayerDidReceiveRemoteControlBeginSeekingForwardEventCalled
+
+        // then
+        XCTAssertEqual(actualResult, expectedResult, "didReceiveRemoteControl(event:) is remote control begin seeking forward should be true")
+    }
+
+    func testDidReceiveRemoteControlEndSeekingForwardEvent() {
+        // given
+        let expectedResult = true
+        let event = UIEventEndSeekingForwardStub()
+
+        // when
+        self.sut.didReceiveRemoteControl(event: event)
+        let actualResult = self.delegatorSpy.audioPlayerDidReceiveRemoteControlEndSeekingForwardEventCalled
+
+        // then
+        XCTAssertEqual(actualResult, expectedResult, "didReceiveRemoteControl(event:) is remote control end seeking forward should be true")
+    }
+}
+
+extension ColiseuPlayerTests {
+    class UIEventRemoteControlStub: UIEvent {
+        override var type: UIEvent.EventType {
+            get {
+                return UIEvent.EventType.remoteControl
+            }
+        }
+    }
+
+    class UIEventPlayStub: UIEventRemoteControlStub {
+        override var subtype: UIEvent.EventSubtype {
+            get {
+                return UIEvent.EventSubtype.remoteControlPlay
+            }
+        }
+    }
+
+    class UIEventPauseStub: UIEventRemoteControlStub {
+        override var subtype: UIEvent.EventSubtype {
+            get {
+                return UIEvent.EventSubtype.remoteControlPause
+            }
+        }
+    }
+
+    class UIEventPreviousTrackStub: UIEventRemoteControlStub {
+        override var subtype: UIEvent.EventSubtype {
+            get {
+                return UIEvent.EventSubtype.remoteControlPreviousTrack
+            }
+        }
+    }
+
+    class UIEventNextTrackStub: UIEventRemoteControlStub {
+        override var subtype: UIEvent.EventSubtype {
+            get {
+                return UIEvent.EventSubtype.remoteControlNextTrack
+            }
+        }
+    }
+
+    class UIEventBeginSeekingBackwardStub: UIEventRemoteControlStub {
+        override var subtype: UIEvent.EventSubtype {
+            get {
+                return UIEvent.EventSubtype.remoteControlBeginSeekingBackward
+            }
+        }
+    }
+
+    class UIEventEndSeekingBackwardStub: UIEventRemoteControlStub {
+        override var subtype: UIEvent.EventSubtype {
+            get {
+                return UIEvent.EventSubtype.remoteControlEndSeekingBackward
+            }
+        }
+    }
+
+    class UIEventBeginSeekingForwardStub: UIEventRemoteControlStub {
+        override var subtype: UIEvent.EventSubtype {
+            get {
+                return UIEvent.EventSubtype.remoteControlBeginSeekingForward
+            }
+        }
+    }
+
+    class UIEventEndSeekingForwardStub: UIEventRemoteControlStub {
+        override var subtype: UIEvent.EventSubtype {
+            get {
+                return UIEvent.EventSubtype.remoteControlEndSeekingForward
+            }
+        }
+    }
 }
 
 extension ColiseuPlayerTests: ColiseuPlayerDataSource {
@@ -211,5 +393,49 @@ extension ColiseuPlayerTests: ColiseuPlayerDataSource {
 
     func audioWillShuffle(in player: ColiseuPlayer) -> Bool {
         return false
+    }
+}
+
+extension ColiseuPlayerTests {
+    class DelegatorSpy: ColiseuPlayerDelegate {
+        var audioPlayerDidReceiveRemoteControlPlayEventCalled = false
+        func audioPlayerDidReceiveRemoteControlPlayEvent(_ player: ColiseuPlayer) {
+            self.audioPlayerDidReceiveRemoteControlPlayEventCalled = true
+        }
+
+        var audioPlayerDidReceiveRemoteControlPauseEventCalled = false
+        func audioPlayerDidReceiveRemoteControlPauseEvent(_ player: ColiseuPlayer) {
+            self.audioPlayerDidReceiveRemoteControlPauseEventCalled = true
+        }
+
+        var audioPlayerDidReceiveRemoteControlPreviousTrackEventCalled = false
+        func audioPlayerDidReceiveRemoteControlPreviousTrackEvent(_ player: ColiseuPlayer) {
+            self.audioPlayerDidReceiveRemoteControlPreviousTrackEventCalled = true
+        }
+
+        var audioPlayerDidReceiveRemoteControlNextTrackEventCalled = false
+        func audioPlayerDidReceiveRemoteControlNextTrackEvent(_ player: ColiseuPlayer) {
+            self.audioPlayerDidReceiveRemoteControlNextTrackEventCalled = true
+        }
+
+        var audioPlayerDidReceiveRemoteControlBeginSeekingBackwardEventCalled = false
+        func audioPlayerDidReceiveRemoteControlBeginSeekingBackwardEvent(_ player: ColiseuPlayer) {
+            self.audioPlayerDidReceiveRemoteControlBeginSeekingBackwardEventCalled = true
+        }
+
+        var audioPlayerDidReceiveRemoteControlEndSeekingBackwardEventCalled = false
+        func audioPlayerDidReceiveRemoteControlEndSeekingBackwardEvent(_ player: ColiseuPlayer) {
+            self.audioPlayerDidReceiveRemoteControlEndSeekingBackwardEventCalled = true
+        }
+
+        var audioPlayerDidReceiveRemoteControlBeginSeekingForwardEventCalled = false
+        func audioPlayerDidReceiveRemoteControlBeginSeekingForwardEvent(_ player: ColiseuPlayer) {
+            self.audioPlayerDidReceiveRemoteControlBeginSeekingForwardEventCalled = true
+        }
+
+        var audioPlayerDidReceiveRemoteControlEndSeekingForwardEventCalled = false
+        func audioPlayerDidReceiveRemoteControlEndSeekingForwardEvent(_ player: ColiseuPlayer) {
+            self.audioPlayerDidReceiveRemoteControlEndSeekingForwardEventCalled = true
+        }
     }
 }
