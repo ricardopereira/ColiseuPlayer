@@ -20,7 +20,7 @@ class ColiseuPlayerTests: XCTestCase {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
         self.sut = ColiseuPlayer()
-        self.sut.engine = AVAudioPlayerEngineMock()
+        self.sut.engine = ColiseuPlayerEngineMock()
         self.delegatorSpy = DelegatorSpy()
         self.sut.dataSource = self
         self.sut.delegate = self.delegatorSpy
@@ -314,7 +314,7 @@ class ColiseuPlayerTests: XCTestCase {
 }
 
 extension ColiseuPlayerTests {
-    class AVAudioPlayerEngineMock: ColiseuPlayerEngine {
+    class ColiseuPlayerEngineMock: ColiseuPlayerEngine {
         override func initAudioPlayer(url: URL) -> AVAudioPlayer? {
             do {
                 return try AVAudioPlayerMock(contentsOf: url)
