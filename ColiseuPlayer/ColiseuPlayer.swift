@@ -108,12 +108,7 @@ public enum ColiseuPlayerRepeat: Int
     case none = 0, one, all
 }
 
-private protocol AudioPlayerProtocol: AVAudioPlayerDelegate
-{
-    func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool)
-}
-
-/// An audio player engine, to make mockable by test
+/// An audio player engine, to make it mockable by test
 class ColiseuPlayerEngine
 {
     func initAudioPlayer(url: URL) -> AVAudioPlayer?
@@ -475,9 +470,9 @@ public class ColiseuPlayer: NSObject
     }
 }
 
-// MARK: - AudioPlayerProtocol
+// MARK: - AVAudioPlayerDelegate
 
-extension ColiseuPlayer: AudioPlayerProtocol
+extension ColiseuPlayer: AVAudioPlayerDelegate
 {
     public func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool)
     {
