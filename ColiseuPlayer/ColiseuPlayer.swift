@@ -113,12 +113,7 @@ private protocol AudioPlayerProtocol: AVAudioPlayerDelegate
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool)
 }
 
-internal protocol AudioPlayerEngine
-{
-    func initAudioPlayer(url: URL) -> AVAudioPlayer?
-}
-
-class ColiseuPlayerEngine: AudioPlayerEngine
+class ColiseuPlayerEngine
 {
     func initAudioPlayer(url: URL) -> AVAudioPlayer?
     {
