@@ -334,7 +334,8 @@ extension ColiseuPlayerTests {
         }
 
         override func play() -> Bool {
-            self.isPlayingMock = super.play()
+            self.isPlayingMock = true
+            super.play()
             return self.isPlayingMock
         }
 
