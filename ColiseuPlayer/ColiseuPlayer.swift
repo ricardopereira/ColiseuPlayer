@@ -113,6 +113,7 @@ private protocol AudioPlayerProtocol: AVAudioPlayerDelegate
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool)
 }
 
+/// An audio player engine, to make mockable by test
 class ColiseuPlayerEngine
 {
     func initAudioPlayer(url: URL) -> AVAudioPlayer?
