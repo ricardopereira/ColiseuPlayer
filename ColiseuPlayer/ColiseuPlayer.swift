@@ -120,7 +120,8 @@ internal protocol AudioPlayerEngine
 
 class ColiseuPlayerEngine: AudioPlayerEngine
 {
-    func initAudioPlayer(url: URL) -> AVAudioPlayer? {
+    func initAudioPlayer(url: URL) -> AVAudioPlayer?
+    {
         do {
             return try AVAudioPlayer(contentsOf: url)
         }
