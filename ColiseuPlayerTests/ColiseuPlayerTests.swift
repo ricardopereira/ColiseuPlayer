@@ -19,7 +19,9 @@ class ColiseuPlayerTests: XCTestCase {
     override func setUp() {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
-        self.sut = ColiseuPlayer()
+        let player = ColiseuPlayer()
+        player.audioPlayer = AVAudioPlayerMock()
+        self.sut = player
         self.delegatorSpy = DelegatorSpy()
         self.sut.dataSource = self
         self.sut.delegate = self.delegatorSpy
@@ -309,6 +311,22 @@ class ColiseuPlayerTests: XCTestCase {
 
         // then
         XCTAssertEqual(actualResult, expectedResult, "didReceiveRemoteControl(event:) is remote control end seeking forward should be true")
+    }
+}
+
+extension ColiseuPlayerTests {
+    class AVAudioPlayerMock: AVAudioPlayer {
+        private var isPlayingMock: Bool = false
+
+        override var isPlaying: Bool {
+            return self.isPlayingMock
+        }
+
+        override func play() -> Bool {
+            self.isPlayingMock = true
+            super.play()
+            return true
+        }
     }
 }
 
