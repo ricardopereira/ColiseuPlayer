@@ -109,7 +109,7 @@ public enum ColiseuPlayerRepeat: Int
 }
 
 /// An audio player engine, to make it mockable by test
-class ColiseuPlayerEngine
+internal class ColiseuPlayerEngine
 {
     func initAudioPlayer(url: URL) -> AVAudioPlayer?
     {
