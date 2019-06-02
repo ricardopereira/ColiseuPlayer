@@ -20,6 +20,7 @@ class ColiseuPlayerTests: XCTestCase {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
         self.sut = ColiseuPlayer()
+        self.sut.builder = AudioPlayerBuilderMock()
         self.delegatorSpy = DelegatorSpy()
         self.sut.dataSource = self
         self.sut.delegate = self.delegatorSpy
@@ -113,7 +114,7 @@ class ColiseuPlayerTests: XCTestCase {
 
     func testPlaySongIndexIsInvalidIndex() {
         // given
-        let expectedResult = true
+        let expectedResult = false
         self.sut.playSong(index: 0, songsList: self.list)
         self.sut.stopSong()
 
@@ -309,6 +310,44 @@ class ColiseuPlayerTests: XCTestCase {
 
         // then
         XCTAssertEqual(actualResult, expectedResult, "didReceiveRemoteControl(event:) is remote control end seeking forward should be true")
+    }
+}
+
+extension ColiseuPlayerTests {
+    class AudioPlayerBuilderMock: AudioPlayerBuilder {
+        override func createAudioPlayer(contentsOf url: URL) -> AVAudioPlayer? {
+            do {
+                return try AVAudioPlayerMock(contentsOf: url)
+            }
+            catch let error {
+                print("AVAudioPlayer error occurred:\n \(error)")
+            }
+            return nil
+        }
+    }
+
+    class AVAudioPlayerMock: AVAudioPlayer {
+        private var isPlayingMock: Bool = false
+
+        override var isPlaying: Bool {
+            return self.isPlayingMock
+        }
+
+        override func play() -> Bool {
+            self.isPlayingMock = true
+            super.play()
+            return self.isPlayingMock
+        }
+
+        override func pause() {
+            self.isPlayingMock = false
+            super.pause()
+        }
+
+        override func stop() {
+            self.isPlayingMock = false
+            super.stop()
+        }
     }
 }
 
