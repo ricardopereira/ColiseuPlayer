@@ -426,7 +426,7 @@ public class ColiseuPlayer: NSObject
     }
 
     // MARK: - ColiseuPlayerDelegate
-    
+
     /// Tells the object when a remote-control event is received.
     ///
     /// - Parameter event: An event object encapsulating a remote-control command. Remote-control events have a type of UIEvent.EventType.remoteControl.

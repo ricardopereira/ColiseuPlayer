@@ -327,6 +327,11 @@ extension ColiseuPlayerTests {
             super.play()
             return true
         }
+
+        override func stop() {
+            self.isPlayingMock = false
+            super.stop()
+        }
     }
 }
 
