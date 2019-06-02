@@ -19,9 +19,8 @@ class ColiseuPlayerTests: XCTestCase {
     override func setUp() {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
-        let player = ColiseuPlayer()
-        player.audioPlayer = AVAudioPlayerMock()
-        self.sut = player
+        self.sut = ColiseuPlayer()
+        self.sut.engine = AVAudioPlayerEngineMock()
         self.delegatorSpy = DelegatorSpy()
         self.sut.dataSource = self
         self.sut.delegate = self.delegatorSpy
@@ -115,7 +114,7 @@ class ColiseuPlayerTests: XCTestCase {
 
     func testPlaySongIndexIsInvalidIndex() {
         // given
-        let expectedResult = true
+        let expectedResult = false
         self.sut.playSong(index: 0, songsList: self.list)
         self.sut.stopSong()
 
@@ -315,6 +314,18 @@ class ColiseuPlayerTests: XCTestCase {
 }
 
 extension ColiseuPlayerTests {
+    class AVAudioPlayerEngineMock: ColiseuPlayerEngine {
+        override func initAudioPlayer(url: URL) -> AVAudioPlayer? {
+            do {
+                return try AVAudioPlayerMock(contentsOf: url)
+            }
+            catch let error {
+                print("AVAudioPlayer error occurred:\n \(error)")
+            }
+            return nil
+        }
+    }
+
     class AVAudioPlayerMock: AVAudioPlayer {
         private var isPlayingMock: Bool = false
 
@@ -326,6 +337,11 @@ extension ColiseuPlayerTests {
             self.isPlayingMock = true
             super.play()
             return true
+        }
+
+        override func pause() {
+            self.isPlayingMock = false
+            super.pause()
         }
 
         override func stop() {
