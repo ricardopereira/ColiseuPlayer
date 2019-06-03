@@ -10,6 +10,7 @@ Pod::Spec.new do |s|
 
   s.platform     = :ios, '8.0'
   s.requires_arc = true
+  s.swift_version = '5.0'
 
   s.source_files = 'ColiseuPlayer/*.{h,swift}'
   s.frameworks = 'AVFoundation'
