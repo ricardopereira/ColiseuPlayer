@@ -1,6 +1,6 @@
 // ColiseuPlayer.h
 //
-// Copyright (c) 2014 Ricardo Pereira (http://ricardopereira.eu)
+// Copyright (c) 2019 Ricardo Pereira (https://ricardopereira.eu)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
