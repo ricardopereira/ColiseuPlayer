@@ -101,7 +101,7 @@ You will also need to make sure you're opting into using frameworks:
 use_frameworks!
 ```
 
-Then run `pod install` with CocoaPods 0.36 or newer.
+Then run `pod install` with CocoaPods 1.7.0 or newer.
 
 #### Manually
 
